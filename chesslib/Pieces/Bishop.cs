@@ -1,5 +1,4 @@
-﻿using chesslib.Figures.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,13 +6,11 @@ using System.Text;
 
 namespace chesslib.Figures
 {
-    public class King : Piece, IMoved
+    public class Bishop : Piece
     {
-        public King(Cell currentCell, Color color) : base(currentCell, color)
+        public Bishop(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
         }
-
-        public bool HasAlreadyMoved { get; set; } = false;
 
         public override List<Cell> GetAllowedMoves()
         {

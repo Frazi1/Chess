@@ -4,15 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04B9B78D-9DEA-446D-8C0D-AFACFA9C4BC2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>chesslib</RootNamespace>
-    <AssemblyName>chesslib</AssemblyName>
+    <ProjectGuid>{94A7DF40-D642-4B0E-918E-03BB6BAA2FC1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>test</RootNamespace>
+    <AssemblyName>test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,21 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Field\Cell.cs" />
-    <Compile Include="Pieces\Bishop.cs" />
-    <Compile Include="Pieces\Interfaces\IMoved.cs" />
-    <Compile Include="Pieces\Piece.cs" />
-    <Compile Include="Pieces\King.cs" />
-    <Compile Include="Pieces\Knight.cs" />
-    <Compile Include="Pieces\Pawn.cs" />
-    <Compile Include="Pieces\Queen.cs" />
-    <Compile Include="Pieces\Rook.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="PieceType.cs" />
-    <Compile Include="PlayerType.cs" />
-    <Compile Include="Player\Interfaces\IPlayer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

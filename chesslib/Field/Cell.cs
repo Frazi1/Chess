@@ -7,23 +7,35 @@ namespace chesslib
 {
     public class Cell
     {
-        public char Letter { get; set; }
-        public int Number { get; set; }
+        private int _posX;
 
-        private Piece _figure;
-
-        public Piece Figure
+        public int PosX
         {
-            get { return _figure; }
-            set { _figure = value; }
+            get { return _posX; }
+            set { _posX = value; }
+        }
+        private int _posY;
+
+        public int PosY
+        {
+            get { return _posY; }
+            set { _posY = value; }
         }
 
-        public bool IsTaken => Figure != null;
+        private Piece _piece;
 
-        public Cell(char letter, int number)
+        public Piece Piece
         {
-            Letter = letter;
-            Number = number;
+            get { return _piece; }
+            set { _piece = value; }
+        }
+
+        public bool IsTaken => Piece != null;
+
+        public Cell(int x, int y)
+        {
+            PosX = x;
+            PosY = y;
         }
     }
 }

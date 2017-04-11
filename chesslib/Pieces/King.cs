@@ -7,20 +7,20 @@ using System.Text;
 
 namespace chesslib.Figures
 {
-    public class Rook : Piece, IMoved
+    public class King : Piece, IMoved
     {
-        public bool HasAlreadyMoved { get; set; } = false;
-
-        public Rook(Cell currentCell, Color color) : base(currentCell, color)
+        public King(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
         }
 
-        public override bool MoveTo(Cell cell)
+        public bool HasAlreadyMoved { get; set; } = false;
+
+        public override List<Cell> GetAllowedMoves()
         {
             throw new NotImplementedException();
         }
 
-        public override List<Cell> GetAllowedMoves()
+        public override bool MoveTo(Cell cell)
         {
             throw new NotImplementedException();
         }

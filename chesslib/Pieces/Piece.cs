@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,13 @@ namespace chesslib
     public abstract class Piece
     {
         public Cell CurrentCell { get; set; }
-        public Color Color { get; private set; }
+        public PlayerType PlayerType { get; set; }
+        public PieceType PieceType { get; protected set; }
 
-        public Piece(Cell currentCell, Color color)
+        public Piece(Cell currentCell, PlayerType playerType)
         {
             CurrentCell = currentCell;
-            Color = color;
+            PlayerType = playerType;
         }
 
         public abstract bool MoveTo(Cell cell);

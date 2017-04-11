@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace chesslib
 {
-    public class Generator
-    {
-        private const int FieldSize = 8;
-
-    }
+	public enum PlayerType
+	{
+		White,
+		Black
+	}
 }

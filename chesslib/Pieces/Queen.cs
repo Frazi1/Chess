@@ -8,7 +8,7 @@ namespace chesslib.Figures
 {
     public class Queen : Piece
     {
-        public Queen(Cell currentCell, Color color) : base(currentCell, color)
+        public Queen(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
         }
 
