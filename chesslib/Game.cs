@@ -1,4 +1,5 @@
-﻿using chesslib.Player;
+﻿using chesslib.Figures;
+using chesslib.Player;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,8 +10,66 @@ namespace chesslib
 {
     public class Game
     {
+        private const int SIZE = 8;
+
         public IPlayer Player1 { get; set; }
         public IPlayer Player2 { get; set; }
         public Cell[,] ChessBoard { get; set; }
+        public ObservableCollection<Piece> Pieces { get; set; }
+
+        public Game()
+        {
+            ChessBoard = new Cell[SIZE, SIZE];
+            Pieces = new ObservableCollection<Piece>();
+
+            InitializeBoard();
+            CreatePieces();
+        }
+
+        private void CreatePieces()
+        {
+
+            //black
+            Pieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black));
+            Pieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black));
+            Pieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black));
+            Pieces.Add(new King(ChessBoard[3, 0], PlayerType.Black));
+            Pieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black));
+            Pieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black));
+            Pieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black));
+            Pieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black));
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                Pieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black));
+            }
+
+            //white
+            Pieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White));
+            Pieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White));
+            Pieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White));
+            Pieces.Add(new King(ChessBoard[4, 7], PlayerType.White));
+            Pieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White));
+            Pieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White));
+            Pieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White));
+            Pieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White));
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                Pieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White));
+            }
+
+        }
+
+        private void InitializeBoard()
+        {
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = 0; j < SIZE; j++)
+                {
+                    ChessBoard[i, j] = new Cell(i, j);
+                }
+            }
+        }
     }
 }

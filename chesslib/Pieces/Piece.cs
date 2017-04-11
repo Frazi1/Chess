@@ -11,11 +11,12 @@ namespace chesslib
     {
         public Cell CurrentCell { get; set; }
         public PlayerType PlayerType { get; set; }
-        public PieceType PieceType { get; protected set; }
 
         public Piece(Cell currentCell, PlayerType playerType)
         {
             CurrentCell = currentCell;
+            if (CurrentCell.Piece == null)
+                CurrentCell.Piece = this;
             PlayerType = playerType;
         }
 
