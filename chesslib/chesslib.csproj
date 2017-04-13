@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Field\Cell.cs" />
+    <Compile Include="Field\Board.cs" />
     <Compile Include="Pieces\Bishop.cs" />
     <Compile Include="Pieces\Interfaces\IMoved.cs" />
     <Compile Include="Pieces\Piece.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="PieceType.cs" />
     <Compile Include="PlayerType.cs" />
     <Compile Include="Player\Interfaces\IPlayer.cs" />
+    <Compile Include="Player\RealPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

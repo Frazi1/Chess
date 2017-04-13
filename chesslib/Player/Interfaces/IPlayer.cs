@@ -7,6 +7,7 @@ namespace chesslib.Player
 {
     public interface IPlayer
     {
-        void MakeMove();
+        PlayerType PlayerType { get; set; }
+        void MovePiece(Piece piece, Cell nextCell);
     }
 }

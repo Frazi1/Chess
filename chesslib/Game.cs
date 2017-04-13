@@ -1,4 +1,5 @@
-﻿using chesslib.Figures;
+﻿using chesslib.Field;
+using chesslib.Figures;
 using chesslib.Player;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,37 @@ namespace chesslib
 
         public IPlayer Player1 { get; set; }
         public IPlayer Player2 { get; set; }
-        public Cell[,] ChessBoard { get; set; }
-        public ObservableCollection<Piece> Pieces { get; set; }
+        public Board Board
+        {
+            get { return Board.Instance; }
+        }
+
+        private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
+        public List<Piece> Pieces { get { return Board.Pieces; } }
+        public bool IsGameFinished { get; private set; }
+        public IPlayer CurrentPlayer { get; private set; }
 
         public Game()
         {
-            ChessBoard = new Cell[SIZE, SIZE];
-            Pieces = new ObservableCollection<Piece>();
-
-            InitializeBoard();
             CreatePieces();
+            Player1 = new RealPlayer(PlayerType.White);
+            Player2 = new RealPlayer(PlayerType.Black);
+            IsGameFinished = false;
+            Start();
+        }
+
+        public void MakeMove(Piece piece, Cell nextCell)
+        {
+            CurrentPlayer.MovePiece(piece, nextCell);
+            if (CurrentPlayer == Player1)
+                CurrentPlayer = Player2;
+            else
+                CurrentPlayer = Player1;
+        }
+
+        private void Start()
+        {
+            CurrentPlayer = Player1;
         }
 
         private void CreatePieces()
@@ -61,15 +83,5 @@ namespace chesslib
 
         }
 
-        private void InitializeBoard()
-        {
-            for (int i = 0; i < SIZE; i++)
-            {
-                for (int j = 0; j < SIZE; j++)
-                {
-                    ChessBoard[i, j] = new Cell(i, j);
-                }
-            }
-        }
     }
 }
