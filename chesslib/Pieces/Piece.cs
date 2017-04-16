@@ -34,7 +34,18 @@ namespace chesslib
                 return -1;
             }
         }
+        public virtual bool CanMoveTo(Cell cell, IPlayer player)
+        {
+            if (!CheckPlayer(player))
+                return false;
 
+            var moves = GetAllowedMoves();
+            if (moves.Contains(cell))
+                return true;
+
+            return false;
+
+        }
         public virtual bool MoveTo(Cell cell, IPlayer player)
         {
             Update(this);
@@ -47,6 +58,12 @@ namespace chesslib
                 return true;
             return false;
         }
+        public void Destroy()
+        {
+            IsInGame = false;
+            CurrentCell = null;
+            Update(this);
+        }
         public abstract List<Cell> GetAllowedMoves();
 
         #region IObservable
@@ -58,6 +75,8 @@ namespace chesslib
                 _observers.Add(observer);
             return new Unsubscriber(_observers, observer);
         }
+
+
 
         public void Update(Piece loc)
         {

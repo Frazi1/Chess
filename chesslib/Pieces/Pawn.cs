@@ -44,7 +44,7 @@ namespace chesslib.Figures
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
-                        if (chessBoard[x-1,y-1].IsTaken && 
+                        if (chessBoard[x - 1, y - 1].IsTaken &&
                             chessBoard[x - 1, y - 1].Piece.PlayerType != this.PlayerType)
                             allowedMoves.Add(chessBoard[x - 1, y - 1]);
                     }
@@ -52,7 +52,7 @@ namespace chesslib.Figures
                     //Атака вперед и вправо
                     if (y > 0 && x < size)
                     {
-                        if (chessBoard[x + 1, y - 1].IsTaken && 
+                        if (chessBoard[x + 1, y - 1].IsTaken &&
                             chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
                             allowedMoves.Add(chessBoard[x + 1, y - 1]);
                     }
@@ -72,7 +72,7 @@ namespace chesslib.Figures
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
-                        if (chessBoard[x - 1, y + 1].IsTaken && 
+                        if (chessBoard[x - 1, y + 1].IsTaken &&
                             chessBoard[x - 1, y + 1].Piece.PlayerType != this.PlayerType)
                             allowedMoves.Add(chessBoard[x - 1, y + 1]);
                     }
@@ -80,7 +80,7 @@ namespace chesslib.Figures
                     //Атака вперед и вправо
                     if (y > 0 && x < size)
                     {
-                        if (chessBoard[x + 1, y + 1].IsTaken && 
+                        if (chessBoard[x + 1, y + 1].IsTaken &&
                             chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
                             allowedMoves.Add(chessBoard[x + 1, y + 1]);
                     }
@@ -89,19 +89,27 @@ namespace chesslib.Figures
 
             return allowedMoves;
         }
+        //public override bool CanMoveTo(Cell nextCell, IPlayer player)
+        //{
+            //if (!base.CheckPlayer(player))
+            //    return false;
 
+            //var moves = GetAllowedMoves();
+            //if (!moves.Contains(nextCell))
+            //    return false;
+
+            //return true;
+
+        //}
         public override bool MoveTo(Cell nextCell, IPlayer player)
         {
-            if (!base.CheckPlayer(player))
-                return false;
-            var moves = GetAllowedMoves();
-            if (moves.Contains(nextCell))
+            //if (nextCell.IsTaken)
+            //{
+            //    //Стек
+            //    nextCell.Piece = null;
+            //}
+            if (base.CanMoveTo(nextCell, player))
             {
-                if (nextCell.IsTaken)
-                {
-                    //Стек
-                    nextCell.Piece = null;
-                }
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;

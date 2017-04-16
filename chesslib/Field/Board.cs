@@ -51,6 +51,15 @@ namespace chesslib.Field
             }
         }
 
+        public void DestroyPiece(Piece piece)
+        {
+            if(AlivePieces.Contains(piece))
+            {
+                AlivePieces.Remove(piece);
+                piece.Destroy();
+                DestroyedPieces.Add(piece);
+            }
+        }
         
     }
 }

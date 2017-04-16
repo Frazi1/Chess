@@ -36,11 +36,9 @@ namespace chesslib
 
         public bool MakeMove(Piece piece, Cell nextCell)
         {
-            bool ok;
-            ok = CurrentPlayer.MovePiece(piece, nextCell);
+            bool ok = CurrentPlayer.MovePiece(piece, nextCell);
             if (!ok)
                 return false;
-
             ChangePlayers();
             return true;
         }

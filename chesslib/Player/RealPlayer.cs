@@ -22,7 +22,20 @@ namespace chesslib.Player
 
         public bool MovePiece(Piece piece, Cell nextCell)
         {
-            return piece.MoveTo(nextCell, this);
+            Piece pieceToDestroy = null;
+            if (nextCell.Piece != null &&
+                nextCell.Piece.PlayerType != PlayerType)
+            {
+                pieceToDestroy = nextCell.Piece;
+            }
+            bool canMoveTo = piece.CanMoveTo(nextCell, this);
+            if (pieceToDestroy != null && canMoveTo)
+            {
+                Board.Instance.DestroyPiece(pieceToDestroy);
+            }
+            bool moved = piece.MoveTo(nextCell, this);
+
+            return moved;
         }
     }
 }
