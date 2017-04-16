@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using chesslib.Player;
 
 namespace chesslib.Figures
 {
@@ -14,9 +15,10 @@ namespace chesslib.Figures
         }
 
         public bool HasAlreadyMoved { get; set; } = false;
-        public override bool MoveTo(Cell cell)
+
+        public override bool MoveTo(Cell cell, IPlayer player)
         {
-            throw new NotImplementedException();
+            return base.MoveTo(cell, player);
         }
 
         public override List<Cell> GetAllowedMoves()

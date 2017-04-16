@@ -1,5 +1,6 @@
 ﻿using chesslib.Field;
 using chesslib.Figures.Interfaces;
+using chesslib.Player;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -89,8 +90,10 @@ namespace chesslib.Figures
             return allowedMoves;
         }
 
-        public override bool MoveTo(Cell nextCell)
+        public override bool MoveTo(Cell nextCell, IPlayer player)
         {
+            if (!base.CheckPlayer(player))
+                return false;
             var moves = GetAllowedMoves();
             if (moves.Contains(nextCell))
             {
@@ -102,8 +105,7 @@ namespace chesslib.Figures
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;
-                return true;
-
+                return base.MoveTo(nextCell, player);
             }
             return false;
         }

@@ -8,6 +8,6 @@ namespace chesslib.Player
     public interface IPlayer
     {
         PlayerType PlayerType { get; set; }
-        void MovePiece(Piece piece, Cell nextCell);
+        bool MovePiece(Piece piece, Cell nextCell);
     }
 }

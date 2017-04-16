@@ -21,7 +21,7 @@ namespace chesslib
         }
 
         private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
-        public List<Piece> Pieces { get { return Board.Pieces; } }
+        public List<Piece> Pieces { get { return Board.AlivePieces; } }
         public bool IsGameFinished { get; private set; }
         public IPlayer CurrentPlayer { get; private set; }
 
@@ -34,9 +34,19 @@ namespace chesslib
             Start();
         }
 
-        public void MakeMove(Piece piece, Cell nextCell)
+        public bool MakeMove(Piece piece, Cell nextCell)
         {
-            CurrentPlayer.MovePiece(piece, nextCell);
+            bool ok;
+            ok = CurrentPlayer.MovePiece(piece, nextCell);
+            if (!ok)
+                return false;
+
+            ChangePlayers();
+            return true;
+        }
+
+        private void ChangePlayers()
+        {
             if (CurrentPlayer == Player1)
                 CurrentPlayer = Player2;
             else

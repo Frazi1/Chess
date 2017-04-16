@@ -11,13 +11,16 @@ namespace chesslib.Field
         private readonly int SIZE;
 
         public Cell[,] ChessBoard { get; set; }
-        public List<Piece> Pieces { get; set; }
+        public List<Piece> AlivePieces { get; set; }
+        public List<Piece> DestroyedPieces { get; set; }
+
 
         private Board(int size)
         {
             SIZE = size;
             ChessBoard = new Cell[size, size];
-            Pieces = new List<Piece>();
+            AlivePieces = new List<Piece>();
+            DestroyedPieces = new List<Piece>();
 
             InitializeBoard();
         }
@@ -48,5 +51,6 @@ namespace chesslib.Field
             }
         }
 
+        
     }
 }

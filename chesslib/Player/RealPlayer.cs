@@ -11,7 +11,7 @@ namespace chesslib.Player
         public RealPlayer(PlayerType playerType)
         {
             PlayerType = playerType;
-            _pieces = Board.Instance.Pieces
+            _pieces = Board.Instance.AlivePieces
                 .Where(p => p.PlayerType == this.PlayerType)
                 .ToList();
         }
@@ -20,9 +20,9 @@ namespace chesslib.Player
 
         public PlayerType PlayerType { get; set; }
 
-        public void MovePiece(Piece piece, Cell nextCell)
+        public bool MovePiece(Piece piece, Cell nextCell)
         {
-            piece.MoveTo(nextCell);
+            return piece.MoveTo(nextCell, this);
         }
     }
 }
