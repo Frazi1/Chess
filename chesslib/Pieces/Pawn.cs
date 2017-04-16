@@ -105,6 +105,7 @@ namespace chesslib.Figures
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;
+                HasAlreadyMoved = true;
                 return base.MoveTo(nextCell, player);
             }
             return false;
