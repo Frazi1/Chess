@@ -14,13 +14,12 @@ namespace chesslib.Figures
     {
         public Pawn(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
-
         }
 
         public bool HasAlreadyMoved { get; set; } = false;
         public bool IsPromoted { get; set; } = false;
 
-
+        //TODO: Переделать GetAllowedMoves
         public override List<Cell> GetAllowedMoves()
         {
             List<Cell> allowedMoves = new List<Cell>();
@@ -28,7 +27,7 @@ namespace chesslib.Figures
             int y = CurrentCell.PosY;
             Cell[,] chessBoard = Board.Instance.ChessBoard;
 
-            int size = Board.Instance.ChessBoard.Length;
+            int size = Board.Instance.ChessBoard.GetLength(0);
 
             //Белые
             if (PlayerType == PlayerType.White)
@@ -89,34 +88,13 @@ namespace chesslib.Figures
 
             return allowedMoves;
         }
-        //public override bool CanMoveTo(Cell nextCell, IPlayer player)
-        //{
-            //if (!base.CheckPlayer(player))
-            //    return false;
-
-            //var moves = GetAllowedMoves();
-            //if (!moves.Contains(nextCell))
-            //    return false;
-
-            //return true;
-
-        //}
         public override bool MoveTo(Cell nextCell, IPlayer player)
         {
-            //if (nextCell.IsTaken)
-            //{
-            //    //Стек
-            //    nextCell.Piece = null;
-            //}
-            if (base.CanMoveTo(nextCell, player))
-            {
-                CurrentCell.Piece = null;
-                CurrentCell = nextCell;
-                nextCell.Piece = this;
+
+            bool moved = base.MoveTo(nextCell, player);
+            if (moved)
                 HasAlreadyMoved = true;
-                return base.MoveTo(nextCell, player);
-            }
-            return false;
+            return moved;
         }
     }
 }
