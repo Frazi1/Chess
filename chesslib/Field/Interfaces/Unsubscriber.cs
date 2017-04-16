@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace chesslib.Field
 {
-    internal class Unsubscriber : IDisposable
+    internal class Unsubscriber<T> : IDisposable
     {
-        private List<IObserver<Piece>> _observers;
-        private IObserver<Piece> _observer;
+        private List<IObserver<T>> _observers;
+        private IObserver<T> _observer;
 
-        public Unsubscriber(List<IObserver<Piece>> observers, IObserver<Piece> observer)
+        public Unsubscriber(List<IObserver<T>> observers, IObserver<T> observer)
         {
             _observers = observers;
             _observer = observer;

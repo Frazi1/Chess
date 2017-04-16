@@ -9,5 +9,6 @@ namespace chesslib.Player
     {
         PlayerType PlayerType { get; set; }
         bool MovePiece(Piece piece, Cell nextCell);
+        
     }
 }

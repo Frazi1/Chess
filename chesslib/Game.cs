@@ -9,7 +9,7 @@ using System.Text;
 
 namespace chesslib
 {
-    public class Game
+    public class Game : IObservable<Game>
     {
         private const int SIZE = 8;
 
@@ -27,6 +27,7 @@ namespace chesslib
 
         public Game()
         {
+            _observers = new List<IObserver<Game>>();
             CreatePieces();
             Player1 = new RealPlayer(PlayerType.White);
             Player2 = new RealPlayer(PlayerType.Black);
@@ -40,6 +41,7 @@ namespace chesslib
             if (!ok)
                 return false;
             ChangePlayers();
+            Update(this);
             return true;
         }
 
@@ -50,12 +52,10 @@ namespace chesslib
             else
                 CurrentPlayer = Player1;
         }
-
         private void Start()
         {
             CurrentPlayer = Player1;
         }
-
         private void CreatePieces()
         {
 
@@ -91,5 +91,32 @@ namespace chesslib
 
         }
 
+        #region IObservable
+        private List<IObserver<Game>> _observers;
+        public IDisposable Subscribe(IObserver<Game> observer)
+        {
+            if (!_observers.Contains(observer))
+                _observers.Add(observer);
+            return new Unsubscriber<Game>(_observers, observer);
+        }
+
+        public void Update(Game loc)
+        {
+            foreach (var observer in _observers)
+            {
+                    observer.OnNext(loc);
+            }
+        }
+        public void EndUpdates()
+        {
+            foreach (var observer in _observers)
+            {
+                if (_observers.Contains(observer))
+                    observer.OnCompleted();
+
+                _observers.Clear();
+            }
+        }
+        #endregion
     }
 }

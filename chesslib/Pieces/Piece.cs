@@ -80,7 +80,7 @@ namespace chesslib
         {
             if (!_observers.Contains(observer))
                 _observers.Add(observer);
-            return new Unsubscriber(_observers, observer);
+            return new Unsubscriber<Piece>(_observers, observer);
         }
 
         public void Update(Piece loc)
