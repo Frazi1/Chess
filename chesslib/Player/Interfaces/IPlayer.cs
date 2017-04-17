@@ -1,5 +1,4 @@
 ﻿using chesslib.Command;
-using chesslib.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace chesslib.Player
         PlayerType PlayerType { get; set; }
         MakeMoveCommand MakeMoveCommand { get; set; }
 
-        IStrategy Strategy { get; set; }
+        void PrepareMove(Piece p, Cell nextCell);
         void MakeMove();
     }
 }
