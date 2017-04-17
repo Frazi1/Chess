@@ -1,4 +1,5 @@
-﻿using chesslib.Field;
+﻿using chesslib.Command;
+using chesslib.Field;
 using chesslib.Figures;
 using chesslib.Player;
 using System;
@@ -116,6 +117,24 @@ namespace chesslib
 
                 _observers.Clear();
             }
+        }
+        #endregion
+
+        #region ICommand
+        private ICommand _command;
+        public  void SetCommand (ICommand command)
+        {
+            _command = command;
+        }
+        public void ExecuteCommand()
+        {
+            if (_command != null)
+                _command.Execute();
+        }
+        public void UndoCommand()
+        {
+            if (_command != null)
+                _command.Undo();
         }
         #endregion
     }

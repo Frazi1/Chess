@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\MakeMoveCommand.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
     <Compile Include="Field\Interfaces\Unsubscriber.cs" />
@@ -52,8 +54,8 @@
     <Compile Include="Pieces\AllTypes\Queen.cs" />
     <Compile Include="Pieces\AllTypes\Rook.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="PieceType.cs" />
-    <Compile Include="PlayerType.cs" />
+    <Compile Include="Pieces\PieceType.cs" />
+    <Compile Include="Player\PlayerType.cs" />
     <Compile Include="Player\Interfaces\IPlayer.cs" />
     <Compile Include="Player\RealPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

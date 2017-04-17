@@ -49,7 +49,7 @@ namespace chesslib.Figures
                     }
 
                     //Атака вперед и вправо
-                    if (y > 0 && x < size)
+                    if (y > 0 && x < size - 1)
                     {
                         if (chessBoard[x + 1, y - 1].IsTaken &&
                             chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
@@ -77,7 +77,7 @@ namespace chesslib.Figures
                     }
 
                     //Атака вперед и вправо
-                    if (y > 0 && x < size)
+                    if (y > 0 && x < size-1)
                     {
                         if (chessBoard[x + 1, y + 1].IsTaken &&
                             chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
