@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chesslib", "chesslib\chesslib.csproj", "{04B9B78D-9DEA-446D-8C0D-AFACFA9C4BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessUI", "C:\Users\diman\Desktop\ChessDemo\ChessUI.csproj", "{3281C111-52F0-442A-A2CF-06B060FFD49C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessUI", "ChessUI\ChessUI.csproj", "{3281C111-52F0-442A-A2CF-06B060FFD49C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
