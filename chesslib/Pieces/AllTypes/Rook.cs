@@ -13,9 +13,10 @@ namespace chesslib.Figures
     {
         public Rook(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
+            HasAlreadyMoved = false;
         }
 
-        public bool HasAlreadyMoved { get; set; } = false;
+        public bool HasAlreadyMoved { get; set; }
 
         public override bool MoveTo(Cell cell, IPlayer player)
         {

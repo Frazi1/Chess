@@ -40,8 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\ICommand.cs" />
-    <Compile Include="Command\MakeMoveCommand.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
     <Compile Include="Field\Interfaces\Unsubscriber.cs" />

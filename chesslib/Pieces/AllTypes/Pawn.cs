@@ -14,10 +14,12 @@ namespace chesslib.Figures
     {
         public Pawn(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
         {
+            HasAlreadyMoved = false;
+            IsPromoted = false;
         }
 
-        public bool HasAlreadyMoved { get; set; } = false;
-        public bool IsPromoted { get; set; } = false;
+        public bool HasAlreadyMoved { get; set; }
+        public bool IsPromoted { get; set; }
 
         //TODO: Переделать GetAllowedMoves
         public override List<Cell> GetAllowedMoves()
