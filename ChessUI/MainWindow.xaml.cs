@@ -1,27 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ChessUI.ViewModel;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ChessUI
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModelLocator v = new ViewModelLocator();
+        GameViewModel _gameViewModel;
         public MainWindow()
         {
             InitializeComponent();
+            _gameViewModel = v.Main;
+        }
+
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (_gameViewModel.SelectedPiece == null)
+            {
+                _gameViewModel.SelectedPiece = (e.OriginalSource as Image)?.DataContext as ChessPieceViewModel;
+            }
+            else
+            {
+                int x = (int)e.GetPosition(this.ChessBoard).X;
+                int y = (int)e.GetPosition(this.ChessBoard).Y;
+                try
+                {
+                    //_gameViewModel.Game.MakeMove(_gameViewModel.SelectedPiece.Piece, _gameViewModel.Game.Board.ChessBoard[x, y]);
+                    _gameViewModel
+                        .Game
+                        .CurrentPlayer
+                        .PrepareMove(_gameViewModel.SelectedPiece.Piece,_gameViewModel.Game.Board.ChessBoard[x, y]);
+                    _gameViewModel
+                        .Game
+                        .CurrentPlayer
+                        .MakeMove();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                finally
+                {
+                    _gameViewModel.SelectedPiece = null;
+                }
+
+            }
         }
     }
 }
+

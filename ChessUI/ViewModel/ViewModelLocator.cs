@@ -1,7 +1,7 @@
 /*
   In App.xaml:
   <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:ChessUI"
+      <vm:ViewModelLocator xmlns:vm="clr-namespace:ChessDemo"
                            x:Key="Locator" />
   </Application.Resources>
   
@@ -16,7 +16,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace ChessUI
+namespace ChessUI.ViewModel
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -42,14 +42,14 @@ namespace ChessUI
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<GameViewModel>();
         }
 
-        public MainViewModel Main
+        public GameViewModel Main
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
+                return ServiceLocator.Current.GetInstance<GameViewModel>();
             }
         }
         

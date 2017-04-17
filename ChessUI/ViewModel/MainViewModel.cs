@@ -1,6 +1,6 @@
 using GalaSoft.MvvmLight;
 
-namespace ChessUI
+namespace ChessUI.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
