@@ -73,6 +73,27 @@ namespace chesslib
         }
         public abstract List<Cell> GetAllowedMoves();
 
+        public bool TryCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
+        {
+            if (x1 >= 0 &&
+                x1 < chessBoard.GetLength(0) &&
+                y1 >= 0 &&
+                y1 < chessBoard.GetLength(0))
+            {
+                if (!chessBoard[x1, y1].IsTaken)
+                {
+                    allowedMoves.Add(chessBoard[x1, y1]);
+                    return true;
+                }
+                else if (chessBoard[x1, y1].IsTaken &&
+                    chessBoard[x1, y1].Piece.PlayerType != PlayerType)
+                {
+                    allowedMoves.Add(chessBoard[x1, y1]);
+                    return false;
+                }
+            }
+            return false;
+        }
         #region IObservable
 
         private List<IObserver<Piece>> _observers;

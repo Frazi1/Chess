@@ -45,19 +45,6 @@ namespace chesslib.Figures
 
         }
 
-        private void TryCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
-        {
-            if (x1 >= 0 &&
-                x1 < chessBoard.GetLength(0) &&
-                y1 >= 0 &&
-                y1 < chessBoard.GetLength(0))
-            {
-                if (!chessBoard[x1, y1].IsTaken ||
-                    chessBoard[x1, y1].Piece.PlayerType != PlayerType)
-                    allowedMoves.Add(chessBoard[x1, y1]);
-            }
-        }
-
         public override bool MoveTo(Cell cell, IPlayer player)
         {
             return base.MoveTo(cell, player);

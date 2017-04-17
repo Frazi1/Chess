@@ -35,76 +35,38 @@ namespace chesslib.Figures
 
             int size = Board.Instance.ChessBoard.GetLength(0);
 
+            bool _continue;
             //Вправо
-            for (int i = x; i < size; i++)
+            for (int i = x + 1, j = y; i < size; i++)
             {
-                if (!chessBoard[i, y].IsTaken)
-                    allowedMoves.Add(chessBoard[i, y]);
-                else
-                {
-                    if (chessBoard[i, y].Piece.PlayerType != PlayerType)
-                        allowedMoves.Add(chessBoard[i, y]);
-                    if (chessBoard[i, y].Piece != this)
-                        break;
-                }
+                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                if (!_continue)
+                    break;
             }
             //Влево
-            for (int i = x; i > 0; i--)
+            for (int i = x - 1, j = y; i >= 0; i--)
             {
-                if (!chessBoard[i, y].IsTaken)
-                    allowedMoves.Add(chessBoard[i, y]);
-                else
-                {
-                    if (chessBoard[i, y].Piece.PlayerType != PlayerType)
-                        allowedMoves.Add(chessBoard[i, y]);
-                    if (chessBoard[i, y].Piece != this)
-                        break;
-                }
+                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                if (!_continue)
+                    break;
             }
             //Вниз
-            for (int i = y; i < size; i++)
+            for (int i = x, j = y + 1; j < size; j++)
             {
-                if (!chessBoard[x, i].IsTaken)
-                    allowedMoves.Add(chessBoard[x, i]);
-                else
-                {
-                    if (chessBoard[x, i].Piece.PlayerType != PlayerType)
-                        allowedMoves.Add(chessBoard[x, i]);
-                    if (chessBoard[x, i].Piece != this)
-                        break;
-                }
+                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                if (!_continue)
+                    break;
             }
             //Вверх
-            for (int i = y; i > 0; i--)
+            for (int i = x, j = y - 1; j >= 0; j--)
             {
-                if (!chessBoard[x, i].IsTaken)
-                    allowedMoves.Add(chessBoard[x, i]);
-                else
-                {
-                    if (chessBoard[x, i].Piece.PlayerType != PlayerType)
-                        allowedMoves.Add(chessBoard[x, i]);
-                    if (chessBoard[x, i].Piece != this)
-                        break;
-                }
+                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                if (!_continue)
+                    break;
             }
-            return allowedMoves;
-        }
 
-        //TODO: Дописать и переделать GetAllowedMoves
-        private bool TryCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
-        {
-            bool _continue = true;
-            if (x1 >= 0 &&
-                x1 < chessBoard.GetLength(0) &&
-                y1 >= 0 &&
-                y1 < chessBoard.GetLength(0))
-            {
-                if (!chessBoard[x1, y1].IsTaken ||
-                    chessBoard[x1, y1].Piece.PlayerType != PlayerType)
-                    allowedMoves.Add(chessBoard[x1, y1]);
-                _continue = false;
-            }
-            return _continue;
+
+            return allowedMoves;
         }
     }
 }

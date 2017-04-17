@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using chesslib.Player;
+using chesslib.Field;
 
 namespace chesslib.Figures
 {
@@ -21,7 +22,22 @@ namespace chesslib.Figures
 
         public override List<Cell> GetAllowedMoves()
         {
-            throw new NotImplementedException();
+            List<Cell> allowedMoves = new List<Cell>();
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.Instance.ChessBoard;
+
+            int size = Board.Instance.ChessBoard.GetLength(0);
+
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    TryCell(allowedMoves, chessBoard, i, j);
+                }
+            }
+
+            return allowedMoves;
         }
 
         public override bool MoveTo(Cell cell, IPlayer player)
