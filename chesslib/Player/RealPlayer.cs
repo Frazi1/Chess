@@ -3,39 +3,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using chesslib.Command;
 
 namespace chesslib.Player
 {
     public class RealPlayer : IPlayer
     {
-        public RealPlayer(PlayerType playerType)
+        private Game _game;
+
+        public RealPlayer(PlayerType playerType, Game game)
         {
             PlayerType = playerType;
-            _pieces = Board.Instance.AlivePieces
-                .Where(p => p.PlayerType == this.PlayerType)
-                .ToList();
+            _game = game;
         }
 
-        private List<Piece> _pieces;
-
         public PlayerType PlayerType { get; set; }
+        public MakeMoveCommand MakeMoveCommand { get; set; }
 
-        public bool MovePiece(Piece piece, Cell nextCell)
+        public void PrepareMove(Piece piece, Cell nextCell)
         {
-            Piece pieceToDestroy = null;
-            if (nextCell.Piece != null &&
-                nextCell.Piece.PlayerType != PlayerType)
-            {
-                pieceToDestroy = nextCell.Piece;
-            }
-            bool canMoveTo = piece.CanMoveTo(nextCell, this);
-            if (pieceToDestroy != null && canMoveTo)
-            {
-                Board.Instance.DestroyPiece(pieceToDestroy);
-            }
-            bool moved = piece.MoveTo(nextCell, this);
+            MakeMoveCommand = new MakeMoveCommand(this, piece, nextCell, _game);
+        }
 
-            return moved;
+        public void MakeMove()
+        {
+            if (MakeMoveCommand != null)
+            {
+                MakeMoveCommand.Execute();
+                OnMove();
+            }
+        }
+
+        private void OnMove()
+        {
+            MakeMoveCommand = null;
         }
     }
 }

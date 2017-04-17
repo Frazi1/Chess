@@ -1,12 +1,8 @@
-﻿using chesslib.Command;
-using chesslib.Field;
+﻿using chesslib.Field;
 using chesslib.Figures;
 using chesslib.Player;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 
 namespace chesslib
 {
@@ -30,21 +26,28 @@ namespace chesslib
         {
             _observers = new List<IObserver<Game>>();
             CreatePieces();
-            Player1 = new RealPlayer(PlayerType.White);
-            Player2 = new RealPlayer(PlayerType.Black);
+            Player1 = new RealPlayer(PlayerType.White, this);
+            Player2 = new RealPlayer(PlayerType.Black, this);
             IsGameFinished = false;
             Start();
         }
 
-        public bool MakeMove(Piece piece, Cell nextCell)
+        public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
         {
-            bool ok = CurrentPlayer.MovePiece(piece, nextCell);
-            if (!ok)
+            if (CurrentPlayer != player)
+                return false;
+
+            DestroyPiece(piece, nextCell);
+            bool moved = piece.MoveTo(nextCell, player);
+
+            if (!moved)
                 return false;
             ChangePlayers();
             Update(this);
             return true;
         }
+
+
 
         private void ChangePlayers()
         {
@@ -91,6 +94,20 @@ namespace chesslib
             }
 
         }
+        private void DestroyPiece(Piece piece, Cell nextCell)
+        {
+            Piece pieceToDestroy = null;
+            if (nextCell.Piece != null &&
+                nextCell.Piece.PlayerType != CurrentPlayer.PlayerType)
+            {
+                pieceToDestroy = nextCell.Piece;
+            }
+            bool canMoveTo = piece.CanMoveTo(nextCell, CurrentPlayer);
+            if (pieceToDestroy != null && canMoveTo)
+            {
+                Board.Instance.DestroyPiece(pieceToDestroy);
+            }
+        }
 
         #region IObservable
         private List<IObserver<Game>> _observers;
@@ -105,7 +122,7 @@ namespace chesslib
         {
             foreach (var observer in _observers)
             {
-                    observer.OnNext(loc);
+                observer.OnNext(loc);
             }
         }
         public void EndUpdates()
