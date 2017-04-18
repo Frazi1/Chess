@@ -71,10 +71,6 @@ namespace ChessUI.ViewModel
             throw new NotImplementedException();
         }
         #endregion
-
-        #region Commands
-        public ICommand MakeMoveCommand { get; private set; }
-        #endregion
     }
 }
 
