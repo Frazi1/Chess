@@ -3,6 +3,7 @@ using chesslib.Figures;
 using chesslib.Player;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace chesslib
 {
@@ -10,8 +11,7 @@ namespace chesslib
     {
         private const int SIZE = 8;
 
-        public IPlayer Player1 { get; set; }
-        public IPlayer Player2 { get; set; }
+        public List<IPlayer> Players { get; set; }
         public Board Board
         {
             get { return Board.Instance; }
@@ -20,16 +20,27 @@ namespace chesslib
         private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
         public List<Piece> Pieces { get { return Board.AlivePieces; } }
         public bool IsGameFinished { get; private set; }
-        public IPlayer CurrentPlayer { get; private set; }
+
+        private IPlayer _currentPlayer;
+        public IPlayer CurrentPlayer
+        {
+            get { return _currentPlayer; }
+            private set
+            {
+                if (_currentPlayer != value)
+                {
+                    _currentPlayer = value;
+                    _currentPlayer.OnNext(true);
+                }
+            }
+        }
 
         public Game()
         {
+            Players = new List<IPlayer>();
             _observers = new List<IObserver<Game>>();
             CreatePieces();
-            Player1 = new RealPlayer(PlayerType.White, this);
-            Player2 = new RealPlayer(PlayerType.Black, this);
             IsGameFinished = false;
-            Start();
         }
 
         public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
@@ -42,23 +53,35 @@ namespace chesslib
 
             if (!moved)
                 return false;
-            ChangePlayers();
             Update(this);
+            ChangePlayers();
             return true;
         }
 
+        public bool AddPlayer(IPlayer player)
+        {
+            if (Players.Count < 2 && !Players.Contains(player))
+            {
+                Players.Add(player);
+                player.Game = this;
+                return true;
+            }
+            return false;
+        }
 
 
         private void ChangePlayers()
         {
-            if (CurrentPlayer == Player1)
-                CurrentPlayer = Player2;
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
             else
-                CurrentPlayer = Player1;
+                CurrentPlayer = Players[0];
+            Update(this);
         }
-        private void Start()
+        public void Start()
         {
-            CurrentPlayer = Player1;
+            CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            Update(this);
         }
         private void CreatePieces()
         {
