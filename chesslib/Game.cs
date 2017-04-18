@@ -57,7 +57,6 @@ namespace chesslib
             ChangePlayers();
             return true;
         }
-
         public bool AddPlayer(IPlayer player)
         {
             if (Players.Count < 2 && !Players.Contains(player))
@@ -68,7 +67,11 @@ namespace chesslib
             }
             return false;
         }
-
+        public void Start()
+        {
+            CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            Update(this);
+        }
 
         private void ChangePlayers()
         {
@@ -76,11 +79,6 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
-            Update(this);
-        }
-        public void Start()
-        {
-            CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
             Update(this);
         }
         private void CreatePieces()

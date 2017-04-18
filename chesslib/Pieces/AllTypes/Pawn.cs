@@ -92,7 +92,6 @@ namespace chesslib.Figures
         }
         public override bool MoveTo(Cell nextCell, IPlayer player)
         {
-
             bool moved = base.MoveTo(nextCell, player);
             if (moved)
                 HasAlreadyMoved = true;

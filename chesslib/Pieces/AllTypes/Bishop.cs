@@ -55,7 +55,6 @@ namespace chesslib.Figures
                     break;
             }
 
-
             return allowedMoves;
         }
 
