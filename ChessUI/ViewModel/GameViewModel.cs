@@ -1,4 +1,5 @@
 ﻿using chesslib;
+using chesslib.Player;
 using ChessUI;
 using GalaSoft.MvvmLight;
 using System;
@@ -15,28 +16,53 @@ namespace ChessUI.ViewModel
         private ObservableCollection<ChessPieceViewModel> _chessPieces;
         private Game _game;
 
-        public ObservableCollection<ChessPieceViewModel> ChessPieces
+        public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
         {
             get { return _chessPieces; }
             set { _chessPieces = value; }
         }
+        public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
+
         public Game Game
         {
             get { return _game; }
             set { _game = value; }
         }
         public ChessPieceViewModel SelectedPiece { get; set; }
+        public Cell NextCell { get; set; }
+        public RealPlayerViewModel ActivePlayerViewModel { get; set; }
+
         public PlayerType PlayerType
         {
-            get { return Game.CurrentPlayer.PlayerType; }
+            get
+            {
+                if (Game.CurrentPlayer != null)
+                    return Game.CurrentPlayer.PlayerType;
+                return PlayerType.None;
+            }
         }
+
 
         public GameViewModel()
         {
+            ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
+            RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
+
+            //TODO: передалать
+            RealPlayer p1 = new RealPlayer(PlayerType.White);
+            RealPlayer p2 = new RealPlayer(PlayerType.Black);
             Game = new Game();
-            ChessPieces = new ObservableCollection<ChessPieceViewModel>();
+            Game.AddPlayer(p1);
+            Game.AddPlayer(p2);
+
+            RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
+            RealPlayersViewModels.Add(new RealPlayerViewModel(p2,this));
+
+            //
+
             InitializePieces();
             Subcribe(Game);
+            Game.Start();
 
             //Commands
         }
@@ -45,7 +71,7 @@ namespace ChessUI.ViewModel
         {
             foreach (var item in Game.Pieces)
             {
-                ChessPieces.Add(new ChessPieceViewModel(item));
+                ChessPiecesViewModels.Add(new ChessPieceViewModel(item));
             }
         }
 

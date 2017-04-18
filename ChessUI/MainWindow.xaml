@@ -145,7 +145,7 @@
         </Grid.RowDefinitions>
 
         <Viewbox Grid.Column="1" Grid.Row="1">
-            <ItemsControl x:Name="ChessBoard" HorizontalContentAlignment="Stretch" Height="8" Width="8" HorizontalAlignment="Right" ItemsSource="{Binding Main.ChessPieces}">
+            <ItemsControl x:Name="ChessBoard" HorizontalContentAlignment="Stretch" Height="8" Width="8" HorizontalAlignment="Right" ItemsSource="{Binding Main.ChessPiecesViewModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" MouseDown="Canvas_MouseDown"/>
