@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using chesslib.Command;
+using chesslib.Strategy;
 
 namespace chesslib.Player
 {
@@ -19,14 +20,17 @@ namespace chesslib.Player
 
         public PlayerType PlayerType { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
+        public IStrategy Strategy { get; set; }
 
-        public void PrepareMove(Piece piece, Cell nextCell)
+        public void PrepareMove()
         {
-            MakeMoveCommand = new MakeMoveCommand(this, piece, nextCell, _game);
+            var move = Strategy.PrepareMove();
+            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, _game);
         }
 
         public void MakeMove()
         {
+            PrepareMove();
             if (MakeMoveCommand != null)
             {
                 MakeMoveCommand.Execute();
