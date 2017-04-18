@@ -1,4 +1,5 @@
-﻿using ChessUI.ViewModel;
+﻿using chesslib.Strategy;
+using ChessUI.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,15 +33,24 @@ namespace ChessUI
                 int y = (int)e.GetPosition(this.ChessBoard).Y;
                 try
                 {
-                    //_gameViewModel.Game.MakeMove(_gameViewModel.SelectedPiece.Piece, _gameViewModel.Game.Board.ChessBoard[x, y]);
                     _gameViewModel
                         .Game
                         .CurrentPlayer
-                        .PrepareMove(_gameViewModel.SelectedPiece.Piece,_gameViewModel.Game.Board.ChessBoard[x, y]);
+                        .Strategy = new RealPlayerStrategy(
+                            _gameViewModel.SelectedPiece.Piece,
+                            _gameViewModel.Game.Board.ChessBoard[x, y]);
                     _gameViewModel
                         .Game
                         .CurrentPlayer
                         .MakeMove();
+                    //_gameViewModel
+                    //    .Game
+                    //    .CurrentPlayer
+                    //    .PrepareMove(_gameViewModel.SelectedPiece.Piece,_gameViewModel.Game.Board.ChessBoard[x, y]);
+                    //_gameViewModel
+                    //    .Game
+                    //    .CurrentPlayer
+                    //    .MakeMove();
                 }
                 catch (Exception ex)
                 {
