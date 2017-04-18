@@ -63,7 +63,7 @@ namespace chesslib.Figures
             else if (PlayerType == PlayerType.Black)
             {
                 //Движение вперед
-                if (y < size)
+                if (y < size-1)
                 {
                     if (!chessBoard[x, y + 1].IsTaken)
                         allowedMoves.Add(chessBoard[x, y + 1]);

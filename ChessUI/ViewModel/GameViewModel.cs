@@ -1,5 +1,6 @@
 ﻿using chesslib;
 using chesslib.Player;
+using chesslib.Strategy;
 using ChessUI;
 using GalaSoft.MvvmLight;
 using System;
@@ -47,22 +48,26 @@ namespace ChessUI.ViewModel
         {
             ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
             RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
+            Game = new Game();
 
             //TODO: передалать
-            RealPlayer p1 = new RealPlayer(PlayerType.White);
-            RealPlayer p2 = new RealPlayer(PlayerType.Black);
-            Game = new Game();
+            //RealPlayer p1 = new RealPlayer(PlayerType.White);
+            //RealPlayer p2 = new RealPlayer(PlayerType.Black);
+            ComputerPlayer p1 = new ComputerPlayer(PlayerType.White);
+            ComputerPlayer p2 = new ComputerPlayer(PlayerType.Black);
             Game.AddPlayer(p1);
             Game.AddPlayer(p2);
+            p1.Strategy = new DefaultComputerStrategy(p1);
+            p2.Strategy = new DefaultComputerStrategy(p2);
 
-            RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
-            RealPlayersViewModels.Add(new RealPlayerViewModel(p2,this));
+
+            //RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
+            //RealPlayersViewModels.Add(new RealPlayerViewModel(p2,this));
 
             //
 
             InitializePieces();
             Subcribe(Game);
-            Game.Start();
 
             //Commands
         }

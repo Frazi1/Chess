@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using chesslib.Command;
 using chesslib.Strategy;
+using System.Threading.Tasks;
 
 namespace chesslib.Player
 {
@@ -34,7 +35,10 @@ namespace chesslib.Player
 
         public void PrepareMove()
         {
-            var move = Strategy.PrepareMove();
+            Task<Tuple<Piece, Cell>> t = new Task<Tuple<Piece, Cell>>(() => Strategy.PrepareMove());
+            t.Start();
+            
+            var move = t.Result; 
             MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, Game);
         }
 

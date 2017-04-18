@@ -4,6 +4,7 @@ using chesslib.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace chesslib
 {
@@ -50,10 +51,10 @@ namespace chesslib
 
             DestroyPiece(piece, nextCell);
             bool moved = piece.MoveTo(nextCell, player);
-
             if (!moved)
                 return false;
             Update(this);
+            Thread.Sleep(500);
             ChangePlayers();
             return true;
         }

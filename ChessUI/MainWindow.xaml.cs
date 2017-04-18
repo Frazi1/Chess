@@ -2,6 +2,7 @@
 using ChessUI.ViewModel;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -64,6 +65,13 @@ namespace ChessUI
                 }
 
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t = new Thread(() => _gameViewModel.Game.Start());
+            t.IsBackground = true;
+            t.Start();
         }
     }
 }
