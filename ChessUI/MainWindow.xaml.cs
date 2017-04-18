@@ -1,5 +1,6 @@
 ﻿using chesslib.Strategy;
 using ChessUI.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,12 +13,12 @@ namespace ChessUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        ViewModelLocator v = new ViewModelLocator();
+        //ViewModelLocator v = new ViewModelLocator();
         GameViewModel _gameViewModel;
         public MainWindow()
         {
             InitializeComponent();
-            _gameViewModel = v.Main;
+            _gameViewModel = ServiceLocator.Current.GetInstance<GameViewModel>();
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -40,7 +41,7 @@ namespace ChessUI
                             .ChessBoard[x, y];
                         _gameViewModel
                             .ActivePlayerViewModel.PushStrategy();
-                        
+
                         //_gameViewModel
                         //    .Game
                         //    .CurrentPlayer
