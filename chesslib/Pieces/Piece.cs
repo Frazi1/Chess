@@ -36,12 +36,15 @@ namespace chesslib
         }
         public virtual bool CanMoveTo(Cell cell, IPlayer player)
         {
-            if (!CheckPlayer(player))
-                return false;
+            if (IsInGame)
+            {
+                if (!CheckPlayer(player))
+                    return false;
 
-            var moves = GetAllowedMoves();
-            if (moves.Contains(cell))
-                return true;
+                var moves = GetAllowedMoves();
+                if (moves.Contains(cell))
+                    return true;
+            }
             return false;
         }
 
@@ -94,6 +97,7 @@ namespace chesslib
             }
             return false;
         }
+
         #region IObservable
 
         private List<IObserver<Piece>> _observers;
