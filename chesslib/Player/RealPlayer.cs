@@ -22,21 +22,15 @@ namespace chesslib.Player
         public MakeMoveCommand MakeMoveCommand { get; set; }
         public IStrategy Strategy { get; set; }
 
-        public void GetInput(Piece piece, Cell nextCell)
-        {
-            Strategy = new RealPlayerStrategy(piece, nextCell);
-            PrepareMove();
-        }
-
         public void PrepareMove()
         {
             var move = Strategy.PrepareMove();
             MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, _game);
-
         }
 
         public void MakeMove()
         {
+            PrepareMove();
             if (MakeMoveCommand != null)
             {
                 MakeMoveCommand.Execute();
