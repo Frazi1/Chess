@@ -33,7 +33,7 @@ namespace chesslib.Figures
                     break;
             }
             //Влево вверх
-            for (int i = x - 1, j = y - 1; i >= 0 && j > 0; i--, j--)
+            for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
             {
                 _continue = TryCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
