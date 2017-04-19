@@ -43,6 +43,8 @@ namespace ChessUI.ViewModel
             }
         }
 
+        public bool CanUndo { get { return Game.GameUtils.Memento.MementoStack.Count > 0; } }
+
 
         public GameViewModel()
         {
@@ -91,6 +93,7 @@ namespace ChessUI.ViewModel
         public void OnNext(Game value)
         {
             RaisePropertyChanged(() => PlayerType);
+            RaisePropertyChanged(() => CanUndo);
             foreach (var item in ChessPiecesViewModels)
             {
                 item.OnNext(item.Piece);

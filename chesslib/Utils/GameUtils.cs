@@ -11,21 +11,35 @@ namespace chesslib.Utils
     {
         private GameMemento _memento;
         private IOriginator<Board> _originator;
+
+        public GameMemento Memento
+        {
+            get
+            {
+                return _memento;
+            }
+
+            set
+            {
+                _memento = value;
+            }
+        }
+
         public GameUtils(IOriginator<Board> originator)
         {
-            _memento = new GameMemento();
+            Memento = new GameMemento();
             _originator = originator;
         }
 
         public void SaveState()
         {
 
-            _memento.MementoStack.Push(_originator.GetMemento());
+            Memento.MementoStack.Push(_originator.GetMemento());
         }
 
         public void LoadPreviousState()
         {
-            _originator.SetMemento(_memento.GetPreviousState());
+            _originator.SetMemento(Memento.GetPreviousState());
         }
     }
 }
