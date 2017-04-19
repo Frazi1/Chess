@@ -48,6 +48,8 @@ namespace chesslib
 
         public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
         {
+            if (IsPaused)
+                return false;
             if (CurrentPlayer != player)
                 return false;
             GameUtils.SaveState();
@@ -66,6 +68,7 @@ namespace chesslib
             CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
             
             Update(this);
+            IsPaused = true;
         }
         public bool AddPlayer(IPlayer player)
         {
