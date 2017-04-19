@@ -11,11 +11,14 @@ namespace chesslib
 {
     public abstract class Piece : IObservable<Piece>
     {
+        protected Board Board { get; private set; }
+
         public Cell CurrentCell { get; set; }
         public PlayerType PlayerType { get; set; }
         public bool IsInGame { get; set; }
 
-        public Piece(Cell currentCell, PlayerType playerType)
+
+        public Piece(Cell currentCell, PlayerType playerType, Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)
@@ -23,6 +26,7 @@ namespace chesslib
             PlayerType = playerType;
             _observers = new List<IObserver<Piece>>();
             IsInGame = true;
+            Board = board;
         }
 
         protected int Direction

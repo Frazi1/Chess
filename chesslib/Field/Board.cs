@@ -15,32 +15,17 @@ namespace chesslib.Field
         public List<Piece> DestroyedPieces { get; set; }
 
 
-        private Board(int size)
+        public Board(int size)
         {
             SIZE = size;
             ChessBoard = new Cell[size, size];
             AlivePieces = new List<Piece>();
             DestroyedPieces = new List<Piece>();
 
-            InitializeBoard();
+            Initialize();
         }
 
-        private static Board _instance;
-        public static Board Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new Board(8);
-                return _instance;
-            }
-            private set
-            {
-                _instance = value;
-            }
-        }
-
-        private void InitializeBoard()
+        private void Initialize()
         {
             for (int i = 0; i < SIZE; i++)
             {
