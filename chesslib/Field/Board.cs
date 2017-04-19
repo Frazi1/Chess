@@ -1,13 +1,17 @@
 ﻿using chesslib.Figures;
+using chesslib.Memento;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace chesslib.Field
 {
-    public class Board
+    [Serializable]
+    public class Board : ICloneable
     {
         private readonly int SIZE;
 
@@ -41,39 +45,39 @@ namespace chesslib.Field
         {
 
             //black
-                AlivePieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black, this));
-                AlivePieces.Add(new King(ChessBoard[3, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black, this));
-                AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black, this));
+            AlivePieces.Add(new King(ChessBoard[3, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black, this));
 
-                for (int i = 0; i < SIZE; i++)
-                {
-                    AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black, this));
-                }
+            for (int i = 0; i < SIZE; i++)
+            {
+                AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black, this));
+            }
 
-                //white
-                AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White, this));
-                AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White, this));
-                AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White, this));
-                AlivePieces.Add(new King(ChessBoard[4, 7], PlayerType.White, this));
-                AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White, this));
-                AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White, this));
-                AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White, this));
-                AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White, this));
+            //white
+            AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White, this));
+            AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White, this));
+            AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White, this));
+            AlivePieces.Add(new King(ChessBoard[4, 7], PlayerType.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White, this));
+            AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White, this));
+            AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White, this));
+            AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White, this));
 
-                for (int i = 0; i < SIZE; i++)
-                {
-                    AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White, this));
+            for (int i = 0; i < SIZE; i++)
+            {
+                AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White, this));
             }
 
         }
         public void DestroyPiece(Piece piece)
         {
-            if(AlivePieces.Contains(piece))
+            if (AlivePieces.Contains(piece))
             {
                 AlivePieces.Remove(piece);
                 piece.Destroy();
@@ -81,6 +85,16 @@ namespace chesslib.Field
             }
         }
 
+        public object Clone()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, this);
+                ms.Seek(0, SeekOrigin.Begin);
 
+                return formatter.Deserialize(ms);
+            }
+        }
     }
 }

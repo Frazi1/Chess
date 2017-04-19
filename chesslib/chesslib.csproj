@@ -45,7 +45,11 @@
     <Compile Include="Command\Interfaces\ICommand.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
-    <Compile Include="Field\Interfaces\Unsubscriber.cs" />
+    <Compile Include="Utils\GameMemento.cs" />
+    <Compile Include="Utils\GameUtils.cs" />
+    <Compile Include="Interfaces\Memento\IOriginator.cs" />
+    <Compile Include="Interfaces\Memento\Memento.cs" />
+    <Compile Include="Interfaces\Observers\Unsubscriber.cs" />
     <Compile Include="Pieces\AllTypes\Bishop.cs" />
     <Compile Include="Pieces\Interfaces\IMoved.cs" />
     <Compile Include="Pieces\Piece.cs" />
@@ -65,5 +69,6 @@
     <Compile Include="Strategy\Interfaces\IStrategy.cs" />
     <Compile Include="Strategy\RealPlayerStrategy.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

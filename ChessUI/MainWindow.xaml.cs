@@ -69,9 +69,10 @@ namespace ChessUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Thread t = new Thread(() => _gameViewModel.Game.Start());
-            t.IsBackground = true;
-            t.Start();
+            //Thread t = new Thread(() => _gameViewModel.Game.Start());
+            //t.IsBackground = true;
+            //t.Start();
+            _gameViewModel.Game.Start();
         }
     }
 }

@@ -1,21 +1,23 @@
 ﻿using chesslib.Field;
-using chesslib.Figures;
+using chesslib.Memento;
 using chesslib.Player;
+using chesslib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace chesslib
 {
-    public class Game : IObservable<Game>
+    public class Game : IObservable<Game>, IOriginator<Board>
     {
         private const int SIZE = 8;
+
+        private GameUtils _gameUtils;
 
         public List<IPlayer> Players { get; set; }
         public Board Board { get; set; }
 
-        public bool IsGameStarted { get; private set; }
+        public bool IsPaused { get; private set; }
         public bool IsGameFinished { get; private set; }
 
         private IPlayer _currentPlayer;
@@ -27,7 +29,7 @@ namespace chesslib
                 if (_currentPlayer != value)
                 {
                     _currentPlayer = value;
-                    if (IsGameStarted && !IsGameFinished)
+                    if (IsPaused && !IsGameFinished)
                         _currentPlayer.OnNext(true);
                 }
             }
@@ -39,6 +41,8 @@ namespace chesslib
             _observers = new List<IObserver<Game>>();
             Board = new Board(SIZE);
             IsGameFinished = false;
+            IsPaused = true;
+            _gameUtils = new GameUtils();
         }
 
         public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
@@ -50,8 +54,10 @@ namespace chesslib
             bool moved = piece.MoveTo(nextCell, player);
             if (!moved)
                 return false;
+
+            _gameUtils.SaveState(this);
+
             Update(this);
-            //Thread.Sleep(500);
             ChangePlayers();
             return true;
         }
@@ -67,8 +73,9 @@ namespace chesslib
         }
         public void Start()
         {
-            IsGameStarted = true;
-            CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            IsPaused = false;
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
             Update(this);
         }
 
@@ -80,7 +87,6 @@ namespace chesslib
                 CurrentPlayer = Players[0];
             Update(this);
         }
-
         private void DestroyPiece(Piece piece, Cell nextCell)
         {
             Piece pieceToDestroy = null;
@@ -121,6 +127,19 @@ namespace chesslib
 
                 _observers.Clear();
             }
+        }
+        #endregion
+
+        #region Memento
+        public Memento<Board> GetMemento()
+        {
+            return new Memento<Board>((Board) Board.Clone());
+        }
+
+        public void SetMemento(Memento<Board> value)
+        {
+            Board = value.GetState();
+            IsPaused = true;
         }
         #endregion
     }
