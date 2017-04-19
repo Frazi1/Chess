@@ -28,12 +28,14 @@ namespace chesslib.Player
 
         public void MakeMove()
         {
+            Thread.Sleep(500);
             PrepareMove();
             if (MakeMoveCommand != null)
             {
                 MakeMoveCommand.Execute();
             }
             OnMove();
+
         }
 
         private void OnMove()
