@@ -11,7 +11,7 @@ namespace chesslib.Figures
 {
     public class King : Piece, IMoved
     {
-        public King(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
+        public King(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
             HasAlreadyMoved = false;
             IsUnderAttack = false;
@@ -25,9 +25,9 @@ namespace chesslib.Figures
             List<Cell> allowedMoves = new List<Cell>();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.Instance.ChessBoard;
+            Cell[,] chessBoard = Board.ChessBoard;
 
-            int size = Board.Instance.ChessBoard.GetLength(0);
+            int size = Board.ChessBoard.GetLength(0);
 
             for (int i = x - 1; i <= x + 1; i++)
             {

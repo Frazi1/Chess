@@ -13,10 +13,7 @@ namespace chesslib
         private const int SIZE = 8;
 
         public List<IPlayer> Players { get; set; }
-        public Board Board
-        {
-            get { return Board.Instance; }
-        }
+        public Board Board { get; set; }
 
         private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
         public List<Piece> Pieces { get { return Board.AlivePieces; } }
@@ -40,6 +37,7 @@ namespace chesslib
         {
             Players = new List<IPlayer>();
             _observers = new List<IObserver<Game>>();
+            Board = new Board(SIZE);
             CreatePieces();
             IsGameFinished = false;
         }
@@ -86,33 +84,33 @@ namespace chesslib
         {
 
             //black
-            Pieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black));
-            Pieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black));
-            Pieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black));
-            Pieces.Add(new King(ChessBoard[3, 0], PlayerType.Black));
-            Pieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black));
-            Pieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black));
-            Pieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black));
-            Pieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black));
+            Pieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black, Board));
+            Pieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black, Board));
+            Pieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black, Board));
+            Pieces.Add(new King(ChessBoard[3, 0], PlayerType.Black, Board));
+            Pieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black, Board));
+            Pieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black, Board));
+            Pieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black, Board));
+            Pieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black, Board));
 
             for (int i = 0; i < SIZE; i++)
             {
-                Pieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black));
+                Pieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black, Board));
             }
 
             //white
-            Pieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White));
-            Pieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White));
-            Pieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White));
-            Pieces.Add(new King(ChessBoard[4, 7], PlayerType.White));
-            Pieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White));
-            Pieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White));
-            Pieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White));
-            Pieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White));
+            Pieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White, Board));
+            Pieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White, Board));
+            Pieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White, Board));
+            Pieces.Add(new King(ChessBoard[4, 7], PlayerType.White, Board));
+            Pieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White, Board));
+            Pieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White, Board));
+            Pieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White, Board));
+            Pieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White, Board));
 
             for (int i = 0; i < SIZE; i++)
             {
-                Pieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White));
+                Pieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White, Board));
             }
 
         }
@@ -127,7 +125,7 @@ namespace chesslib
             bool canMoveTo = piece.CanMoveTo(nextCell, CurrentPlayer);
             if (pieceToDestroy != null && canMoveTo)
             {
-                Board.Instance.DestroyPiece(pieceToDestroy);
+                Board.DestroyPiece(pieceToDestroy);
             }
         }
 

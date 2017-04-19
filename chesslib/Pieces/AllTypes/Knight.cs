@@ -10,7 +10,7 @@ namespace chesslib.Figures
 {
     public class Knight : Piece
     {
-        public Knight(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
+        public Knight(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
         }
 
@@ -19,9 +19,9 @@ namespace chesslib.Figures
             List<Cell> allowedMoves = new List<Cell>();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.Instance.ChessBoard;
+            Cell[,] chessBoard = Board.ChessBoard;
 
-            int size = Board.Instance.ChessBoard.GetLength(0);
+            int size = Board.ChessBoard.GetLength(0);
 
             List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
             {
