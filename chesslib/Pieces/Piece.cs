@@ -29,15 +29,6 @@ namespace chesslib
             Board = board;
         }
 
-        protected int Direction
-        {
-            get
-            {
-                if (PlayerType == PlayerType.White)
-                    return 1;
-                return -1;
-            }
-        }
         public virtual bool CanMoveTo(Cell cell, IPlayer player)
         {
             if (IsInGame)
