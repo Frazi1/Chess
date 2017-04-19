@@ -15,8 +15,7 @@ namespace chesslib
         public List<IPlayer> Players { get; set; }
         public Board Board { get; set; }
 
-        private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
-        public List<Piece> Pieces { get { return Board.AlivePieces; } }
+        public bool IsGameStarted { get; private set; }
         public bool IsGameFinished { get; private set; }
 
         private IPlayer _currentPlayer;
@@ -28,7 +27,8 @@ namespace chesslib
                 if (_currentPlayer != value)
                 {
                     _currentPlayer = value;
-                    _currentPlayer.OnNext(true);
+                    if (IsGameStarted && !IsGameFinished)
+                        _currentPlayer.OnNext(true);
                 }
             }
         }
@@ -38,7 +38,6 @@ namespace chesslib
             Players = new List<IPlayer>();
             _observers = new List<IObserver<Game>>();
             Board = new Board(SIZE);
-            CreatePieces();
             IsGameFinished = false;
         }
 
@@ -52,7 +51,7 @@ namespace chesslib
             if (!moved)
                 return false;
             Update(this);
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             ChangePlayers();
             return true;
         }
@@ -68,6 +67,7 @@ namespace chesslib
         }
         public void Start()
         {
+            IsGameStarted = true;
             CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
             Update(this);
         }
@@ -80,40 +80,7 @@ namespace chesslib
                 CurrentPlayer = Players[0];
             Update(this);
         }
-        private void CreatePieces()
-        {
 
-            //black
-            Pieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black, Board));
-            Pieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black, Board));
-            Pieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black, Board));
-            Pieces.Add(new King(ChessBoard[3, 0], PlayerType.Black, Board));
-            Pieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black, Board));
-            Pieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black, Board));
-            Pieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black, Board));
-            Pieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black, Board));
-
-            for (int i = 0; i < SIZE; i++)
-            {
-                Pieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black, Board));
-            }
-
-            //white
-            Pieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White, Board));
-            Pieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White, Board));
-            Pieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White, Board));
-            Pieces.Add(new King(ChessBoard[4, 7], PlayerType.White, Board));
-            Pieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White, Board));
-            Pieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White, Board));
-            Pieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White, Board));
-            Pieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White, Board));
-
-            for (int i = 0; i < SIZE; i++)
-            {
-                Pieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White, Board));
-            }
-
-        }
         private void DestroyPiece(Piece piece, Cell nextCell)
         {
             Piece pieceToDestroy = null;

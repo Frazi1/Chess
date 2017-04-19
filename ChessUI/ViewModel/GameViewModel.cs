@@ -74,7 +74,7 @@ namespace ChessUI.ViewModel
 
         private void InitializePieces()
         {
-            foreach (var item in Game.Pieces)
+            foreach (var item in Game.Board.AlivePieces)
             {
                 ChessPiecesViewModels.Add(new ChessPieceViewModel(item));
             }
