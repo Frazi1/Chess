@@ -10,6 +10,7 @@ using System.Text;
 
 namespace chesslib.Figures
 {
+    [Serializable]
     public class Pawn : Piece, IMoved
     {
         public Pawn(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)

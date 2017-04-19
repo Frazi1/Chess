@@ -9,6 +9,7 @@ using chesslib.Field;
 
 namespace chesslib.Figures
 {
+    [Serializable]
     public class King : Piece, IMoved
     {
         public King(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)

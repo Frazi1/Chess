@@ -8,6 +8,7 @@ using chesslib.Field;
 
 namespace chesslib.Figures
 {
+    [Serializable]
     public class Bishop : Piece
     {
         public Bishop(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)

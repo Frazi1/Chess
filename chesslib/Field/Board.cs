@@ -18,6 +18,7 @@ namespace chesslib.Field
         public Cell[,] ChessBoard { get; set; }
         public List<Piece> AlivePieces { get; set; }
         public List<Piece> DestroyedPieces { get; set; }
+        public PlayerType CurrentPlayerType { get; set; }
 
 
         public Board(int size)

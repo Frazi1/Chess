@@ -74,6 +74,12 @@ namespace ChessUI
             //t.Start();
             _gameViewModel.Game.Start();
         }
+
+        private void button_prev_Click(object sender, RoutedEventArgs e)
+        {
+            _gameViewModel.Game.LoadPreviousState();
+            _gameViewModel.InitializePieces();
+        }
     }
 }
 

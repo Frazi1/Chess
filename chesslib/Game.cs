@@ -12,7 +12,7 @@ namespace chesslib
     {
         private const int SIZE = 8;
 
-        private GameUtils _gameUtils;
+        public GameUtils GameUtils { get; set; }
 
         public List<IPlayer> Players { get; set; }
         public Board Board { get; set; }
@@ -29,7 +29,8 @@ namespace chesslib
                 if (_currentPlayer != value)
                 {
                     _currentPlayer = value;
-                    if (IsPaused && !IsGameFinished)
+                    Board.CurrentPlayerType = value.PlayerType;
+                    if (!IsPaused && !IsGameFinished)
                         _currentPlayer.OnNext(true);
                 }
             }
@@ -42,24 +43,29 @@ namespace chesslib
             Board = new Board(SIZE);
             IsGameFinished = false;
             IsPaused = true;
-            _gameUtils = new GameUtils();
+            GameUtils = new GameUtils(this);
         }
 
         public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
         {
             if (CurrentPlayer != player)
                 return false;
-
+            GameUtils.SaveState();
             DestroyPiece(piece, nextCell);
             bool moved = piece.MoveTo(nextCell, player);
             if (!moved)
                 return false;
 
-            _gameUtils.SaveState(this);
-
             Update(this);
             ChangePlayers();
             return true;
+        }
+        public void LoadPreviousState()
+        {
+            GameUtils.LoadPreviousState();
+            CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
+            
+            Update(this);
         }
         public bool AddPlayer(IPlayer player)
         {

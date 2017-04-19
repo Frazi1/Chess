@@ -9,6 +9,7 @@ using chesslib.Field;
 
 namespace chesslib.Figures
 {
+    [Serializable]
     public class Rook : Piece, IMoved
     {
         public Rook(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)

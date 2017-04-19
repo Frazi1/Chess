@@ -5,6 +5,7 @@ using System.Text;
 
 namespace chesslib
 {
+    [Serializable]
     public class Cell
     {
         private int _posX;

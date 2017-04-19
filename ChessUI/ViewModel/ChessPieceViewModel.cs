@@ -39,7 +39,6 @@ namespace ChessUI.ViewModel
                 default:
                     break;
             }
-            Subcribe(_piece);
         }
 
         public int PosX

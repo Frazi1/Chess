@@ -31,7 +31,7 @@ namespace ChessUI.ViewModel
 
         public void OnNext(RealPlayer value)
         {
-            _gameViewModel.ActivePlayerViewModel = this;
+            //_gameViewModel.ActivePlayerViewModel = this;
         }
 
         public void PushStrategy()

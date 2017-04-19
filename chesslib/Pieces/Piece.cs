@@ -9,7 +9,8 @@ using System.Text;
 
 namespace chesslib
 {
-    public abstract class Piece : IObservable<Piece>
+    [Serializable]
+    public abstract class Piece
     {
         protected Board Board { get; private set; }
 
@@ -24,7 +25,6 @@ namespace chesslib
             if (CurrentCell.Piece == null)
                 CurrentCell.Piece = this;
             PlayerType = playerType;
-            _observers = new List<IObserver<Piece>>();
             IsInGame = true;
             Board = board;
         }
@@ -50,7 +50,6 @@ namespace chesslib
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;
-                Update(this);
                 return true;
             }
             return false;
@@ -67,7 +66,6 @@ namespace chesslib
             IsInGame = false;
             CurrentCell = null;
             //EndUpdates();
-            Update(this);
         }
         public abstract List<Cell> GetAllowedMoves();
 
@@ -92,38 +90,5 @@ namespace chesslib
             }
             return false;
         }
-
-        #region IObservable
-
-        private List<IObserver<Piece>> _observers;
-        public IDisposable Subscribe(IObserver<Piece> observer)
-        {
-            if (!_observers.Contains(observer))
-                _observers.Add(observer);
-            return new Unsubscriber<Piece>(_observers, observer);
-        }
-
-        public void Update(Piece loc)
-        {
-            foreach (var observer in _observers)
-            {
-                if (loc == null)
-                    observer.OnError(new Exception("Null piece"));
-                else
-                    observer.OnNext(loc);
-            }
-        }
-
-        public void EndUpdates()
-        {
-            foreach (var observer in _observers)
-            {
-                if (_observers.Contains(observer))
-                    observer.OnCompleted();
-
-                _observers.Clear();
-            }
-        }
-        #endregion
     }
 }
