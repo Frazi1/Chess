@@ -85,7 +85,10 @@ namespace chesslib
             IsPaused = false;
             if (CurrentPlayer == null)
                 CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            else
+                CurrentPlayer.OnNext(true);
             Update(this);
+            
         }
 
         private void ChangePlayers()
