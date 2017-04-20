@@ -17,7 +17,6 @@ namespace chesslib.Field
 
         public Cell[,] ChessBoard { get; set; }
         public List<Piece> AlivePieces { get; set; }
-        public List<Piece> DestroyedPieces { get; set; }
         public PlayerType CurrentPlayerType { get; set; }
 
 
@@ -26,7 +25,6 @@ namespace chesslib.Field
             SIZE = size;
             ChessBoard = new Cell[size, size];
             AlivePieces = new List<Piece>();
-            DestroyedPieces = new List<Piece>();
             Initialize();
             SetUpPieces();
         }
@@ -82,7 +80,6 @@ namespace chesslib.Field
             {
                 AlivePieces.Remove(piece);
                 piece.Destroy();
-                DestroyedPieces.Add(piece);
             }
         }
 

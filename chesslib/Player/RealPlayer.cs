@@ -39,17 +39,14 @@ namespace chesslib.Player
             t.Start();
             
             var move = t.Result; 
-            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, Game);
+            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
         }
 
         public void MakeMove()
         {
             PrepareMove();
-            if (MakeMoveCommand != null)
-            {
-                MakeMoveCommand.Execute();
-                OnMove();
-            }
+            if (MoveDone != null)
+                MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
         }
 
         private void OnMove()
@@ -77,6 +74,9 @@ namespace chesslib.Player
 
         #region IObservable
         private List<IObserver<RealPlayer>> _observers;
+
+        public event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
+
         public IDisposable Subscribe(IObserver<RealPlayer> observer)
         {
             if (!_observers.Contains(observer))

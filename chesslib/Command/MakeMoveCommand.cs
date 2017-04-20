@@ -7,35 +7,56 @@ namespace chesslib.Command
     {
         private Piece _piece;
         private IPlayer _player;
-        private Game _game;
         private Cell _nextCell;
+        private Cell _prevCell;
+        private Piece _destroyedPiece;
 
         public MakeMoveCommand(IPlayer player,
             Piece piece,
-            Cell nextCell,
-            Game game)
+            Cell nextCell)
         {
             _piece = piece;
             _player = player;
-            _game = game;
             _nextCell = nextCell;
+            _prevCell = _piece.CurrentCell;
         }
 
-        public bool CanExecute
+        public bool CanExecute(object parameter)
         {
-            get
+            Game game = (Game) parameter;
+            if (game.IsPaused || game.IsGameFinished)
+                return false;
+            if (_player != game.CurrentPlayer)
+                return false;
+            return _piece.CanMoveTo(_nextCell, _player);
+        }
+
+        public void Execute(object parameter)
+        {
+            if (CanExecute(parameter))
             {
-                return (_piece != null &&
-                    _player != null &&
-                    _game != null &&
-                    _nextCell != null);
+                Game game = (Game) parameter;
+                game.GameUtils.SaveState();
+                _destroyedPiece = _nextCell.Piece;
+                if (_destroyedPiece != null)
+                    game.Board.DestroyPiece(_destroyedPiece);
+                _piece.MoveTo(_nextCell, _player);
+                game.Update(game);
+                game.ChangePlayers();
             }
         }
 
-        public void Execute()
+        public void Undo(object parameter)
         {
-            if (CanExecute)
-                _game.MakeMove(_piece, _nextCell, _player);
+            Game game = (Game) parameter;
+            _piece.MoveTo(_prevCell, _player);
+            if (_destroyedPiece != null)
+            {
+                _nextCell.Piece = _destroyedPiece;
+                _destroyedPiece.CurrentCell = _nextCell;
+            }
+            game.Update(game);
+            game.ChangePlayers();
         }
     }
 }

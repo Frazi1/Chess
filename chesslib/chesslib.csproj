@@ -45,6 +45,8 @@
     <Compile Include="Command\Interfaces\ICommand.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
+    <Compile Include="Player\Events\MoveDoneEventArgs.cs" />
+    <Compile Include="Player\Events\PlayerEventsDelegates.cs" />
     <Compile Include="Utils\GameMemento.cs" />
     <Compile Include="Utils\GameUtils.cs" />
     <Compile Include="Interfaces\Memento\IOriginator.cs" />

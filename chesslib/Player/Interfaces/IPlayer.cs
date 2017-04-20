@@ -16,5 +16,7 @@ namespace chesslib.Player
         Game Game { get; set; }
 
         void MakeMove();
+
+        event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
     }
 }

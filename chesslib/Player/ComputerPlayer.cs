@@ -15,25 +15,27 @@ namespace chesslib.Player
         public IStrategy Strategy { get; set; }
         public Game Game { get; set; }
 
+        public event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
         public ComputerPlayer(PlayerType playerType)
         {
             PlayerType = playerType;
         }
 
+
+
         private void PrepareMove()
         {
-            var move = Strategy.PrepareMove();
-            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, Game);
+
         }
 
         public void MakeMove()
         {
             Thread.Sleep(500);
-            PrepareMove();
-            if (MakeMoveCommand != null)
-            {
-                MakeMoveCommand.Execute();
-            }
+            var move = Strategy.PrepareMove();
+            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
+            if (MoveDone != null)
+                MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
+
             OnMove();
 
         }

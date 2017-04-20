@@ -1,4 +1,5 @@
-﻿using chesslib.Field;
+﻿using chesslib.Command;
+using chesslib.Field;
 using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Utils;
@@ -12,10 +13,10 @@ namespace chesslib
     {
         private const int SIZE = 8;
 
-        public GameUtils GameUtils { get; set; }
+        public GameUtils GameUtils { get; private set; }
 
-        public List<IPlayer> Players { get; set; }
-        public Board Board { get; set; }
+        public List<IPlayer> Players { get; private set; }
+        public Board Board { get; private set; }
 
         public bool IsPaused { get; private set; }
         public bool IsGameFinished { get; private set; }
@@ -46,22 +47,22 @@ namespace chesslib
             GameUtils = new GameUtils(this);
         }
 
-        public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
-        {
-            if (IsPaused)
-                return false;
-            if (CurrentPlayer != player)
-                return false;
-            GameUtils.SaveState();
-            DestroyPiece(piece, nextCell);
-            bool moved = piece.MoveTo(nextCell, player);
-            if (!moved)
-                return false;
+        //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
+        //{
+        //    if (IsPaused)
+        //        return false;
+        //    if (CurrentPlayer != player)
+        //        return false;
+        //    GameUtils.SaveState();
+        //    DestroyPiece(piece, nextCell);
+        //    bool moved = piece.MoveTo(nextCell, player);
+        //    if (!moved)
+        //        return false;
 
-            Update(this);
-            ChangePlayers();
-            return true;
-        }
+        //    Update(this);
+        //    ChangePlayers();
+        //    return true;
+        //}
         public void LoadPreviousState()
         {
             GameUtils.LoadPreviousState();
@@ -76,10 +77,17 @@ namespace chesslib
             {
                 Players.Add(player);
                 player.Game = this;
+                player.MoveDone += Player_MoveDone;
                 return true;
             }
             return false;
         }
+
+        private void Player_MoveDone(object sender, MoveDoneEventArgs e)
+        {
+            e.MoveCommand.Execute(this);
+        }
+
         public void Start()
         {
             IsPaused = false;
@@ -91,7 +99,7 @@ namespace chesslib
             
         }
 
-        private void ChangePlayers()
+        internal void ChangePlayers()
         {
             if (CurrentPlayer == Players[0])
                 CurrentPlayer = Players[1];
