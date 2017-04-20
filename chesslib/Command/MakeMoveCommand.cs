@@ -49,7 +49,8 @@ namespace chesslib.Command
         public void Undo(object parameter)
         {
             Game game = (Game) parameter;
-              //_piece.MoveTo(_prevCell, _player);
+            game.ChangePlayers();
+            //_piece.MoveTo(_prevCell, _player);
             _piece.CurrentCell = _prevCell;
             _prevCell.Piece = _piece;
             if (_destroyedPiece != null)
@@ -59,7 +60,7 @@ namespace chesslib.Command
                 _destroyedPiece.CurrentCell = _nextCell;
                 game.Board.AlivePieces.Add(_destroyedPiece);
             }
-            game.ChangePlayers();
+
         }
     }
 }

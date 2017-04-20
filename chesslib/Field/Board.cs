@@ -79,7 +79,8 @@ namespace chesslib.Field
             if (AlivePieces.Contains(piece))
             {
                 AlivePieces.Remove(piece);
-                piece.Destroy();
+                piece.IsInGame = false;
+                piece.CurrentCell = null;
             }
         }
 

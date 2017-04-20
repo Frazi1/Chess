@@ -61,12 +61,6 @@ namespace chesslib
                 return true;
             return false;
         }
-        public void Destroy()
-        {
-            IsInGame = false;
-            CurrentCell = null;
-            //EndUpdates();
-        }
         public abstract List<Cell> GetAllowedMoves();
 
         public bool TryCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)

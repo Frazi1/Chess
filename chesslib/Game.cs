@@ -164,7 +164,7 @@ namespace chesslib
         public void SetMemento(Memento<MakeMoveCommand> value)
         {
             value.GetState().Undo(this);
-            IsPaused = true;
+            _prevMoveCommand = null;
         }
         #endregion
     }
