@@ -21,13 +21,6 @@ namespace chesslib.Player
             PlayerType = playerType;
         }
 
-
-
-        private void PrepareMove()
-        {
-
-        }
-
         public void MakeMove()
         {
             Thread.Sleep(500);

@@ -1,4 +1,5 @@
-﻿using chesslib.Field;
+﻿using chesslib.Command;
+using chesslib.Field;
 using chesslib.Memento;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace chesslib.Utils
     public class GameUtils
     {
         private GameMemento _memento;
-        private IOriginator<Board> _originator;
+        private IOriginator<MakeMoveCommand> _originator;
 
         public GameMemento Memento
         {
@@ -25,7 +26,7 @@ namespace chesslib.Utils
             }
         }
 
-        public GameUtils(IOriginator<Board> originator)
+        public GameUtils(IOriginator<MakeMoveCommand> originator)
         {
             Memento = new GameMemento();
             _originator = originator;
@@ -33,7 +34,6 @@ namespace chesslib.Utils
 
         public void SaveState()
         {
-
             Memento.MementoStack.Push(_originator.GetMemento());
         }
 

@@ -1,4 +1,5 @@
-﻿using chesslib.Field;
+﻿using chesslib.Command;
+using chesslib.Field;
 using chesslib.Memento;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ namespace chesslib.Utils
 {
     public class GameMemento
     {
-        public Stack<Memento<Board>> MementoStack { get; set; }
+        public Stack<Memento<MakeMoveCommand>> MementoStack { get; set; }
 
         public GameMemento()
         {
-            MementoStack = new Stack<Memento<Board>>();
+            MementoStack = new Stack<Memento<MakeMoveCommand>>();
         }
 
-        public Memento<Board> GetPreviousState()
+        public Memento<MakeMoveCommand> GetPreviousState()
         {
             return MementoStack.Pop();
         }

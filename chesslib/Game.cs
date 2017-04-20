@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace chesslib
 {
-    public class Game : IObservable<Game>, IOriginator<Board>
+    public class Game : IObservable<Game>, IOriginator<MakeMoveCommand>
     {
         private const int SIZE = 8;
 
@@ -20,6 +20,8 @@ namespace chesslib
 
         public bool IsPaused { get; private set; }
         public bool IsGameFinished { get; private set; }
+
+        private MakeMoveCommand _prevMoveCommand;
 
         private IPlayer _currentPlayer;
         public IPlayer CurrentPlayer
@@ -65,11 +67,12 @@ namespace chesslib
         //}
         public void LoadPreviousState()
         {
+            IsPaused = true;
             GameUtils.LoadPreviousState();
-            CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
+            //CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
             
             Update(this);
-            IsPaused = true;
+
         }
         public bool AddPlayer(IPlayer player)
         {
@@ -86,6 +89,8 @@ namespace chesslib
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)
         {
             e.MoveCommand.Execute(this);
+            _prevMoveCommand = e.MoveCommand;
+            GameUtils.SaveState();
         }
 
         public void Start()
@@ -151,14 +156,14 @@ namespace chesslib
         #endregion
 
         #region Memento
-        public Memento<Board> GetMemento()
+        public Memento<MakeMoveCommand> GetMemento()
         {
-            return new Memento<Board>((Board) Board.Clone());
+            return new Memento<MakeMoveCommand>(_prevMoveCommand);
         }
 
-        public void SetMemento(Memento<Board> value)
+        public void SetMemento(Memento<MakeMoveCommand> value)
         {
-            Board = value.GetState();
+            value.GetState().Undo(this);
             IsPaused = true;
         }
         #endregion

@@ -36,7 +36,7 @@ namespace chesslib.Command
             if (CanExecute(parameter))
             {
                 Game game = (Game) parameter;
-                game.GameUtils.SaveState();
+                //game.GameUtils.SaveState();
                 _destroyedPiece = _nextCell.Piece;
                 if (_destroyedPiece != null)
                     game.Board.DestroyPiece(_destroyedPiece);
@@ -49,13 +49,16 @@ namespace chesslib.Command
         public void Undo(object parameter)
         {
             Game game = (Game) parameter;
-            _piece.MoveTo(_prevCell, _player);
+              //_piece.MoveTo(_prevCell, _player);
+            _piece.CurrentCell = _prevCell;
+            _prevCell.Piece = _piece;
             if (_destroyedPiece != null)
             {
+                _destroyedPiece.IsInGame = true;
                 _nextCell.Piece = _destroyedPiece;
                 _destroyedPiece.CurrentCell = _nextCell;
+                game.Board.AlivePieces.Add(_destroyedPiece);
             }
-            game.Update(game);
             game.ChangePlayers();
         }
     }
