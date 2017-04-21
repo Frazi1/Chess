@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace chesslib.Player
+namespace chesslib.Events
 {
-    public static class PlayerEventsDelegates
+    public static class EventsDelegates
     {
         public delegate void MoveDoneEventHandler(object sender, MoveDoneEventArgs e);
+        public delegate void GameStateChangedEventHandler(object sender, GameStateChangedEventArgs e);
     }
 }

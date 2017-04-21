@@ -1,7 +1,7 @@
 ﻿using chesslib.Command;
 using System;
 
-namespace chesslib.Player
+namespace chesslib.Events
 {
     public class MoveDoneEventArgs : EventArgs
     {
