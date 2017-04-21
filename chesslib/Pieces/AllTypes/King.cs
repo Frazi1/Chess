@@ -14,11 +14,13 @@ namespace chesslib.Figures
     {
         public King(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
-            HasAlreadyMoved = false;
             IsUnderAttack = false;
         }
 
-        public bool HasAlreadyMoved { get; set; }
+        public bool HasAlreadyMoved
+        {
+            get { return MovesCounter != 0; }
+        }
         public bool IsUnderAttack { get; set; }
 
         public override List<Cell> GetAllowedMoves()

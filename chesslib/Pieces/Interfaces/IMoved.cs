@@ -7,6 +7,6 @@ namespace chesslib.Figures.Interfaces
 {
     interface IMoved
     {
-        bool HasAlreadyMoved { get; set; }
+        bool HasAlreadyMoved { get;}
     }
 }

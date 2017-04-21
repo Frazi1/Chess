@@ -15,11 +15,13 @@ namespace chesslib.Figures
     {
         public Pawn(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
-            HasAlreadyMoved = false;
             IsPromoted = false;
         }
 
-        public bool HasAlreadyMoved { get; set; }
+        public bool HasAlreadyMoved
+        {
+            get { return MovesCounter != 0; }
+        }
         public bool IsPromoted { get; set; }
 
         //TODO: Переделать GetAllowedMoves
@@ -94,8 +96,6 @@ namespace chesslib.Figures
         public override bool MoveTo(Cell nextCell, IPlayer player)
         {
             bool moved = base.MoveTo(nextCell, player);
-            if (moved)
-                HasAlreadyMoved = true;
             return moved;
         }
     }

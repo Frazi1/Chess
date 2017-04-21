@@ -14,16 +14,16 @@ namespace chesslib.Figures
     {
         public Rook(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
-            HasAlreadyMoved = false;
         }
 
-        public bool HasAlreadyMoved { get; set; }
+        public bool HasAlreadyMoved
+        {
+            get { return MovesCounter != 0; }
+        }
 
         public override bool MoveTo(Cell cell, IPlayer player)
         {
             bool moved = base.MoveTo(cell, player);
-            if (moved)
-                HasAlreadyMoved = true;
             return moved;
         }
 

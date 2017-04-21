@@ -17,6 +17,7 @@ namespace chesslib
         public Cell CurrentCell { get; set; }
         public PlayerType PlayerType { get; set; }
         public bool IsInGame { get; set; }
+        public int MovesCounter { get; set; }
 
 
         public Piece(Cell currentCell, PlayerType playerType, Board board)
@@ -27,6 +28,7 @@ namespace chesslib
             PlayerType = playerType;
             IsInGame = true;
             Board = board;
+            MovesCounter = 0;
         }
 
         public virtual bool CanMoveTo(Cell cell, IPlayer player)
@@ -50,6 +52,7 @@ namespace chesslib
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;
+                ++MovesCounter;
                 return true;
             }
             return false;
