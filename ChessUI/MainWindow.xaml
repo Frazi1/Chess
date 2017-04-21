@@ -173,7 +173,7 @@
         </TextBlock>
         <Button x:Name="button_start" Content="Start" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Button x:Name="button_prev" Content="Prev" HorizontalAlignment="Left" Margin="111,0,0,0" VerticalAlignment="Top" Width="74" Click="button_prev_Click" IsEnabled="{Binding Path=Main.CanUndo}"/>
-        <ListView HorizontalAlignment="Left" Height="100" Margin="10,52,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Main.MementoStates}" IsEnabled="False" IsSynchronizedWithCurrentItem="True" Loaded="ListView_Loaded">
+        <ListView HorizontalAlignment="Left" Height="248" Margin="10,52,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Main.MementoStates}" IsSynchronizedWithCurrentItem="True" Loaded="ListView_Loaded">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

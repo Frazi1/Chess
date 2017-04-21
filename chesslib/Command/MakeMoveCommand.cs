@@ -66,7 +66,7 @@ namespace chesslib.Command
                 if (_destroyedPiece != null)
                     game.Board.DestroyPiece(_destroyedPiece);
                 _piece.MoveTo(_nextCell, _player);
-                game.Update(game);
+                //game.Update(game);
                 game.ChangePlayers();
             }
         }
