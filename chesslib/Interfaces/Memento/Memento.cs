@@ -14,6 +14,14 @@ namespace chesslib.Memento
             _data = data;
         }
 
+        public T Data
+        {
+            get
+            {
+                return _data;
+            }
+        }
+
         public T GetState()
         {
             return _data;

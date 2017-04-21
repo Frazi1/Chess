@@ -92,5 +92,9 @@ namespace chesslib.Command
             }
 
         }
+        public override string ToString()
+        {
+            return $"from {_prevCell} to {NextCell}";
+        }
     }
 }

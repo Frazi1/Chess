@@ -38,5 +38,9 @@ namespace chesslib
             PosX = x;
             PosY = y;
         }
+        public override string ToString()
+        {
+            return $"{PosX}, {PosY}";
+        }
     }
 }

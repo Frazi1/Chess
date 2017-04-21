@@ -32,8 +32,8 @@ namespace ChessUI
                 }
                 else
                 {
-                    int x = (int)e.GetPosition(this.ChessBoard).X;
-                    int y = (int)e.GetPosition(this.ChessBoard).Y;
+                    int x = (int) e.GetPosition(this.ChessBoard).X;
+                    int y = (int) e.GetPosition(this.ChessBoard).Y;
                     try
                     {
                         _gameViewModel.NextCell = _gameViewModel
@@ -79,6 +79,26 @@ namespace ChessUI
         {
             _gameViewModel.Game.LoadPreviousState();
             _gameViewModel.InitializePieces();
+        }
+
+        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                while (true)
+                {
+                    Dispatcher.BeginInvoke((Action) (() =>
+                    {
+                        _gameViewModel.MementoStates.Clear();
+                        var list = _gameViewModel.Game.GameUtils.Memento.MementoList;
+                        for (int i = list.Count - 1; i >= 0; i--)
+                        {
+                            _gameViewModel.MementoStates.Add(list[i]);
+                        }
+                    }));
+                    Thread.Sleep(500);
+                }
+            });
         }
     }
 }

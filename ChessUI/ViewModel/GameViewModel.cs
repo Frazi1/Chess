@@ -1,4 +1,6 @@
 ﻿using chesslib;
+using chesslib.Command;
+using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Strategy;
 using ChessUI;
@@ -17,39 +19,11 @@ namespace ChessUI.ViewModel
         private ObservableCollection<ChessPieceViewModel> _chessPieces;
         private Game _game;
 
-        public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
-        {
-            get { return _chessPieces; }
-            set { _chessPieces = value; }
-        }
-        public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
-
-        public Game Game
-        {
-            get { return _game; }
-            set { _game = value; }
-        }
-        public ChessPieceViewModel SelectedPiece { get; set; }
-        public Cell NextCell { get; set; }
-        public RealPlayerViewModel ActivePlayerViewModel { get; set; }
-
-        public PlayerType PlayerType
-        {
-            get
-            {
-                if (Game.CurrentPlayer != null)
-                    return Game.CurrentPlayer.PlayerType;
-                return PlayerType.None;
-            }
-        }
-
-        public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
-
-
         public GameViewModel()
         {
             ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
             RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
+            MementoStates = new ObservableCollection<Memento<MakeMoveCommand>>();
             Game = new Game();
 
             //TODO: передалать
@@ -74,6 +48,33 @@ namespace ChessUI.ViewModel
             //Commands
         }
 
+        public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
+        {
+            get { return _chessPieces; }
+            set { _chessPieces = value; }
+        }
+        public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
+        public ObservableCollection<Memento<MakeMoveCommand>> MementoStates { get; set; }
+        public RealPlayerViewModel ActivePlayerViewModel { get; set; }
+        public ChessPieceViewModel SelectedPiece { get; set; }
+
+        public Cell NextCell { get; set; }
+        public PlayerType PlayerType
+        {
+            get
+            {
+                if (Game.CurrentPlayer != null)
+                    return Game.CurrentPlayer.PlayerType;
+                return PlayerType.None;
+            }
+        }
+        public Game Game
+        {
+            get { return _game; }
+            set { _game = value; }
+        }
+        public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
+
         public void InitializePieces()
         {
             ChessPiecesViewModels.Clear();
@@ -94,6 +95,7 @@ namespace ChessUI.ViewModel
         {
             RaisePropertyChanged(() => PlayerType);
             RaisePropertyChanged(() => CanUndo);
+
             foreach (var item in ChessPiecesViewModels)
             {
                 item.OnNext(item.Piece);
