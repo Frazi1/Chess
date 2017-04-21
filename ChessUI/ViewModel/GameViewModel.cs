@@ -43,7 +43,7 @@ namespace ChessUI.ViewModel
             }
         }
 
-        public bool CanUndo { get { return Game.GameUtils.Memento.MementoStack.Count > 0; } }
+        public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
 
 
         public GameViewModel()

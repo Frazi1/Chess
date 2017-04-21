@@ -88,9 +88,12 @@ namespace chesslib
 
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)
         {
-            e.MoveCommand.Execute(this);
-            _prevMoveCommand = e.MoveCommand;
-            GameUtils.SaveState();
+            if (e.MoveCommand.CanExecute(this))
+            {
+                e.MoveCommand.Execute(this);
+                _prevMoveCommand = e.MoveCommand;
+                GameUtils.SaveState();
+            }
         }
 
         public void Start()

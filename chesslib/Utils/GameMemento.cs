@@ -10,16 +10,18 @@ namespace chesslib.Utils
 {
     public class GameMemento
     {
-        public Stack<Memento<MakeMoveCommand>> MementoStack { get; set; }
+        public List<Memento<MakeMoveCommand>> MementoList { get; set; }
 
         public GameMemento()
         {
-            MementoStack = new Stack<Memento<MakeMoveCommand>>();
+            MementoList = new List<Memento<MakeMoveCommand>>();
         }
 
         public Memento<MakeMoveCommand> GetPreviousState()
         {
-            return MementoStack.Pop();
+            var prevState = MementoList.Last();
+            MementoList.RemoveAt(MementoList.Count-1);
+            return prevState;
         }
     }
 }

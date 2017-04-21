@@ -34,7 +34,7 @@ namespace chesslib.Utils
 
         public void SaveState()
         {
-            Memento.MementoStack.Push(_originator.GetMemento());
+            Memento.MementoList.Add(_originator.GetMemento());
         }
 
         public void LoadPreviousState()
