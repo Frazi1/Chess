@@ -10,7 +10,6 @@ namespace chesslib.Player
         PlayerType PlayerType { get; set; }
         MakeMoveCommand MakeMoveCommand { get; set; }
 
-        IStrategy Strategy { get; set; }
         Game Game { get; set; }
 
         void DoTurn();

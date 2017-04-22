@@ -41,7 +41,7 @@ namespace ChessUI
                             .Board
                             .ChessBoard[x, y];
                         _gameViewModel
-                            .ActivePlayerViewModel.PushStrategy();
+                            .ActivePlayerViewModel.PushCommand();
 
                         //_gameViewModel
                         //    .Game

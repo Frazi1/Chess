@@ -72,7 +72,7 @@ namespace chesslib
             GameUtils.LoadPreviousState();
             //CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
             
-            Update(this);
+            Update();
 
         }
 
@@ -105,7 +105,7 @@ namespace chesslib
                 CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
             else
                 CurrentPlayer.DoTurn();
-            Update(this);
+            Update();
             
         }
 
@@ -115,7 +115,7 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
-            Update(this);
+            Update();
         }
         private void DestroyPiece(Piece piece, Cell nextCell)
         {
@@ -132,7 +132,7 @@ namespace chesslib
             }
         }
 
-        public void Update(Game loc)
+        public void Update()
         {
             if (GameStateChanged != null)
                 GameStateChanged(this, new GameStateChangedEventArgs(this));
