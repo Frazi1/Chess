@@ -13,6 +13,7 @@ namespace chesslib.Player
         Game Game { get; set; }
 
         void DoTurn();
+        void CancelTurn();
 
         event EventsDelegates.MoveDoneEventHandler MoveDone;
     }

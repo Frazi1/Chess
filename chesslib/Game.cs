@@ -68,6 +68,7 @@ namespace chesslib
 
         public void LoadPreviousState()
         {
+            CurrentPlayer.CancelTurn();
             IsPaused = true;
             GameUtils.LoadPreviousState();
             //CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
@@ -95,6 +96,7 @@ namespace chesslib
                 e.MoveCommand.Execute(this);
                 _prevMoveCommand = e.MoveCommand;
                 GameUtils.SaveState();
+                Update();
             }
         }
 

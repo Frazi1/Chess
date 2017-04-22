@@ -74,6 +74,7 @@ namespace ChessUI.ViewModel
             set { _game = value; }
         }
         public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
+        public bool IsPaused { get { return Game.IsPaused; } }
 
         public void InitializePieces()
         {
@@ -88,6 +89,7 @@ namespace ChessUI.ViewModel
         {
             RaisePropertyChanged(() => PlayerType);
             RaisePropertyChanged(() => CanUndo);
+            RaisePropertyChanged(() => IsPaused);
 
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels

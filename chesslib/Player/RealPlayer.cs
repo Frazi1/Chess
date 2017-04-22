@@ -26,6 +26,7 @@ namespace chesslib.Player
         }
         public PlayerType PlayerType { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
+        public Thread CurrentThread { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
         public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
@@ -34,7 +35,17 @@ namespace chesslib.Player
         {
             if (MovingInProcess != null)
                 MovingInProcess(this, new MovingInProcessEventArgs(this));
-            Task.Factory.StartNew(() => MakeMove());
+            CurrentThread = new Thread(MakeMove)
+            {
+                IsBackground = true
+            };
+            CurrentThread.Start();
+        }
+
+        public void CancelTurn()
+        {
+            if (CurrentThread != null && CurrentThread.IsAlive)
+                CurrentThread.Abort();
         }
 
         private void MakeMove()
