@@ -44,6 +44,7 @@
     <Compile Include="Command\MakeMoveCommand.cs" />
     <Compile Include="Command\Interfaces\ICommand.cs" />
     <Compile Include="Events\EventArgs\GameStateChangedEventArgs.cs" />
+    <Compile Include="Events\EventArgs\MovingInProcessEventArgs.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />

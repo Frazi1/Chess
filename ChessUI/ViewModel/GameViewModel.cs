@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace ChessUI.ViewModel
 {
-    public class GameViewModel : ViewModelBase, IObserver<Game>
+    public class GameViewModel : ViewModelBase
     {
         private ObservableCollection<ChessPieceViewModel> _chessPieces;
         private Game _game;
@@ -43,10 +43,12 @@ namespace ChessUI.ViewModel
             //
 
             InitializePieces();
-            Subcribe(Game);
+            Game.GameStateChanged += Game_GameStateChanged;
 
             //Commands
         }
+
+
 
         public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
         {
@@ -84,14 +86,7 @@ namespace ChessUI.ViewModel
             }
         }
 
-        #region IObserver
-        private IDisposable unsubscriber;
-        public void Subcribe(IObservable<Game> provider)
-        {
-            if (provider != null)
-                unsubscriber = provider.Subscribe(this);
-        }
-        public void OnNext(Game value)
+        private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
             RaisePropertyChanged(() => PlayerType);
             RaisePropertyChanged(() => CanUndo);
@@ -103,17 +98,6 @@ namespace ChessUI.ViewModel
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels.FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
         }
-
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }
 

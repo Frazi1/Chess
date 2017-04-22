@@ -1,13 +1,11 @@
 ﻿using chesslib.Command;
+using chesslib.Events;
 using chesslib.Strategy;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace chesslib.Player
 {
-    public interface IPlayer : IObserver<bool>
+    public interface IPlayer
     {
         PlayerType PlayerType { get; set; }
         MakeMoveCommand MakeMoveCommand { get; set; }
@@ -16,7 +14,8 @@ namespace chesslib.Player
         Game Game { get; set; }
 
         void MakeMove();
+        void DoTurn();
 
-        event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
+        event EventsDelegates.MoveDoneEventHandler MoveDone;
     }
 }
