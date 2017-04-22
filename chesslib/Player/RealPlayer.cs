@@ -40,10 +40,10 @@ namespace chesslib.Player
         {
             if (MovingInProcess != null)
                 MovingInProcess(this, new MovingInProcessEventArgs(this));
-            //Task.Factory.StartNew(()=> MakeMove());
-            MakeMove();
+            Task.Factory.StartNew(() => MakeMove());
         }
-        private void PrepareMove()
+
+        private void MakeMove()
         {
             while (Strategy == null)
             {
@@ -51,12 +51,10 @@ namespace chesslib.Player
             }
             var move = Strategy.PrepareMove();
             MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
-        }
-        private void MakeMove()
-        {
-            PrepareMove();
+
             if (MoveDone != null)
                 MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
+
             OnMove();
         }
 
