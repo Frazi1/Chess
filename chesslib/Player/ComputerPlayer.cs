@@ -5,6 +5,7 @@ using System.Text;
 using chesslib.Command;
 using chesslib.Strategy;
 using System.Threading;
+using chesslib.Events;
 
 namespace chesslib.Player
 {
@@ -15,13 +16,13 @@ namespace chesslib.Player
         public IStrategy Strategy { get; set; }
         public Game Game { get; set; }
 
-        public event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
+        public event EventsDelegates.MoveDoneEventHandler MoveDone;
         public ComputerPlayer(PlayerType playerType)
         {
             PlayerType = playerType;
         }
 
-        public void MakeMove()
+        private void MakeMove()
         {
             Thread.Sleep(500);
             var move = Strategy.PrepareMove();
@@ -38,17 +39,7 @@ namespace chesslib.Player
             MakeMoveCommand = null;
         }
 
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNext(bool value)
+        public void DoTurn()
         {
             Thread t = new Thread(() => MakeMove());
             t.IsBackground = true;

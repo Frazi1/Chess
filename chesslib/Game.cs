@@ -1,4 +1,5 @@
 ﻿using chesslib.Command;
+using chesslib.Events;
 using chesslib.Field;
 using chesslib.Memento;
 using chesslib.Player;
@@ -9,21 +10,12 @@ using System.Linq;
 
 namespace chesslib
 {
-    public class Game : IObservable<Game>, IOriginator<MakeMoveCommand>
+    public class Game : IOriginator<MakeMoveCommand>
     {
         private const int SIZE = 8;
-
-        public GameUtils GameUtils { get; private set; }
-
-        public List<IPlayer> Players { get; private set; }
-        public Board Board { get; private set; }
-
-        public bool IsPaused { get; private set; }
-        public bool IsGameFinished { get; private set; }
-
         private MakeMoveCommand _prevMoveCommand;
-
         private IPlayer _currentPlayer;
+
         public IPlayer CurrentPlayer
         {
             get { return _currentPlayer; }
@@ -34,15 +26,23 @@ namespace chesslib
                     _currentPlayer = value;
                     Board.CurrentPlayerType = value.PlayerType;
                     if (!IsPaused && !IsGameFinished)
-                        _currentPlayer.OnNext(true);
+                        _currentPlayer.DoTurn();
                 }
             }
         }
+        public GameUtils GameUtils { get; private set; }
+
+        public List<IPlayer> Players { get; private set; }
+        public Board Board { get; private set; }
+
+        public bool IsPaused { get; private set; }
+        public bool IsGameFinished { get; private set; }
+
+        public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
         {
             Players = new List<IPlayer>();
-            _observers = new List<IObserver<Game>>();
             Board = new Board(SIZE);
             IsGameFinished = false;
             IsPaused = true;
@@ -65,6 +65,7 @@ namespace chesslib
         //    ChangePlayers();
         //    return true;
         //}
+
         public void LoadPreviousState()
         {
             IsPaused = true;
@@ -74,6 +75,7 @@ namespace chesslib
             Update(this);
 
         }
+
         public bool AddPlayer(IPlayer player)
         {
             if (Players.Count < 2 && !Players.Contains(player))
@@ -102,7 +104,7 @@ namespace chesslib
             if (CurrentPlayer == null)
                 CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
             else
-                CurrentPlayer.OnNext(true);
+                CurrentPlayer.DoTurn();
             Update(this);
             
         }
@@ -130,33 +132,12 @@ namespace chesslib
             }
         }
 
-        #region IObservable
-        private List<IObserver<Game>> _observers;
-        public IDisposable Subscribe(IObserver<Game> observer)
-        {
-            if (!_observers.Contains(observer))
-                _observers.Add(observer);
-            return new Unsubscriber<Game>(_observers, observer);
-        }
-
         public void Update(Game loc)
         {
-            foreach (var observer in _observers)
-            {
-                observer.OnNext(loc);
-            }
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
-        public void EndUpdates()
-        {
-            foreach (var observer in _observers)
-            {
-                if (_observers.Contains(observer))
-                    observer.OnCompleted();
 
-                _observers.Clear();
-            }
-        }
-        #endregion
 
         #region Memento
         public Memento<MakeMoveCommand> GetMemento()

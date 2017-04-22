@@ -9,11 +9,12 @@ using System.Windows;
 
 namespace ChessUI.ViewModel
 {
-    public class ChessPieceViewModel : ViewModelBase, IObserver<Piece>
+    public class ChessPieceViewModel : ViewModelBase
     {
         private Piece _piece;
-        public Piece Piece { get { return _piece; } }
-        public ChessPieceViewModel(Piece piece)
+        private PieceType _pieceType;
+
+        public ChessPieceViewModel(Piece piece, Game game)
         {
             _piece = piece;
             switch (piece.GetType().Name)
@@ -39,6 +40,7 @@ namespace ChessUI.ViewModel
                 default:
                     break;
             }
+            game.GameStateChanged += Game_GameStateChanged;
         }
 
         public int PosX
@@ -49,14 +51,12 @@ namespace ChessUI.ViewModel
         {
             get { return IsInGame ? _piece.CurrentCell.PosY : -1; }
         }
-
-        private PieceType _pieceType;
+        public Piece Piece { get { return _piece; } }
         public PieceType PieceType
         {
             get { return this._pieceType; }
             set { this._pieceType = value; RaisePropertyChanged(() => this.PieceType); }
         }
-
         public PlayerType PlayerType
         {
             get { return _piece.PlayerType; }
@@ -64,30 +64,11 @@ namespace ChessUI.ViewModel
         }
         public bool IsInGame { get { return _piece.IsInGame; } }
 
-
-        #region IObserver
-
-        private IDisposable unsubscriber;
-        public void Subcribe(IObservable<Piece> provider)
-        {
-            if (provider != null)
-                unsubscriber = provider.Subscribe(this);
-        }
-        public void OnNext(Piece value)
+        private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
             RaisePropertyChanged(() => _piece.CurrentCell.PosY);
             RaisePropertyChanged(() => _piece.CurrentCell.PosX);
         }
 
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }

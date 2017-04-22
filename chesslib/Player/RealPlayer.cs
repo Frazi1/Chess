@@ -6,25 +6,25 @@ using System.Text;
 using chesslib.Command;
 using chesslib.Strategy;
 using System.Threading.Tasks;
+using chesslib.Events;
+using System.Threading;
 
 namespace chesslib.Player
 {
-    public class RealPlayer : IPlayer, IObservable<RealPlayer>
+    public class RealPlayer : IPlayer
     {
         private Game _game;
         private IStrategy strategy;
+
+        public RealPlayer(PlayerType playerType)
+        {
+            PlayerType = playerType;
+        }
         public Game Game
         {
             get { return _game; }
             set { _game = value; }
         }
-
-        public RealPlayer(PlayerType playerType)
-        {
-            PlayerType = playerType;
-            _observers = new List<IObserver<RealPlayer>>();
-        }
-
         public PlayerType PlayerType { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
         public IStrategy Strategy
@@ -33,63 +33,35 @@ namespace chesslib.Player
             set { strategy = value; }
         }
 
-        public void PrepareMove()
+        public event EventsDelegates.MoveDoneEventHandler MoveDone;
+        public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
+
+        public void DoTurn()
         {
-            Task<Tuple<Piece, Cell>> t = new Task<Tuple<Piece, Cell>>(() => Strategy.PrepareMove());
-            t.Start();
-            
-            var move = t.Result; 
-            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
+            if (MovingInProcess != null)
+                MovingInProcess(this, new MovingInProcessEventArgs(this));
+            Task.Factory.StartNew(() => MakeMove());
         }
 
-        public void MakeMove()
+        private void MakeMove()
         {
-            PrepareMove();
+            while (Strategy == null)
+            {
+                Thread.Sleep(100);
+            }
+            var move = Strategy.PrepareMove();
+            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
+
             if (MoveDone != null)
                 MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
+
+            OnMove();
         }
 
         private void OnMove()
         {
             MakeMoveCommand = null;
+            Strategy = null;
         }
-        #region Game Observer
-
-        public void OnNext(bool value)
-        {
-            if (value)
-                NotifyForMoveInput();
-        }
-
-        public void OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region IObservable
-        private List<IObserver<RealPlayer>> _observers;
-
-        public event PlayerEventsDelegates.MoveDoneEventHandler MoveDone;
-
-        public IDisposable Subscribe(IObserver<RealPlayer> observer)
-        {
-            if (!_observers.Contains(observer))
-                _observers.Add(observer);
-            return new Unsubscriber<RealPlayer>(_observers, observer);
-        }
-        private void NotifyForMoveInput()
-        {
-            foreach (var obs in _observers)
-            {
-                obs.OnNext(this);
-            }
-        }
-        #endregion
     }
 }
