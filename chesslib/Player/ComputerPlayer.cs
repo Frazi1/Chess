@@ -22,7 +22,7 @@ namespace chesslib.Player
             PlayerType = playerType;
         }
 
-        public void MakeMove()
+        private void MakeMove()
         {
             Thread.Sleep(500);
             var move = Strategy.PrepareMove();

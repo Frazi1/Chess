@@ -13,7 +13,7 @@ namespace chesslib.Player
         IStrategy Strategy { get; set; }
         Game Game { get; set; }
 
-        void MakeMove();
+        //void MakeMove();
         void DoTurn();
 
         event EventsDelegates.MoveDoneEventHandler MoveDone;

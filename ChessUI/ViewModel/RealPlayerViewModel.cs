@@ -29,7 +29,7 @@ namespace ChessUI.ViewModel
         {
             Player.Strategy = new RealPlayerStrategy(_gameViewModel.SelectedPiece.Piece,
                 _gameViewModel.NextCell);
-            Player.MakeMove();
+            //Player.MakeMove();
         }
 
     }

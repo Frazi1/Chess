@@ -7,6 +7,7 @@ using chesslib.Command;
 using chesslib.Strategy;
 using System.Threading.Tasks;
 using chesslib.Events;
+using System.Threading;
 
 namespace chesslib.Player
 {
@@ -32,7 +33,6 @@ namespace chesslib.Player
             set { strategy = value; }
         }
 
-
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
         public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
 
@@ -40,25 +40,30 @@ namespace chesslib.Player
         {
             if (MovingInProcess != null)
                 MovingInProcess(this, new MovingInProcessEventArgs(this));
+            //Task.Factory.StartNew(()=> MakeMove());
+            MakeMove();
         }
-        public void PrepareMove()
+        private void PrepareMove()
         {
-            Task<Tuple<Piece, Cell>> t = new Task<Tuple<Piece, Cell>>(() => Strategy.PrepareMove());
-            t.Start();
-            
-            var move = t.Result; 
+            while (Strategy == null)
+            {
+                Thread.Sleep(100);
+            }
+            var move = Strategy.PrepareMove();
             MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
         }
-        public void MakeMove()
+        private void MakeMove()
         {
             PrepareMove();
             if (MoveDone != null)
                 MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
+            OnMove();
         }
 
         private void OnMove()
         {
             MakeMoveCommand = null;
+            Strategy = null;
         }
     }
 }
