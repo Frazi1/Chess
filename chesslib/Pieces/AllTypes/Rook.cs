@@ -40,28 +40,28 @@ namespace chesslib.Figures
             //Вправо
             for (int i = x + 1, j = y; i < size; i++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Влево
             for (int i = x - 1, j = y; i >= 0; i--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вниз
             for (int i = x, j = y + 1; j < size; j++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вверх
             for (int i = x, j = y - 1; j >= 0; j--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }

@@ -98,5 +98,18 @@ namespace chesslib.Figures
             bool moved = base.MoveTo(nextCell, player);
             return moved;
         }
+        public override List<Cell> GetAttackedCells()
+        {
+            int y = PlayerType == PlayerType.White ? CurrentCell.PosY - 1 : CurrentCell.PosY + 1;
+            int x1 = CurrentCell.PosX - 1;
+            int x2 = CurrentCell.PosX + 1;
+            List<Cell> attacked = new List<Cell>();
+
+            if (TryAttackCell(Board.ChessBoard, x1, y))
+                attacked.Add(Board.ChessBoard[x1, y]);
+            if (TryAttackCell(Board.ChessBoard, x2, y))
+                attacked.Add(Board.ChessBoard[x2, y]);
+            return attacked;
+        }
     }
 }

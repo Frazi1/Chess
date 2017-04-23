@@ -36,7 +36,7 @@ namespace chesslib.Figures
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    TryCell(allowedMoves, chessBoard, i, j);
+                    TryMoveToCell(allowedMoves, chessBoard, i, j);
                 }
             }
 

@@ -27,7 +27,7 @@ namespace chesslib.Player
 
         private void MakeMove()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(500);
             var move = Strategy.PrepareMove();
             MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
             if (MoveDone != null)
