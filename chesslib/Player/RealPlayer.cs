@@ -14,7 +14,6 @@ namespace chesslib.Player
     public class RealPlayer : IPlayer
     {
         private Game _game;
-        private IStrategy strategy;
 
         public RealPlayer(PlayerType playerType)
         {
@@ -27,11 +26,7 @@ namespace chesslib.Player
         }
         public PlayerType PlayerType { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
-        public IStrategy Strategy
-        {
-            get { return strategy; }
-            set { strategy = value; }
-        }
+        public Thread CurrentThread { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
         public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
@@ -40,18 +35,26 @@ namespace chesslib.Player
         {
             if (MovingInProcess != null)
                 MovingInProcess(this, new MovingInProcessEventArgs(this));
-            Task.Factory.StartNew(() => MakeMove());
+            CurrentThread = new Thread(MakeMove)
+            {
+                IsBackground = true
+            };
+            CurrentThread.Start();
+        }
+
+        public void CancelTurn()
+        {
+            if (CurrentThread != null && CurrentThread.IsAlive)
+                CurrentThread.Abort();
         }
 
         private void MakeMove()
         {
-            while (Strategy == null)
+            while (MakeMoveCommand == null 
+                || !MakeMoveCommand.CanExecute(Game))
             {
                 Thread.Sleep(100);
             }
-            var move = Strategy.PrepareMove();
-            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2);
-
             if (MoveDone != null)
                 MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
 
@@ -61,7 +64,6 @@ namespace chesslib.Player
         private void OnMove()
         {
             MakeMoveCommand = null;
-            Strategy = null;
         }
     }
 }

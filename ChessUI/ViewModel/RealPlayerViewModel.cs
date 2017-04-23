@@ -25,9 +25,10 @@ namespace ChessUI.ViewModel
             //throw new NotImplementedException();
         }
 
-        public void PushStrategy()
+        public void PushCommand()
         {
-            Player.Strategy = new RealPlayerStrategy(_gameViewModel.SelectedPiece.Piece,
+            Player.MakeMoveCommand = new chesslib.Command.MakeMoveCommand(Player,
+                _gameViewModel.SelectedPiece.Piece,
                 _gameViewModel.NextCell);
             //Player.MakeMove();
         }

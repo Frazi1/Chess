@@ -40,7 +40,7 @@ namespace chesslib.Figures
 
             foreach (var item in toCheck)
             {
-                TryCell(allowedMoves, chessBoard, item.Item1, item.Item2);
+                TryMoveToCell(allowedMoves, chessBoard, item.Item1, item.Item2);
             }
             return allowedMoves;
 

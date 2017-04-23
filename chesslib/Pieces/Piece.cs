@@ -17,6 +17,10 @@ namespace chesslib
         public Cell CurrentCell { get; set; }
         public PlayerType PlayerType { get; set; }
         public bool IsInGame { get; set; }
+        public bool IsAttacked
+        {
+            get { return CurrentCell.IsAttacked; }
+        }
         public int MovesCounter { get; set; }
 
 
@@ -65,8 +69,11 @@ namespace chesslib
             return false;
         }
         public abstract List<Cell> GetAllowedMoves();
-
-        public bool TryCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
+        public virtual List<Cell> GetAttackedCells()
+        {
+            return GetAllowedMoves();
+        }
+        public bool TryMoveToCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
         {
             if (x1 >= 0 &&
                 x1 < chessBoard.GetLength(0) &&
@@ -86,6 +93,23 @@ namespace chesslib
                 }
             }
             return false;
+        }
+        public bool TryAttackCell(Cell[,] chessBoard, int x, int y)
+        {
+            if (x >= 0 &&
+                x < chessBoard.GetLength(0) &&
+                y >= 0 &&
+                y < chessBoard.GetLength(0))
+            {
+                return true;
+            }
+            return false;
+
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name + " - " + PlayerType.ToString();
         }
     }
 }

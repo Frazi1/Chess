@@ -16,7 +16,10 @@ namespace chesslib.Player
         public IStrategy Strategy { get; set; }
         public Game Game { get; set; }
 
+        public Thread CurrentThread { get; private set; }
+
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
+
         public ComputerPlayer(PlayerType playerType)
         {
             PlayerType = playerType;
@@ -41,9 +44,17 @@ namespace chesslib.Player
 
         public void DoTurn()
         {
-            Thread t = new Thread(() => MakeMove());
-            t.IsBackground = true;
-            t.Start();
+            Thread CurrentThread = new Thread(MakeMove)
+            {
+                IsBackground = true
+            };
+            CurrentThread.Start();
+        }
+
+        public void CancelTurn()
+        {
+            if (CurrentThread!=null && CurrentThread.IsAlive)
+                CurrentThread.Abort();
         }
     }
 }

@@ -68,14 +68,14 @@ namespace chesslib
 
         public void LoadPreviousState()
         {
+            CurrentPlayer.CancelTurn();
             IsPaused = true;
             GameUtils.LoadPreviousState();
             //CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
             
-            Update(this);
+            Update();
 
         }
-
         public bool AddPlayer(IPlayer player)
         {
             if (Players.Count < 2 && !Players.Contains(player))
@@ -87,26 +87,33 @@ namespace chesslib
             }
             return false;
         }
+        public void Start()
+        {
+            UpdateCells();
+            IsPaused = false;
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            else
+                CurrentPlayer.DoTurn();
+            Update();
+
+        }
+        public void Update()
+        {
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
+        }
 
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)
         {
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
+                UpdateCells();
                 _prevMoveCommand = e.MoveCommand;
                 GameUtils.SaveState();
+                Update();
             }
-        }
-
-        public void Start()
-        {
-            IsPaused = false;
-            if (CurrentPlayer == null)
-                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
-            else
-                CurrentPlayer.DoTurn();
-            Update(this);
-            
         }
 
         internal void ChangePlayers()
@@ -115,7 +122,7 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
-            Update(this);
+            Update();
         }
         private void DestroyPiece(Piece piece, Cell nextCell)
         {
@@ -131,11 +138,22 @@ namespace chesslib
                 Board.DestroyPiece(pieceToDestroy);
             }
         }
-
-        public void Update(Game loc)
+        private void UpdateCells()
         {
-            if (GameStateChanged != null)
-                GameStateChanged(this, new GameStateChangedEventArgs(this));
+            //Clear attackers lists
+            for (int i = 0; i < Board.ChessBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < Board.ChessBoard.GetLength(1); j++)
+                {
+                    var cell = Board.ChessBoard[i, j];
+                    cell.AttackersList.Clear();
+                }
+            }
+            //Get new lists
+            foreach (var p in Board.AlivePieces)
+            {
+                p.GetAttackedCells().ForEach(x => x.AttackersList.Add(p));
+            }
         }
 
 

@@ -9,35 +9,35 @@ namespace chesslib
     public class Cell
     {
         private int _posX;
+        private int _posY;
+        private Piece _piece;
 
         public int PosX
         {
             get { return _posX; }
             set { _posX = value; }
         }
-        private int _posY;
-
         public int PosY
         {
             get { return _posY; }
             set { _posY = value; }
         }
-
-        private Piece _piece;
-
         public Piece Piece
         {
             get { return _piece; }
             set { _piece = value; }
         }
-
         public bool IsTaken => Piece != null;
+        public bool IsAttacked { get { return AttackersList.Count > 0; } }
+        public List<Piece> AttackersList { get; set; }
 
         public Cell(int x, int y)
         {
             PosX = x;
             PosY = y;
+            AttackersList = new List<Piece>();
         }
+
         public override string ToString()
         {
             return $"{PosX}, {PosY}";

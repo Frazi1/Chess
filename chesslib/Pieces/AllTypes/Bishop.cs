@@ -28,14 +28,14 @@ namespace chesslib.Figures
             //Вправо вверх
             for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Влево вверх
             for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
@@ -43,7 +43,7 @@ namespace chesslib.Figures
             //Вправо вниз
             for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
@@ -51,7 +51,7 @@ namespace chesslib.Figures
             //Влево вниз
             for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
