@@ -94,7 +94,7 @@ namespace chesslib.Command
         }
         public override string ToString()
         {
-            return $"from {_prevCell} to {NextCell}";
+            return string.Format("from {0} to {1}",_prevCell, NextCell);
         }
     }
 }

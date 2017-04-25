@@ -27,7 +27,7 @@ namespace chesslib
             get { return _piece; }
             set { _piece = value; }
         }
-        public bool IsTaken => Piece != null;
+        public bool IsTaken {get{return _piece != null;}}
         public bool IsAttacked { get { return AttackersList.Count > 0; } }
         public List<Piece> AttackersList { get; set; }
 
@@ -40,7 +40,7 @@ namespace chesslib
 
         public override string ToString()
         {
-            return $"{PosX}, {PosY}";
+            return string.Format("{0}, {1}", PosX, PosY);
         }
     }
 }

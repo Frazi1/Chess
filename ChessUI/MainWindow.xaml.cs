@@ -29,7 +29,9 @@ namespace ChessUI
                 {
                     if (_gameViewModel.SelectedPiece == null)
                     {
-                        _gameViewModel.SelectedPiece = (e.OriginalSource as Image)?.DataContext as ChessPieceViewModel;
+                        var img = e.OriginalSource as Image;
+                        if(img!=null)
+                            _gameViewModel.SelectedPiece = img.DataContext as ChessPieceViewModel;
                     }
                     else
                     {
@@ -82,7 +84,7 @@ namespace ChessUI
             {
                 while (true)
                 {
-                    Dispatcher.BeginInvoke((Action) (() =>
+                    Dispatcher.BeginInvoke((Action)(() =>
                     {
                         _gameViewModel.MementoStates.Clear();
                         var list = _gameViewModel.Game.GameUtils.Memento.MementoList;
