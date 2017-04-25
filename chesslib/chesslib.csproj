@@ -49,7 +49,7 @@
     <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
-    <Compile Include="Utils\CheckMateUtils.cs" />
+    <Compile Include="Utils\BoardUtils.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\GameMemento.cs" />
     <Compile Include="Utils\GameUtils.cs" />

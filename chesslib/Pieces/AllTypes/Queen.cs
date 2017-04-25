@@ -16,9 +16,9 @@ namespace chesslib.Figures
             PieceType = PieceType.Queen;
         }
 
-        public override List<Cell> GetAllowedMoves()
+        public override void SetAllowedMoves()
         {
-            List<Cell> allowedMoves = new List<Cell>();
+            base.SetAllowedMoves();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
             Cell[,] chessBoard = Board.ChessBoard;
@@ -28,61 +28,59 @@ namespace chesslib.Figures
             //Вправо
             for (int i = x + 1, j = y; i < size; i++)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Влево
             for (int i = x - 1, j = y; i >= 0; i--)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вниз
             for (int i = x, j = y + 1; j < size; j++)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вверх
             for (int i = x, j = y - 1; j >= 0; j--)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вправо вверх
             for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Влево вверх
             for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Вправо вниз
             for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
             //Влево вниз
             for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
             {
-                _continue = TryMoveToCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(AllowedMoves, chessBoard, i, j);
                 if (!_continue)
                     break;
             }
-
-            return allowedMoves;
         }
 
         public override bool MoveTo(Cell cell, IPlayer player)

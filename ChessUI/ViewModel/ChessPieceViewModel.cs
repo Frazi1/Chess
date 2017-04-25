@@ -60,7 +60,7 @@ namespace ChessUI.ViewModel
         public PlayerType PlayerType
         {
             get { return _piece.PlayerType; }
-            set { _piece.PlayerType = value; RaisePropertyChanged(() => _piece.PlayerType); }
+            //set { _piece.PlayerType = value; RaisePropertyChanged(() => _piece.PlayerType); }
         }
         public bool IsInGame { get { return _piece.IsInGame; } }
 

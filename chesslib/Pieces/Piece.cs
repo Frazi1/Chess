@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using chesslib.Utils;
 
 namespace chesslib
 {
@@ -14,11 +15,11 @@ namespace chesslib
     {
         protected Board Board { get; private set; }
 
-        public Cell CurrentCell { get; set; }
-        public PlayerType PlayerType { get; set; }
+        public Cell CurrentCell { get; internal set; }
+        public PlayerType PlayerType { get; internal set; }
         public PieceType PieceType { get; protected set; }
-        public int MovesCounter { get; set; }
-        public bool IsInGame { get; set; }
+        public int MovesCounter { get; internal set; }
+        public bool IsInGame { get; internal set; }
         public bool IsUnderAttack
         {
             get
@@ -29,6 +30,7 @@ namespace chesslib
             }
         }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
+        public List<Cell> AllowedMoves { get; private set; }
 
         public Piece(Cell currentCell, PlayerType playerType, Board board)
         {
@@ -39,6 +41,7 @@ namespace chesslib
             IsInGame = true;
             Board = board;
             MovesCounter = 0;
+            AllowedMoves = new List<Cell>();
         }
 
         public virtual bool CanMoveTo(Cell cell, IPlayer player)
@@ -48,7 +51,7 @@ namespace chesslib
                 if (!CheckPlayer(player))
                     return false;
 
-                var moves = GetAllowedMoves();
+                var moves = AllowedMoves;
                 if (moves.Contains(cell))
                     return true;
             }
@@ -56,25 +59,20 @@ namespace chesslib
         }
         public virtual bool MoveTo(Cell nextCell, IPlayer player)
         {
-                CurrentCell.Piece = null;
-                CurrentCell = nextCell;
-                nextCell.Piece = this;
-                ++MovesCounter;
-                return true;
-        }
-        
-        public abstract List<Cell> GetAllowedMoves();
-        public virtual List<Cell> GetAttackedCells()
-        {
-            return GetAllowedMoves();
+            CurrentCell.Piece = null;
+            CurrentCell = nextCell;
+            nextCell.Piece = this;
+            ++MovesCounter;
+            return true;
         }
 
+        public virtual void SetAllowedMoves()
+        {
+            AllowedMoves =new List<Cell>();
+        }
         public bool TryMoveToCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x, int y)
         {
-            if (x >= 0 &&
-                x < chessBoard.GetLength(0) &&
-                y >= 0 &&
-                y < chessBoard.GetLength(0))
+            if (BoardUtils.IsValidCell(chessBoard, x, y))
             {
                 if (!chessBoard[x, y].IsTaken)
                 {
@@ -90,6 +88,8 @@ namespace chesslib
             }
             return false;
         }
+
+
         public bool TryAttackCell(Cell[,] chessBoard, int x, int y)
         {
             if (x >= 0 &&

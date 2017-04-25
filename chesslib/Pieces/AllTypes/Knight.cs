@@ -16,9 +16,9 @@ namespace chesslib.Figures
             PieceType = PieceType.Knight;
         }
 
-        public override List<Cell> GetAllowedMoves()
+        public override void SetAllowedMoves()
         {
-            List<Cell> allowedMoves = new List<Cell>();
+            base.SetAllowedMoves();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
             Cell[,] chessBoard = Board.ChessBoard;
@@ -41,10 +41,8 @@ namespace chesslib.Figures
 
             foreach (var item in toCheck)
             {
-                TryMoveToCell(allowedMoves, chessBoard, item.Item1, item.Item2);
+                TryMoveToCell(AllowedMoves, chessBoard, item.Item1, item.Item2);
             }
-            return allowedMoves;
-
         }
 
         public override bool MoveTo(Cell cell, IPlayer player)

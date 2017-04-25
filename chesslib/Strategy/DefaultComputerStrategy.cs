@@ -26,15 +26,15 @@ namespace chesslib.Strategy
         public Tuple<Piece, Cell> PrepareMove()
         {
             AlivePieces = _player
-    .Game
-    .Board
-    .AlivePieces
-    .Where(p => p.PlayerType == _player.PlayerType)
-    .ToList();
+                            .Game
+                            .Board
+                            .AlivePieces
+                            .Where(p => p.PlayerType == _player.PlayerType)
+                            .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
-            Piece piece = AlivePieces.First(p => p.GetAllowedMoves().Count > 0);
-            Cell cell = piece.GetAllowedMoves()
+            Piece piece = AlivePieces.First(p => p.AllowedMoves.Count > 0);
+            Cell cell = piece.AllowedMoves
                 .OrderBy(p => r.Next()).First();
 
 

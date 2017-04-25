@@ -67,14 +67,14 @@ namespace chesslib.Command
                     game.Board.DestroyPiece(_destroyedPiece);
                 _piece.MoveTo(_nextCell, _player);
                 //game.Update(game);
-                game.ChangePlayers();
+                game.ChangeTurn();
             }
         }
 
         public void Undo(object parameter)
         {
             Game game = (Game) parameter;
-            game.ChangePlayers();
+            game.ChangeTurn();
             //_piece.MoveTo(_prevCell, _player);
 
             //Удаляем фигуру из текущей клетки

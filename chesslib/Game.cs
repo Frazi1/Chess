@@ -89,7 +89,8 @@ namespace chesslib
         }
         public void Start()
         {
-            UpdateCells();
+            //UpdateCells();
+            UpdatePieces();
             IsPaused = false;
             if (CurrentPlayer == null)
                 CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
@@ -109,20 +110,29 @@ namespace chesslib
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
-                UpdateCells();
+                //UpdateCells();
                 _prevMoveCommand = e.MoveCommand;
                 GameUtils.SaveState();
                 Update();
             }
         }
 
-        internal void ChangePlayers()
+        internal void ChangeTurn()
         {
             if (CurrentPlayer == Players[0])
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
+            UpdatePieces();
             Update();
+        }
+
+        private void UpdatePieces()
+        {
+            foreach (var p in Board.AlivePieces)
+            {
+                p.SetAllowedMoves();
+            }
         }
         private void DestroyPiece(Piece piece, Cell nextCell)
         {
@@ -138,23 +148,23 @@ namespace chesslib
                 Board.DestroyPiece(pieceToDestroy);
             }
         }
-        private void UpdateCells()
-        {
-            //Clear attackers lists
-            for (int i = 0; i < Board.ChessBoard.GetLength(0); i++)
-            {
-                for (int j = 0; j < Board.ChessBoard.GetLength(1); j++)
-                {
-                    var cell = Board.ChessBoard[i, j];
-                    cell.AttackersList.Clear();
-                }
-            }
-            //Get new lists
-            foreach (var p in Board.AlivePieces)
-            {
-                p.GetAttackedCells().ForEach(x => x.AttackersList.Add(p));
-            }
-        }
+        //private void UpdateCells()
+        //{
+        //    //Clear attackers lists
+        //    for (int i = 0; i < Board.ChessBoard.GetLength(0); i++)
+        //    {
+        //        for (int j = 0; j < Board.ChessBoard.GetLength(1); j++)
+        //        {
+        //            var cell = Board.ChessBoard[i, j];
+        //            cell.AttackersList.Clear();
+        //        }
+        //    }
+        //    //Get new lists
+        //    foreach (var p in Board.AlivePieces)
+        //    {
+        //        p.GetAttackedCells().ForEach(x => x.AttackersList.Add(p));
+        //    }
+        //}
 
 
         #region Memento
