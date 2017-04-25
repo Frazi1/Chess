@@ -14,6 +14,7 @@ namespace chesslib.Player
     public class RealPlayer : IPlayer
     {
         private Game _game;
+        private MakeMoveCommand _makeMoveCommand;
 
         public RealPlayer(PlayerType playerType)
         {
@@ -25,7 +26,11 @@ namespace chesslib.Player
             set { _game = value; }
         }
         public PlayerType PlayerType { get; set; }
-        public MakeMoveCommand MakeMoveCommand { get; set; }
+        public MakeMoveCommand MakeMoveCommand
+        {
+            get { return _makeMoveCommand; }
+            set { if (!_game.IsPaused) _makeMoveCommand = value; }
+        }
         public Thread CurrentThread { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
@@ -41,7 +46,6 @@ namespace chesslib.Player
             };
             CurrentThread.Start();
         }
-
         public void CancelTurn()
         {
             if (CurrentThread != null && CurrentThread.IsAlive)
@@ -60,7 +64,6 @@ namespace chesslib.Player
 
             OnMove();
         }
-
         private void OnMove()
         {
             MakeMoveCommand = null;
