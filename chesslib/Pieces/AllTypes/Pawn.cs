@@ -1,5 +1,4 @@
 ﻿using chesslib.Field;
-using chesslib.Figures.Interfaces;
 using chesslib.Player;
 using System;
 using System.Collections.Generic;
@@ -11,17 +10,14 @@ using System.Text;
 namespace chesslib.Figures
 {
     [Serializable]
-    public class Pawn : Piece, IMoved
+    public class Pawn : Piece
     {
         public Pawn(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
             IsPromoted = false;
+            PieceType = PieceType.Pawn;
         }
 
-        public bool HasAlreadyMoved
-        {
-            get { return MovesCounter != 0; }
-        }
         public bool IsPromoted { get; set; }
 
         //TODO: Переделать GetAllowedMoves

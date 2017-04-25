@@ -13,6 +13,7 @@ namespace chesslib.Figures
     {
         public Knight(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
+            PieceType = PieceType.Knight;
         }
 
         public override List<Cell> GetAllowedMoves()

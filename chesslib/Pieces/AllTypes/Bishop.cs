@@ -13,6 +13,7 @@ namespace chesslib.Figures
     {
         public Bishop(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
+            PieceType = PieceType.Bishop;
         }
 
         public override List<Cell> GetAllowedMoves()

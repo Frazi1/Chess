@@ -11,7 +11,7 @@ using System.Text;
 namespace chesslib.Field
 {
     [Serializable]
-    public class Board : ICloneable
+    public class Board
     {
         private readonly int SIZE;
 
@@ -81,18 +81,6 @@ namespace chesslib.Field
                 AlivePieces.Remove(piece);
                 piece.IsInGame = false;
                 piece.CurrentCell = null;
-            }
-        }
-
-        public object Clone()
-        {
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, this);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                return formatter.Deserialize(ms);
             }
         }
     }

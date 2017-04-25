@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace chesslib.Figures.Interfaces
+namespace chesslib.Utils
 {
-    interface IMoved
+    public class CheckMateUtils
     {
-        bool HasAlreadyMoved { get;}
+
     }
 }

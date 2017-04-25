@@ -28,7 +28,6 @@ namespace chesslib
             set { _piece = value; }
         }
         public bool IsTaken {get{return _piece != null;}}
-        public bool IsAttacked { get { return AttackersList.Count > 0; } }
         public List<Piece> AttackersList { get; set; }
 
         public Cell(int x, int y)

@@ -1,5 +1,4 @@
-﻿using chesslib.Figures.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,18 +9,12 @@ using chesslib.Field;
 namespace chesslib.Figures
 {
     [Serializable]
-    public class King : Piece, IMoved
+    public class King : Piece
     {
         public King(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
-            IsUnderAttack = false;
+            PieceType = PieceType.King;
         }
-
-        public bool HasAlreadyMoved
-        {
-            get { return MovesCounter != 0; }
-        }
-        public bool IsUnderAttack { get; set; }
 
         public override List<Cell> GetAllowedMoves()
         {

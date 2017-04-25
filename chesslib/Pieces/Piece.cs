@@ -16,13 +16,19 @@ namespace chesslib
 
         public Cell CurrentCell { get; set; }
         public PlayerType PlayerType { get; set; }
-        public bool IsInGame { get; set; }
-        public bool IsAttacked
-        {
-            get { return CurrentCell.IsAttacked; }
-        }
+        public PieceType PieceType { get; protected set; }
         public int MovesCounter { get; set; }
-
+        public bool IsInGame { get; set; }
+        public bool IsUnderAttack
+        {
+            get
+            {
+                return CurrentCell.AttackersList
+                                  .Where(a => a.PlayerType != PlayerType)
+                                  .Count() > 0;
+            }
+        }
+        public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
 
         public Piece(Cell currentCell, PlayerType playerType, Board board)
         {
@@ -48,47 +54,37 @@ namespace chesslib
             }
             return false;
         }
-
         public virtual bool MoveTo(Cell nextCell, IPlayer player)
         {
-            if (CanMoveTo(nextCell, player))
-            {
                 CurrentCell.Piece = null;
                 CurrentCell = nextCell;
                 nextCell.Piece = this;
                 ++MovesCounter;
                 return true;
-            }
-            return false;
         }
-
-        protected bool CheckPlayer(IPlayer player)
-        {
-            if (player.PlayerType == PlayerType)
-                return true;
-            return false;
-        }
+        
         public abstract List<Cell> GetAllowedMoves();
         public virtual List<Cell> GetAttackedCells()
         {
             return GetAllowedMoves();
         }
-        public bool TryMoveToCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x1, int y1)
+
+        public bool TryMoveToCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x, int y)
         {
-            if (x1 >= 0 &&
-                x1 < chessBoard.GetLength(0) &&
-                y1 >= 0 &&
-                y1 < chessBoard.GetLength(0))
+            if (x >= 0 &&
+                x < chessBoard.GetLength(0) &&
+                y >= 0 &&
+                y < chessBoard.GetLength(0))
             {
-                if (!chessBoard[x1, y1].IsTaken)
+                if (!chessBoard[x, y].IsTaken)
                 {
-                    allowedMoves.Add(chessBoard[x1, y1]);
+                    allowedMoves.Add(chessBoard[x, y]);
                     return true;
                 }
-                else if (chessBoard[x1, y1].IsTaken &&
-                    chessBoard[x1, y1].Piece.PlayerType != PlayerType)
+                else if (chessBoard[x, y].IsTaken &&
+                    chessBoard[x, y].Piece.PlayerType != PlayerType)
                 {
-                    allowedMoves.Add(chessBoard[x1, y1]);
+                    allowedMoves.Add(chessBoard[x, y]);
                     return false;
                 }
             }
@@ -111,5 +107,13 @@ namespace chesslib
         {
             return GetType().Name + " - " + PlayerType.ToString();
         }
+
+        protected bool CheckPlayer(IPlayer player)
+        {
+            if (player.PlayerType == PlayerType)
+                return true;
+            return false;
+        }
+
     }
 }
