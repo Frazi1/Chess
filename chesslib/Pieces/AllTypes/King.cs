@@ -29,6 +29,8 @@ namespace chesslib.Figures
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
+                    if (i == x && j == y)
+                        continue;
                     TryMoveToCell(i, j);
                     TryAttackCell(i, j);
                 }
