@@ -16,9 +16,9 @@ namespace chesslib.Figures
             PieceType = PieceType.Rook;
         }
 
-        public override bool MoveTo(Cell cell, IPlayer player)
+        public override bool MoveTo(Cell cell)
         {
-            bool moved = base.MoveTo(cell, player);
+            bool moved = base.MoveTo(cell);
             return moved;
         }
 

@@ -35,14 +35,14 @@ namespace chesslib.Figures
             }
         }
 
-        public override bool MoveTo(Cell cell, IPlayer player)
+        public override bool MoveTo(Cell cell)
         {
-            return base.MoveTo(cell, player);
+            return base.MoveTo(cell);
         }
 
-        public override bool CanMoveTo(Cell cell, IPlayer player)
+        public override bool CanMoveTo(Cell cell)
         {
-            return base.CanMoveTo(cell, player) && !cell.IsAttacked(this);
+            return base.CanMoveTo(cell) && !cell.IsAttacked(this.PlayerType);
         }
     }
 }

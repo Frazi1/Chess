@@ -53,7 +53,9 @@ namespace chesslib.Command
                 return false;
             if (_player != game.CurrentPlayer)
                 return false;
-            return _piece.CanMoveTo(_nextCell, _player);
+            if (_player.PlayerType != _piece.PlayerType)
+                return false;
+            return _piece.CanMoveTo(_nextCell);
         }
 
         public void Execute(object parameter)
@@ -65,7 +67,7 @@ namespace chesslib.Command
                 _destroyedPiece = _nextCell.Piece;
                 if (_destroyedPiece != null)
                     game.Board.DestroyPiece(_destroyedPiece);
-                _piece.MoveTo(_nextCell, _player);
+                _piece.MoveTo(_nextCell);
                 //game.Update(game);
                 //game.ChangeTurn();
             }

@@ -13,7 +13,7 @@ namespace chesslib
     [Serializable]
     public abstract class Piece
     {
-        protected Board Board { get; private set; }
+        public Board Board { get; private set; }
 
         public Cell CurrentCell { get; internal set; }
         public PlayerType PlayerType { get; internal set; }
@@ -47,20 +47,17 @@ namespace chesslib
             AttackedCells = new List<Cell>();
         }
 
-        public virtual bool CanMoveTo(Cell cell, IPlayer player)
+        public virtual bool CanMoveTo(Cell cell)
         {
             if (IsInGame)
             {
-                if (!CheckPlayer(player))
-                    return false;
-
                 var moves = AllowedCells;
                 if (moves.Contains(cell))
                     return true;
             }
             return false;
         }
-        public virtual bool MoveTo(Cell nextCell, IPlayer player)
+        public virtual bool MoveTo(Cell nextCell)
         {
             CurrentCell.Piece = null;
             CurrentCell = nextCell;
@@ -92,10 +89,14 @@ namespace chesslib
                 if (CurrentCell.PosX == x && CurrentCell.PosY == y)
                     return false;
 
-                if (!chessBoard[x, y].IsTaken)
+
+                if (!chessBoard[x, y].IsTaken /*&&
+                    !BoardUtils.IsCheckOnNextTurn(this, chessBoard[x, y])*/)
                 {
+
                     AllowedCells.Add(chessBoard[x, y]);
                     return true;
+
                 }
                 else if (chessBoard[x, y].IsTaken &&
                     chessBoard[x, y].Piece.PlayerType != PlayerType)
@@ -133,13 +134,5 @@ namespace chesslib
         {
             return GetType().Name + " - " + PlayerType.ToString();
         }
-
-        protected bool CheckPlayer(IPlayer player)
-        {
-            if (player.PlayerType == PlayerType)
-                return true;
-            return false;
-        }
-
     }
 }

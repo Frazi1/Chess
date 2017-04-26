@@ -91,9 +91,9 @@ namespace chesslib.Figures
             }
         }
 
-        public override bool MoveTo(Cell cell, IPlayer player)
+        public override bool MoveTo(Cell cell)
         {
-            return base.MoveTo(cell, player);
+            return base.MoveTo(cell);
         }
     }
 }

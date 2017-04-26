@@ -43,10 +43,10 @@ namespace chesslib
             return string.Format("{0}, {1}", PosX, PosY);
         }
 
-        public bool IsAttacked(Piece piece)
+        public bool IsAttacked(PlayerType playerType)
         {
             return AttackersList
-                    .Where(a => a.PlayerType != piece.PlayerType)
+                    .Where(a => a.PlayerType != playerType)
                     .Count()
                     > 0;
         }

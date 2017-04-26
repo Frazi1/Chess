@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ChessUI.ViewModel
@@ -94,6 +95,8 @@ namespace ChessUI.ViewModel
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels
                     .FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
+            if (e.IsCheck != null)
+                MessageBox.Show(e.IsCheck.ToString() + " Check");
         }
     }
 }
