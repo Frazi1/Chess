@@ -39,9 +39,10 @@ namespace chesslib.Figures
                 new Tuple<int, int>(x+1,y-2),
             };
 
-            foreach (var item in toCheck)
+            foreach (var move in toCheck)
             {
-                TryMoveToCell(AllowedMoves, chessBoard, item.Item1, item.Item2);
+                TryAttackCell(move.Item1, move.Item2);
+                TryMoveToCell(move.Item1, move.Item2);
             }
         }
 

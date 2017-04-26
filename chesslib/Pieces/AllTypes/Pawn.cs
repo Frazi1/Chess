@@ -37,24 +37,31 @@ namespace chesslib.Figures
                 if (y > 0)
                 {
                     if (!chessBoard[x, y - 1].IsTaken)
-                        AllowedMoves.Add(chessBoard[x, y - 1]);
-                    if (!HasAlreadyMoved && !chessBoard[x, y - 2].IsTaken)
-                        AllowedMoves.Add(chessBoard[x, y - 2]);
-
+                    {
+                        AllowedCells.Add(chessBoard[x, y - 1]);
+                        if (!HasAlreadyMoved && !chessBoard[x, y - 2].IsTaken)
+                            AllowedCells.Add(chessBoard[x, y - 2]);
+                    }
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
+                        TryAttackCell(x - 1, y - 1);
                         if (chessBoard[x - 1, y - 1].IsTaken &&
                             chessBoard[x - 1, y - 1].Piece.PlayerType != this.PlayerType)
-                            AllowedMoves.Add(chessBoard[x - 1, y - 1]);
+                        {
+                            AllowedCells.Add(chessBoard[x - 1, y - 1]);
+                        }
                     }
 
                     //Атака вперед и вправо
                     if (y > 0 && x < size - 1)
                     {
+                        TryAttackCell(x + 1, y - 1);
                         if (chessBoard[x + 1, y - 1].IsTaken &&
                             chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
-                            AllowedMoves.Add(chessBoard[x + 1, y - 1]);
+                        {
+                            AllowedCells.Add(chessBoard[x + 1, y - 1]);
+                        }
                     }
                 }
             }
@@ -62,27 +69,34 @@ namespace chesslib.Figures
             else if (PlayerType == PlayerType.Black)
             {
                 //Движение вперед
-                if (y < size-1)
+                if (y < size - 1)
                 {
                     if (!chessBoard[x, y + 1].IsTaken)
-                        AllowedMoves.Add(chessBoard[x, y + 1]);
-                    if (!HasAlreadyMoved && !chessBoard[x, y + 2].IsTaken)
-                        AllowedMoves.Add(chessBoard[x, y + 2]);
-
+                    {
+                        AllowedCells.Add(chessBoard[x, y + 1]);
+                        if (!HasAlreadyMoved && !chessBoard[x, y + 2].IsTaken)
+                            AllowedCells.Add(chessBoard[x, y + 2]);
+                    }
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
+                        TryAttackCell(x - 1, y + 1);
                         if (chessBoard[x - 1, y + 1].IsTaken &&
                             chessBoard[x - 1, y + 1].Piece.PlayerType != this.PlayerType)
-                            AllowedMoves.Add(chessBoard[x - 1, y + 1]);
+                        {
+                            AllowedCells.Add(chessBoard[x - 1, y + 1]);
+                        }
                     }
 
                     //Атака вперед и вправо
-                    if (y > 0 && x < size-1)
+                    if (y > 0 && x < size - 1)
                     {
+                        TryAttackCell(x + 1, y + 1);
                         if (chessBoard[x + 1, y + 1].IsTaken &&
                             chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
-                            AllowedMoves.Add(chessBoard[x + 1, y + 1]);
+                        {
+                            AllowedCells.Add(chessBoard[x + 1, y + 1]);
+                        }
                     }
                 }
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using chesslib.Figures;
 
 namespace chesslib
 {
@@ -27,7 +28,7 @@ namespace chesslib
             get { return _piece; }
             set { _piece = value; }
         }
-        public bool IsTaken {get{return _piece != null;}}
+        public bool IsTaken { get { return _piece != null; } }
         public List<Piece> AttackersList { get; set; }
 
         public Cell(int x, int y)
@@ -40,6 +41,14 @@ namespace chesslib
         public override string ToString()
         {
             return string.Format("{0}, {1}", PosX, PosY);
+        }
+
+        public bool IsAttacked(Piece piece)
+        {
+            return AttackersList
+                    .Where(a => a.PlayerType != piece.PlayerType)
+                    .Count()
+                    > 0;
         }
     }
 }

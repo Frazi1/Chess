@@ -29,7 +29,8 @@ namespace chesslib.Figures
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    TryMoveToCell(AllowedMoves, chessBoard, i, j);
+                    TryMoveToCell(i, j);
+                    TryAttackCell(i, j);
                 }
             }
         }
@@ -37,6 +38,11 @@ namespace chesslib.Figures
         public override bool MoveTo(Cell cell, IPlayer player)
         {
             return base.MoveTo(cell, player);
+        }
+
+        public override bool CanMoveTo(Cell cell, IPlayer player)
+        {
+            return base.CanMoveTo(cell, player) && !cell.IsAttacked(this);
         }
     }
 }

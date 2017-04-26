@@ -33,8 +33,8 @@ namespace chesslib.Strategy
                             .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
-            Piece piece = AlivePieces.First(p => p.AllowedMoves.Count > 0);
-            Cell cell = piece.AllowedMoves
+            Piece piece = AlivePieces.First(p => p.AllowedCells.Count > 0);
+            Cell cell = piece.AllowedCells
                 .OrderBy(p => r.Next()).First();
 
 

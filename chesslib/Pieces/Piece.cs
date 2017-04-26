@@ -30,7 +30,9 @@ namespace chesslib
             }
         }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
-        public List<Cell> AllowedMoves { get; private set; }
+        public List<Cell> AllowedCells { get; protected set; }
+        public List<Cell> AttackedCells { get; protected set; }
+
 
         public Piece(Cell currentCell, PlayerType playerType, Board board)
         {
@@ -41,7 +43,8 @@ namespace chesslib
             IsInGame = true;
             Board = board;
             MovesCounter = 0;
-            AllowedMoves = new List<Cell>();
+            AllowedCells = new List<Cell>();
+            AttackedCells = new List<Cell>();
         }
 
         public virtual bool CanMoveTo(Cell cell, IPlayer player)
@@ -51,7 +54,7 @@ namespace chesslib
                 if (!CheckPlayer(player))
                     return false;
 
-                var moves = AllowedMoves;
+                var moves = AllowedCells;
                 if (moves.Contains(cell))
                     return true;
             }
@@ -68,36 +71,54 @@ namespace chesslib
 
         public virtual void SetAllowedMoves()
         {
-            AllowedMoves =new List<Cell>();
+            AllowedCells.Clear();
+            AttackedCells.Clear();
         }
-        public bool TryMoveToCell(List<Cell> allowedMoves, Cell[,] chessBoard, int x, int y)
+        /// <summary>
+        /// If cell at x,y is free, it will be added to allowedMoves list and TRUE will be returned
+        /// If cell is occupied by an enemy piece, it will be added to allowedMoves and FALSE will be returned
+        /// Otherwise, FALSE returned
+        /// </summary>
+        /// <param name="allowedMoves"></param>
+        /// <param name="chessBoard"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>True or fasle</returns>
+        public virtual bool TryMoveToCell(int x, int y)
         {
+            var chessBoard = Board.ChessBoard;
             if (BoardUtils.IsValidCell(chessBoard, x, y))
             {
                 if (!chessBoard[x, y].IsTaken)
                 {
-                    allowedMoves.Add(chessBoard[x, y]);
+                    AllowedCells.Add(chessBoard[x, y]);
                     return true;
                 }
                 else if (chessBoard[x, y].IsTaken &&
                     chessBoard[x, y].Piece.PlayerType != PlayerType)
                 {
-                    allowedMoves.Add(chessBoard[x, y]);
+                    AllowedCells.Add(chessBoard[x, y]);
                     return false;
                 }
             }
             return false;
         }
 
-
-        public bool TryAttackCell(Cell[,] chessBoard, int x, int y)
+        public virtual bool TryAttackCell(int x, int y)
         {
-            if (x >= 0 &&
-                x < chessBoard.GetLength(0) &&
-                y >= 0 &&
-                y < chessBoard.GetLength(0))
+            var chessBoard = Board.ChessBoard;
+            if (BoardUtils.IsValidCell(chessBoard, x, y))
             {
-                return true;
+                if (!chessBoard[x, y].IsTaken)
+                {
+                    AttackedCells.Add(chessBoard[x, y]);
+                    return true;
+                }
+                else if (chessBoard[x, y].IsTaken)
+                {
+                    AttackedCells.Add(chessBoard[x, y]);
+                    return false;
+                }
             }
             return false;
 
