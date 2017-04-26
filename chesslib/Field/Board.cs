@@ -1,5 +1,6 @@
 ﻿using chesslib.Figures;
 using chesslib.Memento;
+using chesslib.Player;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,17 +15,35 @@ namespace chesslib.Field
     public class Board
     {
         private readonly int SIZE;
+        private IPlayer _currentPlayer;
 
         public Cell[,] ChessBoard { get; set; }
-        public List<Piece> AlivePieces { get; set; }
-        public PlayerType CurrentPlayerType { get; set; }
-
+        public List<Piece> AlivePieces { get; private set; }
+        public List<IPlayer> Players { get; private set; }
+        public IPlayer CurrentPlayer
+        {
+            get { return _currentPlayer; }
+            private set
+            {
+                if (_currentPlayer != value)
+                {
+                    _currentPlayer = value;
+                    if (!IsPaused && !IsGameFinished)
+                        _currentPlayer.DoTurn();
+                }
+            }
+        }
+        public bool IsPaused { get; set; }
+        public bool IsGameFinished { get; private set; }
 
         public Board(int size)
         {
             SIZE = size;
             ChessBoard = new Cell[size, size];
+            Players = new List<IPlayer>();
             AlivePieces = new List<Piece>();
+            IsGameFinished = false;
+            IsPaused = true;
             Initialize();
             SetUpPieces();
         }
@@ -74,6 +93,23 @@ namespace chesslib.Field
             }
 
         }
+        public void UpdatePiecesAndCells()
+        {
+            //Clear attackers lists
+            for (int i = 0; i < ChessBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < ChessBoard.GetLength(1); j++)
+                {
+                    var cell = ChessBoard[i, j];
+                    cell.AttackersList.Clear();
+                }
+            }
+            foreach (var p in AlivePieces)
+            {
+                p.SetAllowedMoves();
+                p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
+            }
+        }
         public void DestroyPiece(Piece piece)
         {
             if (AlivePieces.Contains(piece))
@@ -82,6 +118,33 @@ namespace chesslib.Field
                 piece.IsInGame = false;
                 piece.CurrentCell = null;
             }
+        }
+
+        internal void ChangeTurn()
+        {
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
+            else
+                CurrentPlayer = Players[0];
+            UpdatePiecesAndCells();
+        }
+        internal void Start()
+        {
+            UpdatePiecesAndCells();
+            IsPaused = false;
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            else
+                CurrentPlayer.DoTurn();
+        }
+        internal bool AddPlayer(IPlayer player)
+        {
+            if (Players.Count < 2 && !Players.Contains(player))
+            {
+                Players.Add(player);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace chesslib.Command
                     game.Board.DestroyPiece(_destroyedPiece);
                 _piece.MoveTo(_nextCell, _player);
                 //game.Update(game);
-                game.ChangeTurn();
+                //game.ChangeTurn();
             }
         }
 

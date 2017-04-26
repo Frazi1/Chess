@@ -14,38 +14,23 @@ namespace chesslib
     {
         private const int SIZE = 8;
         private MakeMoveCommand _prevMoveCommand;
-        private IPlayer _currentPlayer;
 
-        public IPlayer CurrentPlayer
-        {
-            get { return _currentPlayer; }
-            private set
-            {
-                if (_currentPlayer != value)
-                {
-                    _currentPlayer = value;
-                    Board.CurrentPlayerType = value.PlayerType;
-                    if (!IsPaused && !IsGameFinished)
-                        _currentPlayer.DoTurn();
-                }
-            }
-        }
         public GameUtils GameUtils { get; private set; }
 
-        public List<IPlayer> Players { get; private set; }
         public Board Board { get; private set; }
-
-        public bool IsPaused { get; private set; }
-        public bool IsGameFinished { get; private set; }
+        public bool IsPaused
+        {
+            get { return Board.IsPaused; }
+            set { Board.IsPaused = value; }
+        }
+        public bool IsGameFinished { get { return Board.IsGameFinished; } }
+        public IPlayer CurrentPlayer { get { return Board.CurrentPlayer; } }
 
         public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
         {
-            Players = new List<IPlayer>();
             Board = new Board(SIZE);
-            IsGameFinished = false;
-            IsPaused = true;
             GameUtils = new GameUtils(this);
         }
 
@@ -71,38 +56,22 @@ namespace chesslib
             CurrentPlayer.CancelTurn();
             IsPaused = true;
             GameUtils.LoadPreviousState();
-            //CurrentPlayer = Players.First(p => p.PlayerType == Board.CurrentPlayerType);
-
-            Update();
-
+            RaiseGameStateChange();
         }
         public bool AddPlayer(IPlayer player)
         {
-            if (Players.Count < 2 && !Players.Contains(player))
+            bool added = Board.AddPlayer(player);
+            if (added)
             {
-                Players.Add(player);
-                player.Game = this;
                 player.MoveDone += Player_MoveDone;
-                return true;
+                player.Game = this;
             }
-            return false;
+            return added;
         }
         public void Start()
         {
-            //UpdateCells();
-            UpdatePiecesAndCells();
-            IsPaused = false;
-            if (CurrentPlayer == null)
-                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
-            else
-                CurrentPlayer.DoTurn();
-            Update();
-
-        }
-        public void Update()
-        {
-            if (GameStateChanged != null)
-                GameStateChanged(this, new GameStateChangedEventArgs(this));
+            Board.Start();
+            RaiseGameStateChange();
         }
 
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)
@@ -110,55 +79,23 @@ namespace chesslib
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
-                //UpdateCells();
                 _prevMoveCommand = e.MoveCommand;
                 GameUtils.SaveState();
-                Update();
+                ChangeTurn();
+                //RaiseGameStateChange();
             }
+        }
+        private void RaiseGameStateChange()
+        {
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
 
         internal void ChangeTurn()
         {
-            if (CurrentPlayer == Players[0])
-                CurrentPlayer = Players[1];
-            else
-                CurrentPlayer = Players[0];
-            UpdatePiecesAndCells();
-            Update();
+            Board.ChangeTurn();
+            RaiseGameStateChange();
         }
-
-        private void UpdatePiecesAndCells()
-        {           
-            //Clear attackers lists
-            for (int i = 0; i < Board.ChessBoard.GetLength(0); i++)
-            {
-                for (int j = 0; j < Board.ChessBoard.GetLength(1); j++)
-                {
-                    var cell = Board.ChessBoard[i, j];
-                    cell.AttackersList.Clear();
-                }
-            }
-            foreach (var p in Board.AlivePieces)
-            {
-                p.SetAllowedMoves();
-                p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
-            }
-        }
-        private void DestroyPiece(Piece piece, Cell nextCell)
-        {
-            Piece pieceToDestroy = null;
-            if (nextCell.Piece != null &&
-                nextCell.Piece.PlayerType != CurrentPlayer.PlayerType)
-            {
-                pieceToDestroy = nextCell.Piece;
-            }
-            bool canMoveTo = piece.CanMoveTo(nextCell, CurrentPlayer);
-            if (pieceToDestroy != null && canMoveTo)
-            {
-                Board.DestroyPiece(pieceToDestroy);
-            }
-        }
-
 
         #region Memento
         public Memento<MakeMoveCommand> GetMemento()

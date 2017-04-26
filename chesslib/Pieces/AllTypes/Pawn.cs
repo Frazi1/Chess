@@ -40,7 +40,7 @@ namespace chesslib.Figures
                     {
                         AllowedCells.Add(chessBoard[x, y - 1]);
                         if (!HasAlreadyMoved && !chessBoard[x, y - 2].IsTaken)
-                            AllowedCells.Add(chessBoard[x, y - 2]);
+                            TryMoveToCell(x, y - 2);
                     }
                     //Атака вперед влево
                     if (y > 0 && x > 0)
@@ -49,7 +49,7 @@ namespace chesslib.Figures
                         if (chessBoard[x - 1, y - 1].IsTaken &&
                             chessBoard[x - 1, y - 1].Piece.PlayerType != this.PlayerType)
                         {
-                            AllowedCells.Add(chessBoard[x - 1, y - 1]);
+                            TryMoveToCell(x - 1, y - 1);
                         }
                     }
 
@@ -60,7 +60,7 @@ namespace chesslib.Figures
                         if (chessBoard[x + 1, y - 1].IsTaken &&
                             chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
                         {
-                            AllowedCells.Add(chessBoard[x + 1, y - 1]);
+                            TryMoveToCell(x + 1, y - 1);
                         }
                     }
                 }
@@ -75,7 +75,7 @@ namespace chesslib.Figures
                     {
                         AllowedCells.Add(chessBoard[x, y + 1]);
                         if (!HasAlreadyMoved && !chessBoard[x, y + 2].IsTaken)
-                            AllowedCells.Add(chessBoard[x, y + 2]);
+                            TryMoveToCell(x, y + 2);
                     }
                     //Атака вперед влево
                     if (y > 0 && x > 0)
@@ -84,7 +84,7 @@ namespace chesslib.Figures
                         if (chessBoard[x - 1, y + 1].IsTaken &&
                             chessBoard[x - 1, y + 1].Piece.PlayerType != this.PlayerType)
                         {
-                            AllowedCells.Add(chessBoard[x - 1, y + 1]);
+                            TryMoveToCell(x - 1, y + 1);
                         }
                     }
 
@@ -95,7 +95,7 @@ namespace chesslib.Figures
                         if (chessBoard[x + 1, y + 1].IsTaken &&
                             chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
                         {
-                            AllowedCells.Add(chessBoard[x + 1, y + 1]);
+                            TryMoveToCell(x + 1, y + 1);
                         }
                     }
                 }

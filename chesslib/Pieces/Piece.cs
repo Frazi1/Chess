@@ -89,6 +89,9 @@ namespace chesslib
             var chessBoard = Board.ChessBoard;
             if (BoardUtils.IsValidCell(chessBoard, x, y))
             {
+                if (CurrentCell.PosX == x && CurrentCell.PosY == y)
+                    return false;
+
                 if (!chessBoard[x, y].IsTaken)
                 {
                     AllowedCells.Add(chessBoard[x, y]);
@@ -109,6 +112,8 @@ namespace chesslib
             var chessBoard = Board.ChessBoard;
             if (BoardUtils.IsValidCell(chessBoard, x, y))
             {
+                if (CurrentCell.PosX == x && CurrentCell.PosY == y)
+                    return false;
                 if (!chessBoard[x, y].IsTaken)
                 {
                     AttackedCells.Add(chessBoard[x, y]);

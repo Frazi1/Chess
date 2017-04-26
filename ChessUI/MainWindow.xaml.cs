@@ -63,7 +63,8 @@ namespace ChessUI
                 int x = (int) e.GetPosition(this.ChessBoard).X;
                 int y = (int) e.GetPosition(this.ChessBoard).Y;
                 string text = "";
-                _gameViewModel.Game.Board.ChessBoard[x, y].AttackersList.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
+                //_gameViewModel.Game.Board.ChessBoard[x, y].AttackersList.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
+                _gameViewModel.Game.Board.ChessBoard[x, y].Piece?.AllowedCells.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
                 MessageBox.Show(text);
             }
         }
