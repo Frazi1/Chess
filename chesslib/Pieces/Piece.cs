@@ -90,8 +90,8 @@ namespace chesslib
                     return false;
 
 
-                if (!chessBoard[x, y].IsTaken /*&&
-                    !BoardUtils.IsCheckOnNextTurn(this, chessBoard[x, y])*/)
+                if (!chessBoard[x, y].IsTaken &&
+                    !BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this,chessBoard[x,y])))
                 {
 
                     AllowedCells.Add(chessBoard[x, y]);

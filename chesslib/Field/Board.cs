@@ -17,7 +17,7 @@ namespace chesslib.Field
         private readonly int SIZE;
         private IPlayer _currentPlayer;
 
-        public Cell[,] ChessBoard { get; set; }
+        public Cell[,] ChessBoard { get; private set; }
         public List<Piece> AlivePieces { get; private set; }
         public List<IPlayer> Players { get; private set; }
         public IPlayer CurrentPlayer
