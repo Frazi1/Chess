@@ -17,11 +17,12 @@ namespace chesslib.Utils
                             y < chessBoard.GetLength(0);
         }
 
-        public static Piece IsCheck(Board board, PlayerType playerType)
+        public static bool IsCheck(Board board, PlayerType playerType)
         {
             return board
                     .AlivePieces
-                    .FirstOrDefault(p => p.PieceType == PieceType.King && p.PlayerType == playerType && p.IsUnderAttack);
+                    .Where(p => p.PieceType == PieceType.King && p.PlayerType == playerType && p.IsUnderAttack)
+                    .Count() > 0;
         }
 
         //public static bool IsCheckOnNextTurn(Piece piece, Cell nextCell)
@@ -65,10 +66,11 @@ namespace chesslib.Utils
             Piece newPiece = board.ChessBoard[px, py].Piece;
 
             newPiece.MoveTo(newCell);
+            //board.UpdatePiecesAndCells();
 
-            if (IsCheck(board, newPiece.PlayerType) != null)
-                return false;
-            return true;
+            if (IsCheck(board, newPiece.PlayerType))
+                return true;
+            return false;
 
         }
     }

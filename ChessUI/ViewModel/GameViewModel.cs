@@ -95,7 +95,7 @@ namespace ChessUI.ViewModel
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels
                     .FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
-            if (e.IsCheck != null)
+            if (e.IsCheck)
                 MessageBox.Show(e.IsCheck.ToString() + " Check");
         }
     }
