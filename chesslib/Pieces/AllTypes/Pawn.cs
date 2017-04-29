@@ -42,10 +42,10 @@ namespace chesslib.Figures
                         if (!HasAlreadyMoved && !chessBoard[x, y - 2].IsTaken)
                             TryMoveToCell(x, y - 2);
                     }
+
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
-                        TryAttackCell(x - 1, y - 1);
                         if (chessBoard[x - 1, y - 1].IsTaken &&
                             chessBoard[x - 1, y - 1].Piece.PlayerType != this.PlayerType)
                         {
@@ -53,10 +53,9 @@ namespace chesslib.Figures
                         }
                     }
 
-                    //Атака вперед и вправо
+                    //Атака вперед вправо
                     if (y > 0 && x < size - 1)
                     {
-                        TryAttackCell(x + 1, y - 1);
                         if (chessBoard[x + 1, y - 1].IsTaken &&
                             chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
                         {
@@ -77,10 +76,10 @@ namespace chesslib.Figures
                         if (!HasAlreadyMoved && !chessBoard[x, y + 2].IsTaken)
                             TryMoveToCell(x, y + 2);
                     }
+
                     //Атака вперед влево
                     if (y > 0 && x > 0)
                     {
-                        TryAttackCell(x - 1, y + 1);
                         if (chessBoard[x - 1, y + 1].IsTaken &&
                             chessBoard[x - 1, y + 1].Piece.PlayerType != this.PlayerType)
                         {
@@ -88,37 +87,62 @@ namespace chesslib.Figures
                         }
                     }
 
-                    //Атака вперед и вправо
+                    //Атака вперед вправо
                     if (y > 0 && x < size - 1)
                     {
-                        TryAttackCell(x + 1, y + 1);
                         if (chessBoard[x + 1, y + 1].IsTaken &&
                             chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
                         {
                             TryMoveToCell(x + 1, y + 1);
                         }
                     }
+
                 }
             }
 
         }
-        public override bool MoveTo(Cell nextCell)
-        {
-            bool moved = base.MoveTo(nextCell);
-            return moved;
-        }
-        //public override List<Cell> GetAttackedCells()
-        //{
-        //    int y = PlayerType == PlayerType.White ? CurrentCell.PosY - 1 : CurrentCell.PosY + 1;
-        //    int x1 = CurrentCell.PosX - 1;
-        //    int x2 = CurrentCell.PosX + 1;
-        //    List<Cell> attacked = new List<Cell>();
 
-        //    if (TryAttackCell(Board.ChessBoard, x1, y))
-        //        attacked.Add(Board.ChessBoard[x1, y]);
-        //    if (TryAttackCell(Board.ChessBoard, x2, y))
-        //        attacked.Add(Board.ChessBoard[x2, y]);
-        //    return attacked;
-        //}
+        public override void GetAttackedCells()
+        {
+            base.GetAttackedCells();
+
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            if (PlayerType == PlayerType.White)
+            {
+                //Атака вперед влево
+                if (y > 0 && x > 0)
+                {
+                    TryAttackCell(x - 1, y - 1);
+                }
+
+                //Атака вперед вправо
+                if (y > 0 && x < size - 1)
+                {
+                    TryAttackCell(x + 1, y - 1);
+                }
+            }
+            else if (PlayerType == PlayerType.Black)
+            {
+                
+                //Атака вперед влево
+                if (y > 0 && x > 0)
+                {
+                    TryAttackCell(x - 1, y + 1);
+                }
+
+                //Атака вперед вправо
+                if (y > 0 && x < size - 1)
+                {
+                    TryAttackCell(x + 1, y + 1);
+                }
+            }
+
+        }
+
     }
 }

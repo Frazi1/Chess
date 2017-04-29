@@ -30,19 +30,27 @@ namespace chesslib.Figures
                 for (int j = y - 1; j <= y + 1; j++)
                 {
                     TryMoveToCell(i, j);
+                }
+            }
+        }
+
+        public override void GetAttackedCells()
+        {
+            base.GetAttackedCells();
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
                     TryAttackCell(i, j);
                 }
             }
         }
 
-        public override bool MoveTo(Cell cell)
-        {
-            return base.MoveTo(cell);
-        }
-
-        public override bool CanMoveTo(Cell cell)
-        {
-            return base.CanMoveTo(cell) && !cell.IsAttacked(this.PlayerType);
-        }
     }
 }

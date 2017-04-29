@@ -98,6 +98,7 @@ namespace chesslib
                 e.MoveCommand.Execute(this);
                 _prevMoveCommand = e.MoveCommand;
                 GameUtils.SaveState();
+                Board.UpdatePiecesAndCells();
                 ChangeTurn();
                 //RaiseGameStateChange();
             }

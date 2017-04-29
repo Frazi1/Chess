@@ -81,6 +81,12 @@ namespace chesslib.Field
 
         public void UpdatePiecesAndCells()
         {
+            UpdateAttackedCells();
+            UpdatePiecesMoves();
+        }
+
+        public void UpdateAttackedCells()
+        {
             //Clear attackers lists
             for (int i = 0; i < ChessBoard.GetLength(0); i++)
             {
@@ -92,10 +98,19 @@ namespace chesslib.Field
             }
             foreach (var p in AlivePieces)
             {
-                p.SetAllowedMoves();
+                p.GetAttackedCells();
                 p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
             }
         }
+
+        public void UpdatePiecesMoves()
+        {
+            foreach (var p in AlivePieces)
+            {
+                p.SetAllowedMoves();
+            }
+        }
+
         public void DestroyPiece(Piece piece)
         {
             if (AlivePieces.Contains(piece))

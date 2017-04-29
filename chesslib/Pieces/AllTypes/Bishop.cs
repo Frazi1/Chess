@@ -30,7 +30,6 @@ namespace chesslib.Figures
             for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
             {
                 _continue = TryMoveToCell(i, j);
-                TryAttackCell(i, j);
                 if (!_continue)
                     break;
             }
@@ -38,7 +37,6 @@ namespace chesslib.Figures
             for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
             {
                 _continue = TryMoveToCell(i, j);
-                TryAttackCell(i, j);
                 if (!_continue)
                     break;
             }
@@ -47,7 +45,6 @@ namespace chesslib.Figures
             for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
             {
                 _continue = TryMoveToCell(i, j);
-                TryAttackCell(i, j);
                 if (!_continue)
                     break;
             }
@@ -56,15 +53,51 @@ namespace chesslib.Figures
             for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
             {
                 _continue = TryMoveToCell(i, j);
-                TryAttackCell(i, j);
                 if (!_continue)
                     break;
             }
         }
 
-        public override bool MoveTo(Cell cell)
+        public override void GetAttackedCells()
         {
-            return base.MoveTo(cell);
+            base.GetAttackedCells();
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            bool _continue;
+            //Вправо вверх
+            for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
+            //Влево вверх
+            for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
+
+            //Вправо вниз
+            for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
+
+            //Влево вниз
+            for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
         }
     }
 }

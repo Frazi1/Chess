@@ -66,7 +66,7 @@ namespace chesslib.Utils
             Piece newPiece = board.ChessBoard[px, py].Piece;
 
             newPiece.MoveTo(newCell);
-            //board.UpdatePiecesAndCells();
+            board.UpdateAttackedCells();
 
             if (IsCheck(board, newPiece.PlayerType))
                 return true;

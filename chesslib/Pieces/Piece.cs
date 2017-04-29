@@ -47,7 +47,7 @@ namespace chesslib
             AttackedCells = new List<Cell>();
         }
 
-        public virtual bool CanMoveTo(Cell cell)
+        public bool CanMoveTo(Cell cell)
         {
             if (IsInGame)
             {
@@ -57,7 +57,7 @@ namespace chesslib
             }
             return false;
         }
-        public virtual bool MoveTo(Cell nextCell)
+        public bool MoveTo(Cell nextCell)
         {
             CurrentCell.Piece = null;
             CurrentCell = nextCell;
@@ -66,10 +66,13 @@ namespace chesslib
             return true;
         }
 
+        public virtual void GetAttackedCells()
+        {
+            AttackedCells.Clear();
+        }
         public virtual void SetAllowedMoves()
         {
             AllowedCells.Clear();
-            AttackedCells.Clear();
         }
         /// <summary>
         /// If cell at x,y is free, it will be added to allowedMoves list and TRUE will be returned
@@ -81,7 +84,7 @@ namespace chesslib
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>True or fasle</returns>
-        public virtual bool TryMoveToCell(int x, int y)
+        public bool TryMoveToCell(int x, int y)
         {
             var chessBoard = Board.ChessBoard;
             if (BoardUtils.IsValidCell(chessBoard, x, y))
@@ -112,8 +115,7 @@ namespace chesslib
             }
             return false;
         }
-
-        public virtual bool TryAttackCell(int x, int y)
+        public bool TryAttackCell(int x, int y)
         {
             var chessBoard = Board.ChessBoard;
             if (BoardUtils.IsValidCell(chessBoard, x, y))
