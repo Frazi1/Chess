@@ -1,139 +1,153 @@
-﻿using chesslib.Field;
-using chesslib.Figures;
+﻿using chesslib.Command;
+using chesslib.Events;
+using chesslib.Field;
+using chesslib.Memento;
 using chesslib.Player;
+using chesslib.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace chesslib
 {
-    public class Game : IObservable<Game>
+    public class Game : IOriginator<MakeMoveCommand>
     {
         private const int SIZE = 8;
+        private MakeMoveCommand _prevMoveCommand;
+        private IPlayer _currentPlayer;
 
-        public IPlayer Player1 { get; set; }
-        public IPlayer Player2 { get; set; }
-        public Board Board
+        public GameUtils GameUtils { get; private set; }
+
+        public Board Board { get; private set; }
+        public bool IsPaused
         {
-            get { return Board.Instance; }
+            get { return Board.IsPaused; }
+            set { Board.IsPaused = value; }
         }
-
-        private Cell[,] ChessBoard { get { return Board.ChessBoard; } }
-        public List<Piece> Pieces { get { return Board.AlivePieces; } }
-        public bool IsGameFinished { get; private set; }
-        public IPlayer CurrentPlayer { get; private set; }
+        public bool IsGameFinished { get { return Board.IsGameFinished; } }
+        public List<IPlayer> Players { get; private set; }
+        public IPlayer CurrentPlayer
+        {
+            get { return _currentPlayer; }
+            private set
+            {
+                if (_currentPlayer != value)
+                {
+                    _currentPlayer = value;
+                }
+            }
+        }
+        public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
         {
-            _observers = new List<IObserver<Game>>();
-            CreatePieces();
-            Player1 = new RealPlayer(PlayerType.White, this);
-            Player2 = new RealPlayer(PlayerType.Black, this);
-            IsGameFinished = false;
-            Start();
+            Board = new Board(SIZE);
+            GameUtils = new GameUtils(this);
+            Players = new List<IPlayer>();
         }
 
-        public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
+        //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
+        //{
+        //    if (IsPaused)
+        //        return false;
+        //    if (CurrentPlayer != player)
+        //        return false;
+        //    GameUtils.SaveState();
+        //    DestroyPiece(piece, nextCell);
+        //    bool moved = piece.MoveTo(nextCell, player);
+        //    if (!moved)
+        //        return false;
+
+        //    Update(this);
+        //    ChangePlayers();
+        //    return true;
+        //}
+
+        public void LoadPreviousState()
         {
-            if (CurrentPlayer != player)
-                return false;
+            CurrentPlayer.CancelTurn();
+            IsPaused = true;
+            GameUtils.LoadPreviousState();
+            RaiseGameStateChange();
+        }
+        public bool AddPlayer(IPlayer player)
+        {
+            if (Players.Count < 2 && !Players.Contains(player))
+            {
+                player.MoveDone += Player_MoveDone;
+                player.Game = this;
+                Players.Add(player);
+                return true;
+            }
+            return false;
+        }
+        public void Start()
+        {
+            Board.Start();
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            if (!IsPaused && !IsGameFinished)
+                CurrentPlayer.DoTurn();
+            RaiseGameStateChange();
+        }
 
-            DestroyPiece(piece, nextCell);
-            bool moved = piece.MoveTo(nextCell, player);
-
-            if (!moved)
-                return false;
-            ChangePlayers();
-            Update(this);
-            return true;
+        private void Player_MoveDone(object sender, MoveDoneEventArgs e)
+        {
+            if (e.MoveCommand.CanExecute(this))
+            {
+                e.MoveCommand.Execute(this);
+                _prevMoveCommand = e.MoveCommand;
+                GameUtils.SaveState();
+                Board.UpdatePiecesAndCells();
+                ChangeTurn();
+            }
+        }
+        private void RaiseGameStateChange()
+        {
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
 
 
-
-        private void ChangePlayers()
+        internal void ChangeTurn()
         {
-            if (CurrentPlayer == Player1)
-                CurrentPlayer = Player2;
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
             else
-                CurrentPlayer = Player1;
-        }
-        private void Start()
-        {
-            CurrentPlayer = Player1;
-        }
-        private void CreatePieces()
-        {
-
-            //black
-            Pieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black));
-            Pieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black));
-            Pieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black));
-            Pieces.Add(new King(ChessBoard[3, 0], PlayerType.Black));
-            Pieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black));
-            Pieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black));
-            Pieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black));
-            Pieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black));
-
-            for (int i = 0; i < SIZE; i++)
-            {
-                Pieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black));
-            }
-
-            //white
-            Pieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White));
-            Pieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White));
-            Pieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White));
-            Pieces.Add(new King(ChessBoard[4, 7], PlayerType.White));
-            Pieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White));
-            Pieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White));
-            Pieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White));
-            Pieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White));
-
-            for (int i = 0; i < SIZE; i++)
-            {
-                Pieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White));
-            }
-
-        }
-        private void DestroyPiece(Piece piece, Cell nextCell)
-        {
-            Piece pieceToDestroy = null;
-            if (nextCell.Piece != null &&
-                nextCell.Piece.PlayerType != CurrentPlayer.PlayerType)
-            {
-                pieceToDestroy = nextCell.Piece;
-            }
-            bool canMoveTo = piece.CanMoveTo(nextCell, CurrentPlayer);
-            if (pieceToDestroy != null && canMoveTo)
-            {
-                Board.Instance.DestroyPiece(pieceToDestroy);
-            }
+                CurrentPlayer = Players[0];
+            IsCheckMate();
+            if (!Board.IsPaused)
+                CurrentPlayer.DoTurn();
+            RaiseGameStateChange();
         }
 
-        #region IObservable
-        private List<IObserver<Game>> _observers;
-        public IDisposable Subscribe(IObserver<Game> observer)
+        private bool IsCheckMate()
         {
-            if (!_observers.Contains(observer))
-                _observers.Add(observer);
-            return new Unsubscriber<Game>(_observers, observer);
+            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
+                   .All(p => p.AllowedCells.Count == 0);
+            if (checkMate)
+            {
+                Board.IsGameFinished = true;
+                Board.IsPaused = true;
+            }
+            else
+            {
+                Board.IsGameFinished = false;
+            }
+            return checkMate;
+
         }
 
-        public void Update(Game loc)
+        #region Memento
+        public Memento<MakeMoveCommand> GetMemento()
         {
-            foreach (var observer in _observers)
-            {
-                observer.OnNext(loc);
-            }
+            return new Memento<MakeMoveCommand>(_prevMoveCommand);
         }
-        public void EndUpdates()
-        {
-            foreach (var observer in _observers)
-            {
-                if (_observers.Contains(observer))
-                    observer.OnCompleted();
 
-                _observers.Clear();
-            }
+        public void SetMemento(Memento<MakeMoveCommand> value)
+        {
+            value.GetState().Undo(this);
+            //_prevMoveCommand = null;
         }
         #endregion
     }

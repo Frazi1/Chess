@@ -1,5 +1,4 @@
-﻿using chesslib.Figures.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,40 +8,49 @@ using chesslib.Field;
 
 namespace chesslib.Figures
 {
-    public class King : Piece, IMoved
+    [Serializable]
+    public class King : Piece
     {
-        public King(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
+        public King(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
-            HasAlreadyMoved = false;
-            IsUnderAttack = false;
+            PieceType = PieceType.King;
         }
 
-        public bool HasAlreadyMoved { get; set; }
-        public bool IsUnderAttack { get; set; }
-
-        public override List<Cell> GetAllowedMoves()
+        public override void SetAllowedMoves()
         {
-            List<Cell> allowedMoves = new List<Cell>();
+            base.SetAllowedMoves();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.Instance.ChessBoard;
+            Cell[,] chessBoard = Board.ChessBoard;
 
-            int size = Board.Instance.ChessBoard.GetLength(0);
+            int size = Board.ChessBoard.GetLength(0);
 
             for (int i = x - 1; i <= x + 1; i++)
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    TryCell(allowedMoves, chessBoard, i, j);
+                    TryMoveToCell(i, j);
                 }
             }
-
-            return allowedMoves;
         }
 
-        public override bool MoveTo(Cell cell, IPlayer player)
+        public override void GetAttackedCells()
         {
-            return base.MoveTo(cell, player);
+            base.GetAttackedCells();
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    TryAttackCell(i, j);
+                }
+            }
         }
+
     }
 }

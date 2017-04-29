@@ -5,39 +5,65 @@ using System.Linq;
 using System.Text;
 using chesslib.Command;
 using chesslib.Strategy;
+using System.Threading.Tasks;
+using chesslib.Events;
+using System.Threading;
 
 namespace chesslib.Player
 {
     public class RealPlayer : IPlayer
     {
         private Game _game;
+        private MakeMoveCommand _makeMoveCommand;
 
-        public RealPlayer(PlayerType playerType, Game game)
+        public RealPlayer(PlayerType playerType)
         {
             PlayerType = playerType;
-            _game = game;
         }
-
+        public Game Game
+        {
+            get { return _game; }
+            set { _game = value; }
+        }
         public PlayerType PlayerType { get; set; }
-        public MakeMoveCommand MakeMoveCommand { get; set; }
-        public IStrategy Strategy { get; set; }
-
-        public void PrepareMove()
+        public MakeMoveCommand MakeMoveCommand
         {
-            var move = Strategy.PrepareMove();
-            MakeMoveCommand = new MakeMoveCommand(this, move.Item1, move.Item2, _game);
+            get { return _makeMoveCommand; }
+            set { if (!_game.IsPaused) _makeMoveCommand = value; }
         }
+        public Thread CurrentThread { get; private set; }
 
-        public void MakeMove()
+        public event EventsDelegates.MoveDoneEventHandler MoveDone;
+        public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
+
+        public void DoTurn()
         {
-            PrepareMove();
-            if (MakeMoveCommand != null)
+            if (MovingInProcess != null)
+                MovingInProcess(this, new MovingInProcessEventArgs(this));
+            CurrentThread = new Thread(MakeMove)
             {
-                MakeMoveCommand.Execute();
-                OnMove();
-            }
+                IsBackground = true
+            };
+            CurrentThread.Start();
+        }
+        public void CancelTurn()
+        {
+            if (CurrentThread != null && CurrentThread.IsAlive)
+                CurrentThread.Abort();
         }
 
+        private void MakeMove()
+        {
+            while (MakeMoveCommand == null 
+                || !MakeMoveCommand.CanExecute(Game))
+            {
+                Thread.Sleep(100);
+            }
+            if (MoveDone != null)
+                MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
+
+            OnMove();
+        }
         private void OnMove()
         {
             MakeMoveCommand = null;

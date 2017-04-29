@@ -2,40 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using chesslib.Figures;
 
 namespace chesslib
 {
+    [Serializable]
     public class Cell
     {
         private int _posX;
+        private int _posY;
+        private Piece _piece;
 
         public int PosX
         {
             get { return _posX; }
             set { _posX = value; }
         }
-        private int _posY;
-
         public int PosY
         {
             get { return _posY; }
             set { _posY = value; }
         }
-
-        private Piece _piece;
-
         public Piece Piece
         {
             get { return _piece; }
             set { _piece = value; }
         }
-
-        public bool IsTaken => Piece != null;
+        public bool IsTaken { get { return _piece != null; } }
+        public List<Piece> AttackersList { get; set; }
 
         public Cell(int x, int y)
         {
             PosX = x;
             PosY = y;
+            AttackersList = new List<Piece>();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}", PosX, PosY);
+        }
+
+        public bool IsAttacked(PlayerType playerType)
+        {
+            return AttackersList
+                    .Where(a => a.PlayerType != playerType)
+                    .Count()
+                    > 0;
         }
     }
 }

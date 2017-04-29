@@ -8,6 +8,8 @@
 
     <Window.Resources>
 
+        <AlternationConverter x:Key="AlternationConverter"/>
+
         <!-- Chekerboard pattern brush -->
         <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
             <DrawingBrush.Drawing>
@@ -145,7 +147,7 @@
         </Grid.RowDefinitions>
 
         <Viewbox Grid.Column="1" Grid.Row="1">
-            <ItemsControl x:Name="ChessBoard" HorizontalContentAlignment="Stretch" Height="8" Width="8" HorizontalAlignment="Right" ItemsSource="{Binding Main.ChessPieces}">
+            <ItemsControl x:Name="ChessBoard" HorizontalContentAlignment="Stretch" Height="8" Width="8" HorizontalAlignment="Right" ItemsSource="{Binding Main.ChessPiecesViewModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" MouseDown="Canvas_MouseDown"/>
@@ -166,8 +168,20 @@
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>
         </Viewbox>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource Locator}, Path=Main.PlayerType}" VerticalAlignment="Top" Width="87" Height="26">
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource Locator}, Path=Main.PlayerType}" VerticalAlignment="Top" Width="87" Height="26"/>
 
-        </TextBlock>
+        <Button x:Name="button_start" Content="Start" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" IsEnabled="{Binding Main.IsPaused}"/>
+        <Button x:Name="button_prev" Content="Prev" HorizontalAlignment="Left" Margin="111,0,0,0" VerticalAlignment="Top" Width="74" Click="button_prev_Click" IsEnabled="{Binding Path=Main.CanUndo}"/>
+        <ListView HorizontalAlignment="Left" Height="248" Margin="10,52,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Main.MementoStates}" IsSynchronizedWithCurrentItem="True" Loaded="ListView_Loaded">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Data.PrevCell}"/>
+                        <TextBlock Text=" - "/>
+                        <TextBlock Text="{Binding Data.NextCell}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

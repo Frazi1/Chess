@@ -8,6 +8,7 @@ namespace chesslib
 {
 	public enum PlayerType
 	{
+        None,
 		White,
 		Black
 	}

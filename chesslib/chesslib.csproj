@@ -43,11 +43,19 @@
   <ItemGroup>
     <Compile Include="Command\MakeMoveCommand.cs" />
     <Compile Include="Command\Interfaces\ICommand.cs" />
+    <Compile Include="Events\EventArgs\GameStateChangedEventArgs.cs" />
+    <Compile Include="Events\EventArgs\MovingInProcessEventArgs.cs" />
     <Compile Include="Field\Cell.cs" />
     <Compile Include="Field\Board.cs" />
-    <Compile Include="Field\Interfaces\Unsubscriber.cs" />
+    <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
+    <Compile Include="Events\EventsDelegates.cs" />
+    <Compile Include="Utils\BoardUtils.cs" />
+    <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Utils\GameMemento.cs" />
+    <Compile Include="Utils\GameUtils.cs" />
+    <Compile Include="Interfaces\Memento\IOriginator.cs" />
+    <Compile Include="Interfaces\Memento\Memento.cs" />
     <Compile Include="Pieces\AllTypes\Bishop.cs" />
-    <Compile Include="Pieces\Interfaces\IMoved.cs" />
     <Compile Include="Pieces\Piece.cs" />
     <Compile Include="Pieces\AllTypes\King.cs" />
     <Compile Include="Pieces\AllTypes\Knight.cs" />
@@ -56,12 +64,15 @@
     <Compile Include="Pieces\AllTypes\Rook.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Pieces\PieceType.cs" />
+    <Compile Include="Player\ComputerPlayer.cs" />
     <Compile Include="Player\PlayerType.cs" />
     <Compile Include="Player\Interfaces\IPlayer.cs" />
     <Compile Include="Player\RealPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategy\DefaultComputerStrategy.cs" />
     <Compile Include="Strategy\Interfaces\IStrategy.cs" />
     <Compile Include="Strategy\RealPlayerStrategy.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

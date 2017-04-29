@@ -8,33 +8,35 @@ using chesslib.Field;
 
 namespace chesslib.Figures
 {
+    [Serializable]
     public class Bishop : Piece
     {
-        public Bishop(Cell currentCell, PlayerType playerType) : base(currentCell, playerType)
+        public Bishop(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
         {
+            PieceType = PieceType.Bishop;
         }
 
-        public override List<Cell> GetAllowedMoves()
+        public override void SetAllowedMoves()
         {
-            List<Cell> allowedMoves = new List<Cell>();
+            base.SetAllowedMoves();
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.Instance.ChessBoard;
+            Cell[,] chessBoard = Board.ChessBoard;
 
-            int size = Board.Instance.ChessBoard.GetLength(0);
+            int size = Board.ChessBoard.GetLength(0);
 
             bool _continue;
             //Вправо вверх
             for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(i, j);
                 if (!_continue)
                     break;
             }
             //Влево вверх
-            for (int i = x - 1, j = y - 1; i >= 0 && j > 0; i--, j--)
+            for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(i, j);
                 if (!_continue)
                     break;
             }
@@ -42,7 +44,7 @@ namespace chesslib.Figures
             //Вправо вниз
             for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(i, j);
                 if (!_continue)
                     break;
             }
@@ -50,18 +52,52 @@ namespace chesslib.Figures
             //Влево вниз
             for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
             {
-                _continue = TryCell(allowedMoves, chessBoard, i, j);
+                _continue = TryMoveToCell(i, j);
+                if (!_continue)
+                    break;
+            }
+        }
+
+        public override void GetAttackedCells()
+        {
+            base.GetAttackedCells();
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            bool _continue;
+            //Вправо вверх
+            for (int i = x + 1, j = y - 1; i < size && j >= 0; i++, j--)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
+            //Влево вверх
+            for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--)
+            {
+                _continue = TryAttackCell(i, j);
                 if (!_continue)
                     break;
             }
 
+            //Вправо вниз
+            for (int i = x + 1, j = y + 1; i < size && j < size; i++, j++)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
 
-            return allowedMoves;
-        }
-
-        public override bool MoveTo(Cell cell, IPlayer player)
-        {
-            return base.MoveTo(cell, player);
+            //Влево вниз
+            for (int i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++)
+            {
+                _continue = TryAttackCell(i, j);
+                if (!_continue)
+                    break;
+            }
         }
     }
 }
