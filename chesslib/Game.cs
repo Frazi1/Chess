@@ -115,9 +115,20 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
+            if(IsCheckMate())
+            {
+                Board.IsGameFinished = true;
+                Board.IsPaused = true;
+            }
             if (!Board.IsPaused)
                 CurrentPlayer.DoTurn();
             RaiseGameStateChange();
+        }
+
+        private bool IsCheckMate()
+        {
+            return Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
+                   .All(p => p.AllowedCells.Count == 0);
         }
 
         #region Memento

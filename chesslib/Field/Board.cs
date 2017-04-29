@@ -20,8 +20,8 @@ namespace chesslib.Field
         public Cell[,] ChessBoard { get; private set; }
         public List<Piece> AlivePieces { get; private set; }
 
-        public bool IsPaused { get; set; }
-        public bool IsGameFinished { get; private set; }
+        public bool IsPaused { get; internal set; }
+        public bool IsGameFinished { get; internal set; }
 
         public Board(int size)
         {
