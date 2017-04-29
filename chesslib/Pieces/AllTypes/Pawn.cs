@@ -38,7 +38,7 @@ namespace chesslib.Figures
                 {
                     if (!chessBoard[x, y - 1].IsTaken)
                     {
-                        AllowedCells.Add(chessBoard[x, y - 1]);
+                        TryMoveToCell(x, y - 1);
                         if (!HasAlreadyMoved && !chessBoard[x, y - 2].IsTaken)
                             TryMoveToCell(x, y - 2);
                     }
@@ -72,7 +72,7 @@ namespace chesslib.Figures
                 {
                     if (!chessBoard[x, y + 1].IsTaken)
                     {
-                        AllowedCells.Add(chessBoard[x, y + 1]);
+                        TryMoveToCell(x, y + 1);
                         if (!HasAlreadyMoved && !chessBoard[x, y + 2].IsTaken)
                             TryMoveToCell(x, y + 2);
                     }
