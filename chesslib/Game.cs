@@ -115,11 +115,7 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
-            if(IsCheckMate())
-            {
-                Board.IsGameFinished = true;
-                Board.IsPaused = true;
-            }
+            IsCheckMate();
             if (!Board.IsPaused)
                 CurrentPlayer.DoTurn();
             RaiseGameStateChange();
@@ -127,8 +123,19 @@ namespace chesslib
 
         private bool IsCheckMate()
         {
-            return Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
+            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
                    .All(p => p.AllowedCells.Count == 0);
+            if (checkMate)
+            {
+                Board.IsGameFinished = true;
+                Board.IsPaused = true;
+            }
+            else
+            {
+                Board.IsGameFinished = false;
+            }
+            return checkMate;
+
         }
 
         #region Memento

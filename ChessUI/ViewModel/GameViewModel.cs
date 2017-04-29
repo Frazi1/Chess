@@ -82,7 +82,7 @@ namespace ChessUI.ViewModel
             ChessPiecesViewModels.Clear();
             foreach (var item in Game.Board.AlivePieces)
             {
-                ChessPiecesViewModels.Add(new ChessPieceViewModel(item,Game));
+                ChessPiecesViewModels.Add(new ChessPieceViewModel(item, Game));
             }
         }
 
@@ -95,8 +95,10 @@ namespace ChessUI.ViewModel
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels
                     .FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
-            if (e.IsCheck)
-                MessageBox.Show(e.IsCheck.ToString() + " Check");
+            if (e.IsCheckMate)
+                MessageBox.Show("Checkmate");
+            else if (e.IsCheck)
+                MessageBox.Show("Check");
         }
     }
 }
