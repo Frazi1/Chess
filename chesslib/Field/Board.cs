@@ -15,24 +15,11 @@ namespace chesslib.Field
     public class Board
     {
         private readonly int SIZE;
-        private IPlayer _currentPlayer;
+
 
         public Cell[,] ChessBoard { get; private set; }
         public List<Piece> AlivePieces { get; private set; }
-        public List<IPlayer> Players { get; private set; }
-        public IPlayer CurrentPlayer
-        {
-            get { return _currentPlayer; }
-            private set
-            {
-                if (_currentPlayer != value)
-                {
-                    _currentPlayer = value;
-                    if (!IsPaused && !IsGameFinished)
-                        _currentPlayer.DoTurn();
-                }
-            }
-        }
+
         public bool IsPaused { get; set; }
         public bool IsGameFinished { get; private set; }
 
@@ -40,7 +27,6 @@ namespace chesslib.Field
         {
             SIZE = size;
             ChessBoard = new Cell[size, size];
-            Players = new List<IPlayer>();
             AlivePieces = new List<Piece>();
             IsGameFinished = false;
             IsPaused = true;
@@ -58,8 +44,7 @@ namespace chesslib.Field
                 }
             }
         }
-
-        public void SetUpPieces()
+        private void SetUpPieces()
         {
 
             //black
@@ -93,6 +78,7 @@ namespace chesslib.Field
             }
 
         }
+
         public void UpdatePiecesAndCells()
         {
             //Clear attackers lists
@@ -120,31 +106,12 @@ namespace chesslib.Field
             }
         }
 
-        internal void ChangeTurn()
-        {
-            if (CurrentPlayer == Players[0])
-                CurrentPlayer = Players[1];
-            else
-                CurrentPlayer = Players[0];
-            UpdatePiecesAndCells();
-        }
+
         internal void Start()
         {
             UpdatePiecesAndCells();
             IsPaused = false;
-            if (CurrentPlayer == null)
-                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
-            else
-                CurrentPlayer.DoTurn();
         }
-        internal bool AddPlayer(IPlayer player)
-        {
-            if (Players.Count < 2 && !Players.Contains(player))
-            {
-                Players.Add(player);
-                return true;
-            }
-            return false;
-        }
+       
     }
 }

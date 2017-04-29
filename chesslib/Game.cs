@@ -14,6 +14,7 @@ namespace chesslib
     {
         private const int SIZE = 8;
         private MakeMoveCommand _prevMoveCommand;
+        private IPlayer _currentPlayer;
 
         public GameUtils GameUtils { get; private set; }
 
@@ -24,14 +25,25 @@ namespace chesslib
             set { Board.IsPaused = value; }
         }
         public bool IsGameFinished { get { return Board.IsGameFinished; } }
-        public IPlayer CurrentPlayer { get { return Board.CurrentPlayer; } }
-
+        public List<IPlayer> Players { get; private set; }
+        public IPlayer CurrentPlayer
+        {
+            get { return _currentPlayer; }
+            private set
+            {
+                if (_currentPlayer != value)
+                {
+                    _currentPlayer = value;
+                }
+            }
+        }
         public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
         {
             Board = new Board(SIZE);
             GameUtils = new GameUtils(this);
+            Players = new List<IPlayer>();
         }
 
         //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
@@ -60,17 +72,22 @@ namespace chesslib
         }
         public bool AddPlayer(IPlayer player)
         {
-            bool added = Board.AddPlayer(player);
-            if (added)
+            if (Players.Count < 2 && !Players.Contains(player))
             {
                 player.MoveDone += Player_MoveDone;
                 player.Game = this;
+                Players.Add(player);
+                return true;
             }
-            return added;
+            return false;
         }
         public void Start()
         {
             Board.Start();
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            if (!IsPaused && !IsGameFinished)
+                CurrentPlayer.DoTurn();
             RaiseGameStateChange();
         }
 
@@ -91,10 +108,16 @@ namespace chesslib
                 GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
 
+
         internal void ChangeTurn()
         {
-            Board.ChangeTurn();
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
+            else
+                CurrentPlayer = Players[0];
+            CurrentPlayer.DoTurn();
             RaiseGameStateChange();
+
         }
 
         #region Memento
