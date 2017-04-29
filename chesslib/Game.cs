@@ -100,7 +100,6 @@ namespace chesslib
                 GameUtils.SaveState();
                 Board.UpdatePiecesAndCells();
                 ChangeTurn();
-                //RaiseGameStateChange();
             }
         }
         private void RaiseGameStateChange()
@@ -116,9 +115,9 @@ namespace chesslib
                 CurrentPlayer = Players[1];
             else
                 CurrentPlayer = Players[0];
-            CurrentPlayer.DoTurn();
+            if (!Board.IsPaused)
+                CurrentPlayer.DoTurn();
             RaiseGameStateChange();
-
         }
 
         #region Memento
