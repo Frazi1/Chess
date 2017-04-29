@@ -1,45 +1,31 @@
 ﻿using chesslib.Command;
-using chesslib.Field;
-using chesslib.Memento;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace chesslib.Utils
 {
     public class GameUtils
     {
-        private GameMemento _memento;
-        private IOriginator<MakeMoveCommand> _originator;
+        private Game game;
 
-        public GameMemento Memento
+        public GameUtils(Game game)
         {
-            get
-            {
-                return _memento;
-            }
-
-            set
-            {
-                _memento = value;
-            }
+            this.game = game;
         }
 
-        public GameUtils(IOriginator<MakeMoveCommand> originator)
+        public void SaveState(MakeMoveCommand moveCommand)
         {
-            Memento = new GameMemento();
-            _originator = originator;
-        }
-
-        public void SaveState()
-        {
-            Memento.MementoList.Add(_originator.GetMemento());
+            game.MoveCommands.Add(moveCommand);
         }
 
         public void LoadPreviousState()
         {
-            _originator.SetMemento(Memento.GetPreviousState());
+            game.CurrentPlayer.CancelTurn();
+            game.IsPaused = true;
+
+            int last = game.MoveCommands.Count - 1;
+            game.MoveCommands[last].Undo(game);
+            game.MoveCommands.RemoveAt(last);
+
+            game.RaiseGameStateChange();
         }
     }
 }
