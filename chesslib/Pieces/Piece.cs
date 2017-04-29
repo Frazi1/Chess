@@ -90,20 +90,25 @@ namespace chesslib
                     return false;
 
 
-                if (!chessBoard[x, y].IsTaken &&
-                    !BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this,chessBoard[x,y])))
+
+                if (!chessBoard[x, y].IsTaken)
                 {
-
-                    AllowedCells.Add(chessBoard[x, y]);
-                    return true;
-
+                    if (!BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this, chessBoard[x, y])))
+                    {
+                        AllowedCells.Add(chessBoard[x, y]);
+                        return true;
+                    }
                 }
                 else if (chessBoard[x, y].IsTaken &&
                     chessBoard[x, y].Piece.PlayerType != PlayerType)
                 {
-                    AllowedCells.Add(chessBoard[x, y]);
-                    return false;
+                    if (!BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this, chessBoard[x, y])))
+                    {
+                        AllowedCells.Add(chessBoard[x, y]);
+                        return false;
+                    }
                 }
+
             }
             return false;
         }
