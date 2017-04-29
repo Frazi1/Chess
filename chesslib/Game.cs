@@ -1,6 +1,7 @@
 ﻿using chesslib.Command;
 using chesslib.Events;
 using chesslib.Field;
+using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Utils;
 using System;
@@ -9,10 +10,11 @@ using System.Linq;
 
 namespace chesslib
 {
-    public class Game
+    public class Game : IOriginator<MakeMoveCommand>
     {
         private const int SIZE = 8;
-        private List<MakeMoveCommand> _moveCommands;
+        private MakeMoveCommand _prevMoveCommand;
+        private IPlayer _currentPlayer;
 
         public GameUtils GameUtils { get; private set; }
 
@@ -42,7 +44,6 @@ namespace chesslib
             Board = new Board(SIZE);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
-            MoveCommands = new List<MakeMoveCommand>();
         }
 
         //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
@@ -62,6 +63,13 @@ namespace chesslib
         //    return true;
         //}
 
+        public void LoadPreviousState()
+        {
+            CurrentPlayer.CancelTurn();
+            IsPaused = true;
+            GameUtils.LoadPreviousState();
+            RaiseGameStateChange();
+        }
         public bool AddPlayer(IPlayer player)
         {
             if (Players.Count < 2 && !Players.Contains(player))
@@ -88,15 +96,18 @@ namespace chesslib
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
-                GameUtils.SaveState(e.MoveCommand);
+                _prevMoveCommand = e.MoveCommand;
+                GameUtils.SaveState();
+                Board.UpdatePiecesAndCells();
                 ChangeTurn();
             }
         }
-        internal void RaiseGameStateChange()
+        private void RaiseGameStateChange()
         {
             if (GameStateChanged != null)
                 GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
+
 
         internal void ChangeTurn()
         {
@@ -109,6 +120,7 @@ namespace chesslib
                 CurrentPlayer.DoTurn();
             RaiseGameStateChange();
         }
+
         private bool IsCheckMate()
         {
             bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
@@ -126,5 +138,17 @@ namespace chesslib
 
         }
 
+        #region Memento
+        public Memento<MakeMoveCommand> GetMemento()
+        {
+            return new Memento<MakeMoveCommand>(_prevMoveCommand);
+        }
+
+        public void SetMemento(Memento<MakeMoveCommand> value)
+        {
+            value.GetState().Undo(this);
+            //_prevMoveCommand = null;
+        }
+        #endregion
     }
 }
