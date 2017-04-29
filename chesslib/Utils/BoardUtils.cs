@@ -65,6 +65,7 @@ namespace chesslib.Utils
             Cell newCell = board.ChessBoard[cx, cy];
             Piece newPiece = board.ChessBoard[px, py].Piece;
 
+            board.DestroyPiece(newCell.Piece);
             newPiece.MoveTo(newCell);
             board.UpdateAttackedCells();
 
