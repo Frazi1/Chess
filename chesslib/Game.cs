@@ -1,19 +1,17 @@
 ﻿using chesslib.Command;
 using chesslib.Events;
 using chesslib.Field;
-using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace chesslib
 {
-    public class Game : IOriginator<MakeMoveCommand>
+    public class Game
     {
         private const int SIZE = 8;
-        private MakeMoveCommand _prevMoveCommand;
+        private List<MakeMoveCommand> _moveCommands;
         private IPlayer _currentPlayer;
 
         public GameUtils GameUtils { get; private set; }
@@ -37,6 +35,19 @@ namespace chesslib
                 }
             }
         }
+        public List<MakeMoveCommand> MoveCommands
+        {
+            get
+            {
+                return _moveCommands;
+            }
+
+            set
+            {
+                _moveCommands = value;
+            }
+        }
+
         public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
@@ -44,31 +55,12 @@ namespace chesslib
             Board = new Board(SIZE);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
+            MoveCommands = new List<MakeMoveCommand>();
         }
-
-        //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
-        //{
-        //    if (IsPaused)
-        //        return false;
-        //    if (CurrentPlayer != player)
-        //        return false;
-        //    GameUtils.SaveState();
-        //    DestroyPiece(piece, nextCell);
-        //    bool moved = piece.MoveTo(nextCell, player);
-        //    if (!moved)
-        //        return false;
-
-        //    Update(this);
-        //    ChangePlayers();
-        //    return true;
-        //}
 
         public void LoadPreviousState()
         {
-            CurrentPlayer.CancelTurn();
-            IsPaused = true;
-            GameUtils.LoadPreviousState();
-            RaiseGameStateChange();
+
         }
         public bool AddPlayer(IPlayer player)
         {
@@ -96,31 +88,11 @@ namespace chesslib
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
-                _prevMoveCommand = e.MoveCommand;
-                GameUtils.SaveState();
+                GameUtils.SaveState(e.MoveCommand);
                 Board.UpdatePiecesAndCells();
                 ChangeTurn();
             }
         }
-        private void RaiseGameStateChange()
-        {
-            if (GameStateChanged != null)
-                GameStateChanged(this, new GameStateChangedEventArgs(this));
-        }
-
-
-        internal void ChangeTurn()
-        {
-            if (CurrentPlayer == Players[0])
-                CurrentPlayer = Players[1];
-            else
-                CurrentPlayer = Players[0];
-            IsCheckMate();
-            if (!Board.IsPaused)
-                CurrentPlayer.DoTurn();
-            RaiseGameStateChange();
-        }
-
         private bool IsCheckMate()
         {
             bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
@@ -138,17 +110,21 @@ namespace chesslib
 
         }
 
-        #region Memento
-        public Memento<MakeMoveCommand> GetMemento()
+        internal void RaiseGameStateChange()
         {
-            return new Memento<MakeMoveCommand>(_prevMoveCommand);
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
-
-        public void SetMemento(Memento<MakeMoveCommand> value)
+        internal void ChangeTurn()
         {
-            value.GetState().Undo(this);
-            //_prevMoveCommand = null;
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
+            else
+                CurrentPlayer = Players[0];
+            IsCheckMate();
+            if (!Board.IsPaused)
+                CurrentPlayer.DoTurn();
+            RaiseGameStateChange();
         }
-        #endregion
     }
 }
