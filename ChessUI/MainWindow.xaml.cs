@@ -76,7 +76,7 @@ namespace ChessUI
 
         private void button_prev_Click(object sender, RoutedEventArgs e)
         {
-            _gameViewModel.Game.LoadPreviousState();
+            _gameViewModel.Game.GameUtils.LoadPreviousState();
         }
 
         private void ListView_Loaded(object sender, RoutedEventArgs e)
@@ -87,11 +87,11 @@ namespace ChessUI
                 {
                     Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        _gameViewModel.MementoStates.Clear();
-                        var list = _gameViewModel.Game.GameUtils.Memento.MementoList;
+                        _gameViewModel.MoveCommands.Clear();
+                        var list = _gameViewModel.Game.MoveCommands;
                         for (int i = list.Count - 1; i >= 0; i--)
                         {
-                            _gameViewModel.MementoStates.Add(list[i]);
+                            _gameViewModel.MoveCommands.Add(list[i]);
                         }
                     }));
                     Thread.Sleep(500);
