@@ -5,7 +5,7 @@ namespace chesslib.Events
     public class GameStateChangedEventArgs
     {
         public Game Game { get; set; }
-        public bool IsCheck { get { return BoardUtils.IsCheck(Game.Board, Game.CurrentPlayer.PlayerType); } }
+        public bool IsCheck { get { return BoardUtils.IsCheck(Game.Board, Game.CurrentPlayer.PlayerColor); } }
         public bool IsCheckMate { get { return Game.IsGameFinished; } }
 
         public GameStateChangedEventArgs(Game game)

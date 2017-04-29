@@ -1,6 +1,7 @@
 ﻿using chesslib;
 using chesslib.Command;
 using chesslib.Player;
+using ChessUI.Command;
 using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace ChessUI.ViewModel
             RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
             MoveCommands = new ObservableCollection<MakeMoveCommand>();
             Game = new Game();
+            Commands = new Commands();
 
             //TODO: передалать
-            RealPlayer p1 = new RealPlayer(PlayerType.White);
-            RealPlayer p2 = new RealPlayer(PlayerType.Black);
+            RealPlayer p1 = new RealPlayer(PlayerColor.White);
+            RealPlayer p2 = new RealPlayer(PlayerColor.Black);
             //ComputerPlayer p1 = new ComputerPlayer(PlayerType.White);
             //ComputerPlayer p2 = new ComputerPlayer(PlayerType.Black);
             Game.AddPlayer(p1);
@@ -42,6 +44,8 @@ namespace ChessUI.ViewModel
             //Commands
         }
 
+        public Commands Commands { get; set; }
+
         public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
         {
             get { return _chessPieces; }
@@ -53,13 +57,13 @@ namespace ChessUI.ViewModel
         public ChessPieceViewModel SelectedPiece { get; set; }
 
         public Cell NextCell { get; set; }
-        public PlayerType PlayerType
+        public PlayerColor PlayerType
         {
             get
             {
                 if (Game.CurrentPlayer != null)
-                    return Game.CurrentPlayer.PlayerType;
-                return PlayerType.None;
+                    return Game.CurrentPlayer.PlayerColor;
+                return PlayerColor.None;
             }
         }
         public Game Game
@@ -87,7 +91,7 @@ namespace ChessUI.ViewModel
 
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels
-                    .FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
+                    .FirstOrDefault(p => p.Player.PlayerColor == Game.CurrentPlayer.PlayerColor);
             if (e.IsCheckMate)
                 MessageBox.Show("Checkmate");
             else if (e.IsCheck)

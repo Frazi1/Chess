@@ -11,7 +11,7 @@ namespace chesslib.Player
 {
     public class ComputerPlayer : IPlayer
     {
-        public PlayerType PlayerType { get; set; }
+        public PlayerColor PlayerColor { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
         public IStrategy Strategy { get; set; }
         public Game Game { get; set; }
@@ -20,9 +20,9 @@ namespace chesslib.Player
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
 
-        public ComputerPlayer(PlayerType playerType)
+        public ComputerPlayer(PlayerColor playerType)
         {
-            PlayerType = playerType;
+            PlayerColor = playerType;
         }
 
         private void MakeMove()

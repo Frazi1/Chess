@@ -16,16 +16,16 @@ namespace chesslib.Player
         private Game _game;
         private MakeMoveCommand _makeMoveCommand;
 
-        public RealPlayer(PlayerType playerType)
+        public RealPlayer(PlayerColor playerType)
         {
-            PlayerType = playerType;
+            PlayerColor = playerType;
         }
         public Game Game
         {
             get { return _game; }
             set { _game = value; }
         }
-        public PlayerType PlayerType { get; set; }
+        public PlayerColor PlayerColor { get; set; }
         public MakeMoveCommand MakeMoveCommand
         {
             get { return _makeMoveCommand; }

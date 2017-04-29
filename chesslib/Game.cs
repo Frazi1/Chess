@@ -5,9 +5,11 @@ using chesslib.Player;
 using chesslib.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace chesslib
 {
+    [Serializable]
     public class Game
     {
         private const int SIZE = 8;
@@ -58,10 +60,6 @@ namespace chesslib
             MoveCommands = new List<MakeMoveCommand>();
         }
 
-        public void LoadPreviousState()
-        {
-
-        }
         public bool AddPlayer(IPlayer player)
         {
             if (Players.Count < 2 && !Players.Contains(player))
@@ -77,7 +75,7 @@ namespace chesslib
         {
             Board.Start();
             if (CurrentPlayer == null)
-                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+                CurrentPlayer = Players.First(p => p.PlayerColor == PlayerColor.White);
             if (!IsPaused && !IsGameFinished)
                 CurrentPlayer.DoTurn();
             RaiseGameStateChange();
@@ -95,7 +93,7 @@ namespace chesslib
         }
         private bool IsCheckMate()
         {
-            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
+            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerColor)
                    .All(p => p.AllowedCells.Count == 0);
             if (checkMate)
             {

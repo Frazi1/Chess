@@ -57,7 +57,7 @@ namespace ChessUI.ViewModel
             get { return this._pieceType; }
             set { this._pieceType = value; RaisePropertyChanged(() => this.PieceType); }
         }
-        public PlayerType PlayerType
+        public PlayerColor PlayerType
         {
             get { return _piece.PlayerType; }
             //set { _piece.PlayerType = value; RaisePropertyChanged(() => _piece.PlayerType); }

@@ -12,7 +12,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Pawn : Piece
     {
-        public Pawn(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
+        public Pawn(Cell currentCell, PlayerColor playerType, Board board) : base(currentCell, playerType, board)
         {
             IsPromoted = false;
             PieceType = PieceType.Pawn;
@@ -31,7 +31,7 @@ namespace chesslib.Figures
             int size = Board.ChessBoard.GetLength(0);
 
             //Белые
-            if (PlayerType == PlayerType.White)
+            if (PlayerType == PlayerColor.White)
             {
                 //Движение вперед
                 if (y > 0)
@@ -65,7 +65,7 @@ namespace chesslib.Figures
                 }
             }
             //Черные
-            else if (PlayerType == PlayerType.Black)
+            else if (PlayerType == PlayerColor.Black)
             {
                 //Движение вперед
                 if (y < size - 1)
@@ -112,7 +112,7 @@ namespace chesslib.Figures
 
             int size = Board.ChessBoard.GetLength(0);
 
-            if (PlayerType == PlayerType.White)
+            if (PlayerType == PlayerColor.White)
             {
                 //Атака вперед влево
                 if (y > 0 && x > 0)
@@ -126,7 +126,7 @@ namespace chesslib.Figures
                     TryAttackCell(x + 1, y - 1);
                 }
             }
-            else if (PlayerType == PlayerType.Black)
+            else if (PlayerType == PlayerColor.Black)
             {
                 
                 //Атака вперед влево

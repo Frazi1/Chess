@@ -1,4 +1,5 @@
 ﻿using chesslib.Player;
+using chesslib.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace chesslib.Strategy
                 .Game
                 .Board
                 .AlivePieces
-                .Where(p => p.PlayerType == _player.PlayerType)
+                .Where(p => p.PlayerType == _player.PlayerColor)
                 .ToList();
         }
         public Tuple<Piece, Cell> PrepareMove()
@@ -29,7 +30,7 @@ namespace chesslib.Strategy
                             .Game
                             .Board
                             .AlivePieces
-                            .Where(p => p.PlayerType == _player.PlayerType)
+                            .Where(p => p.PlayerType == _player.PlayerColor)
                             .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();

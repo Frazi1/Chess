@@ -53,7 +53,7 @@ namespace chesslib.Command
                 return false;
             if (_player != game.CurrentPlayer)
                 return false;
-            if (_player.PlayerType != _piece.PlayerType)
+            if (_player.PlayerColor != _piece.PlayerType)
                 return false;
             return _piece.CanMoveTo(_nextCell);
         }

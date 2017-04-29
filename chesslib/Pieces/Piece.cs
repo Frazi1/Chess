@@ -16,7 +16,7 @@ namespace chesslib
         public Board Board { get; private set; }
 
         public Cell CurrentCell { get; internal set; }
-        public PlayerType PlayerType { get; internal set; }
+        public PlayerColor PlayerType { get; internal set; }
         public PieceType PieceType { get; protected set; }
         public int MovesCounter { get; internal set; }
         public bool IsInGame { get; internal set; }
@@ -34,7 +34,7 @@ namespace chesslib
         public List<Cell> AttackedCells { get; protected set; }
 
 
-        public Piece(Cell currentCell, PlayerType playerType, Board board)
+        public Piece(Cell currentCell, PlayerColor playerType, Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)

@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace chesslib
+namespace chesslib.Player
 {
-	public enum PlayerType
-	{
-        None,
-		White,
-		Black
-	}
+    public enum Player
+    {
+        Human,
+        Computer
+    }
 }

@@ -7,7 +7,7 @@ namespace chesslib.Player
 {
     public interface IPlayer
     {
-        PlayerType PlayerType { get; set; }
+        PlayerColor PlayerColor { get; set; }
         MakeMoveCommand MakeMoveCommand { get; set; }
 
         Game Game { get; set; }

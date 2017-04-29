@@ -25,5 +25,15 @@ namespace chesslib.Utils
             _game.MoveCommands.RemoveAt(last);
             _game.RaiseGameStateChange();
         }
+
+        public void SaveToFile(string path)
+        {
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create))
+            {
+                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
+                                    new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                bf.Serialize(fs, _game);
+            }
+        }
     }
 }

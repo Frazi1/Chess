@@ -49,8 +49,11 @@
     <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
+    <Compile Include="Player\PlayerType.cs" />
     <Compile Include="Utils\BoardUtils.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Utils\GameFactory\GameCreationParams.cs" />
+    <Compile Include="Utils\GameFactory\GameFactory.cs" />
     <Compile Include="Utils\GameUtils.cs" />
     <Compile Include="Pieces\AllTypes\Bishop.cs" />
     <Compile Include="Pieces\Piece.cs" />
@@ -62,7 +65,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Pieces\PieceType.cs" />
     <Compile Include="Player\ComputerPlayer.cs" />
-    <Compile Include="Player\PlayerType.cs" />
+    <Compile Include="Player\PlayerColor.cs" />
     <Compile Include="Player\Interfaces\IPlayer.cs" />
     <Compile Include="Player\RealPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
