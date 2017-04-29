@@ -41,14 +41,38 @@ namespace chesslib.Figures
 
             foreach (var move in toCheck)
             {
-                TryAttackCell(move.Item1, move.Item2);
                 TryMoveToCell(move.Item1, move.Item2);
             }
         }
 
-        public override bool MoveTo(Cell cell)
+        public override void GetAttackedCells()
         {
-            return base.MoveTo(cell);
+            base.GetAttackedCells();
+
+            int x = CurrentCell.PosX;
+            int y = CurrentCell.PosY;
+            Cell[,] chessBoard = Board.ChessBoard;
+
+            int size = Board.ChessBoard.GetLength(0);
+
+            List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
+            {
+                //влево
+                new Tuple<int, int>(x-2,y-1),
+                new Tuple<int, int>(x-2,y+1),
+                new Tuple<int, int>(x-1,y+2),
+                new Tuple<int, int>(x-1,y-2),
+                //вправо
+                new Tuple<int, int>(x+2,y-1),
+                new Tuple<int, int>(x+2,y+1),
+                new Tuple<int, int>(x+1,y+2),
+                new Tuple<int, int>(x+1,y-2),
+            };
+
+            foreach (var move in toCheck)
+            {
+                TryAttackCell(move.Item1, move.Item2);
+            }
         }
     }
 }

@@ -51,7 +51,10 @@
     <Compile Include="Events\EventsDelegates.cs" />
     <Compile Include="Utils\BoardUtils.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Utils\GameMemento.cs" />
     <Compile Include="Utils\GameUtils.cs" />
+    <Compile Include="Interfaces\Memento\IOriginator.cs" />
+    <Compile Include="Interfaces\Memento\Memento.cs" />
     <Compile Include="Pieces\AllTypes\Bishop.cs" />
     <Compile Include="Pieces\Piece.cs" />
     <Compile Include="Pieces\AllTypes\King.cs" />

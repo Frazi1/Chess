@@ -1,16 +1,22 @@
 ﻿using chesslib.Command;
 using chesslib.Events;
 using chesslib.Field;
+using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace chesslib
 {
-    public class Game
+    public class Game : IOriginator<MakeMoveCommand>
     {
         private const int SIZE = 8;
-        private List<MakeMoveCommand> _moveCommands;
+        private MakeMoveCommand _prevMoveCommand;
+        private IPlayer _currentPlayer;
+
+        public GameUtils GameUtils { get; private set; }
 
         public Board Board { get; private set; }
         public bool IsPaused
@@ -19,28 +25,25 @@ namespace chesslib
             set { Board.IsPaused = value; }
         }
         public bool IsGameFinished { get { return Board.IsGameFinished; } }
-        public IPlayer CurrentPlayer { get { return Board.CurrentPlayer; } }
-        public List<MakeMoveCommand> MoveCommands
+        public List<IPlayer> Players { get; private set; }
+        public IPlayer CurrentPlayer
         {
-            get
+            get { return _currentPlayer; }
+            private set
             {
-                return _moveCommands;
-            }
-
-            set
-            {
-                _moveCommands = value;
+                if (_currentPlayer != value)
+                {
+                    _currentPlayer = value;
+                }
             }
         }
-        public GameUtils GameUtils { get; set; }
-
         public event EventsDelegates.GameStateChangedEventHandler GameStateChanged;
 
         public Game()
         {
             Board = new Board(SIZE);
             GameUtils = new GameUtils(this);
-            MoveCommands = new List<MakeMoveCommand>();
+            Players = new List<IPlayer>();
         }
 
         //public bool MakeMove(Piece piece, Cell nextCell, IPlayer player)
@@ -60,20 +63,31 @@ namespace chesslib
         //    return true;
         //}
 
-
+        public void LoadPreviousState()
+        {
+            CurrentPlayer.CancelTurn();
+            IsPaused = true;
+            GameUtils.LoadPreviousState();
+            RaiseGameStateChange();
+        }
         public bool AddPlayer(IPlayer player)
         {
-            bool added = Board.AddPlayer(player);
-            if (added)
+            if (Players.Count < 2 && !Players.Contains(player))
             {
                 player.MoveDone += Player_MoveDone;
                 player.Game = this;
+                Players.Add(player);
+                return true;
             }
-            return added;
+            return false;
         }
         public void Start()
         {
             Board.Start();
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerType == PlayerType.White);
+            if (!IsPaused && !IsGameFinished)
+                CurrentPlayer.DoTurn();
             RaiseGameStateChange();
         }
 
@@ -82,22 +96,59 @@ namespace chesslib
             if (e.MoveCommand.CanExecute(this))
             {
                 e.MoveCommand.Execute(this);
-                GameUtils.SaveState(e.MoveCommand);
+                _prevMoveCommand = e.MoveCommand;
+                GameUtils.SaveState();
+                Board.UpdatePiecesAndCells();
                 ChangeTurn();
-                //RaiseGameStateChange();
             }
         }
-        internal void RaiseGameStateChange()
+        private void RaiseGameStateChange()
         {
             if (GameStateChanged != null)
                 GameStateChanged(this, new GameStateChangedEventArgs(this));
         }
 
+
         internal void ChangeTurn()
         {
-            Board.ChangeTurn();
+            if (CurrentPlayer == Players[0])
+                CurrentPlayer = Players[1];
+            else
+                CurrentPlayer = Players[0];
+            IsCheckMate();
+            if (!Board.IsPaused)
+                CurrentPlayer.DoTurn();
             RaiseGameStateChange();
         }
 
+        private bool IsCheckMate()
+        {
+            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerType)
+                   .All(p => p.AllowedCells.Count == 0);
+            if (checkMate)
+            {
+                Board.IsGameFinished = true;
+                Board.IsPaused = true;
+            }
+            else
+            {
+                Board.IsGameFinished = false;
+            }
+            return checkMate;
+
+        }
+
+        #region Memento
+        public Memento<MakeMoveCommand> GetMemento()
+        {
+            return new Memento<MakeMoveCommand>(_prevMoveCommand);
+        }
+
+        public void SetMemento(Memento<MakeMoveCommand> value)
+        {
+            value.GetState().Undo(this);
+            //_prevMoveCommand = null;
+        }
+        #endregion
     }
 }

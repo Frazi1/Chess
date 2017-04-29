@@ -1,11 +1,17 @@
 ﻿using chesslib;
 using chesslib.Command;
+using chesslib.Memento;
 using chesslib.Player;
 using chesslib.Strategy;
+using ChessUI;
 using GalaSoft.MvvmLight;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ChessUI.ViewModel
 {
@@ -18,21 +24,21 @@ namespace ChessUI.ViewModel
         {
             ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
             RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
-            MoveCommands = new ObservableCollection<MakeMoveCommand>();
+            MementoStates = new ObservableCollection<Memento<MakeMoveCommand>>();
             Game = new Game();
 
             //TODO: передалать
-            //RealPlayer p1 = new RealPlayer(PlayerType.White);
+            RealPlayer p1 = new RealPlayer(PlayerType.White);
             RealPlayer p2 = new RealPlayer(PlayerType.Black);
-            ComputerPlayer p1 = new ComputerPlayer(PlayerType.White);
+            //ComputerPlayer p1 = new ComputerPlayer(PlayerType.White);
             //ComputerPlayer p2 = new ComputerPlayer(PlayerType.Black);
             Game.AddPlayer(p1);
             Game.AddPlayer(p2);
-            p1.Strategy = new DefaultComputerStrategy(p1);
+            //p1.Strategy = new DefaultComputerStrategy(p1);
             //p2.Strategy = new DefaultComputerStrategy(p2);
 
 
-            //RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
+            RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
             RealPlayersViewModels.Add(new RealPlayerViewModel(p2, this));
 
             //
@@ -49,7 +55,7 @@ namespace ChessUI.ViewModel
             set { _chessPieces = value; }
         }
         public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
-        public ObservableCollection<MakeMoveCommand> MoveCommands { get; set; }
+        public ObservableCollection<Memento<MakeMoveCommand>> MementoStates { get; set; }
         public RealPlayerViewModel ActivePlayerViewModel { get; set; }
         public ChessPieceViewModel SelectedPiece { get; set; }
 
@@ -68,7 +74,7 @@ namespace ChessUI.ViewModel
             get { return _game; }
             set { _game = value; }
         }
-        public bool CanUndo { get { return Game.MoveCommands.Count > 0; } }
+        public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
         public bool IsPaused { get { return Game.IsPaused; } }
 
         public void InitializePieces()
@@ -76,7 +82,7 @@ namespace ChessUI.ViewModel
             ChessPiecesViewModels.Clear();
             foreach (var item in Game.Board.AlivePieces)
             {
-                ChessPiecesViewModels.Add(new ChessPieceViewModel(item,Game));
+                ChessPiecesViewModels.Add(new ChessPieceViewModel(item, Game));
             }
         }
 
@@ -89,8 +95,10 @@ namespace ChessUI.ViewModel
             if (RealPlayersViewModels.Count > 0)
                 ActivePlayerViewModel = RealPlayersViewModels
                     .FirstOrDefault(p => p.Player.PlayerType == Game.CurrentPlayer.PlayerType);
-            if (e.IsCheck != null)
-                MessageBox.Show(e.IsCheck.ToString() + " Check");
+            if (e.IsCheckMate)
+                MessageBox.Show("Checkmate");
+            else if (e.IsCheck)
+                MessageBox.Show("Check");
         }
     }
 }
