@@ -1,17 +1,10 @@
 ﻿using chesslib;
 using chesslib.Command;
-using chesslib.Memento;
 using chesslib.Player;
-using chesslib.Strategy;
-using ChessUI;
 using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ChessUI.ViewModel
 {
@@ -24,7 +17,7 @@ namespace ChessUI.ViewModel
         {
             ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
             RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
-            MementoStates = new ObservableCollection<Memento<MakeMoveCommand>>();
+            MoveCommands = new ObservableCollection<MakeMoveCommand>();
             Game = new Game();
 
             //TODO: передалать
@@ -55,7 +48,7 @@ namespace ChessUI.ViewModel
             set { _chessPieces = value; }
         }
         public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
-        public ObservableCollection<Memento<MakeMoveCommand>> MementoStates { get; set; }
+        public ObservableCollection<MakeMoveCommand> MoveCommands { get; set; }
         public RealPlayerViewModel ActivePlayerViewModel { get; set; }
         public ChessPieceViewModel SelectedPiece { get; set; }
 
@@ -74,7 +67,7 @@ namespace ChessUI.ViewModel
             get { return _game; }
             set { _game = value; }
         }
-        public bool CanUndo { get { return Game.GameUtils.Memento.MementoList.Count > 0; } }
+        public bool CanUndo { get { return Game.MoveCommands.Count > 0; } }
         public bool IsPaused { get { return Game.IsPaused; } }
 
         public void InitializePieces()

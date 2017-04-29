@@ -87,11 +87,11 @@ namespace ChessUI
                 {
                     Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        _gameViewModel.MementoStates.Clear();
-                        var list = _gameViewModel.Game.GameUtils.Memento.MementoList;
+                        _gameViewModel.MoveCommands.Clear();
+                        var list = _gameViewModel.Game.MoveCommands;
                         for (int i = list.Count - 1; i >= 0; i--)
                         {
-                            _gameViewModel.MementoStates.Add(list[i]);
+                            _gameViewModel.MoveCommands.Add(list[i]);
                         }
                     }));
                     Thread.Sleep(500);
