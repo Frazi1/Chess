@@ -5,7 +5,7 @@ using System.Text;
 
 namespace chesslib.Player
 {
-    public enum Player
+    public enum PlayerType
     {
         Human,
         Computer
