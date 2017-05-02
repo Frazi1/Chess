@@ -149,7 +149,7 @@
         <!--Menu-->
         <Menu>
             <MenuItem Header="File">
-                <MenuItem Header="Save" Click="MenuItem_SaveGame_Click"/>
+                <MenuItem Header="Save" Command="{Binding Path=Main.Commands.SaveGameCommand}" CommandParameter="{Binding Path=Main.Game}" />
                 <MenuItem Header="New Game" Click="MenuItem_NewGame_Click">
                 </MenuItem>
             </MenuItem>

@@ -1,6 +1,8 @@
 ﻿using chesslib;
 using chesslib.Command;
 using chesslib.Player;
+using chesslib.Strategy;
+using chesslib.Utils;
 using ChessUI.Command;
 using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
@@ -13,47 +15,39 @@ namespace ChessUI.ViewModel
     {
         private ObservableCollection<ChessPieceViewModel> _chessPieces;
         private Game _game;
+        private string _path;
 
         public GameViewModel()
         {
             ChessPiecesViewModels = new ObservableCollection<ChessPieceViewModel>();
-            RealPlayersViewModels = new ObservableCollection<RealPlayerViewModel>();
+            PlayersViewModels = new ObservableCollection<PlayerViewModel>();
             MoveCommands = new ObservableCollection<MakeMoveCommand>();
-            Game = new Game();
-            Commands = new Commands();
-
-            //TODO: передалать
-            RealPlayer p1 = new RealPlayer(PlayerColor.White);
-            RealPlayer p2 = new RealPlayer(PlayerColor.Black);
-            //ComputerPlayer p1 = new ComputerPlayer(PlayerType.White);
-            //ComputerPlayer p2 = new ComputerPlayer(PlayerType.Black);
-            Game.AddPlayer(p1);
-            Game.AddPlayer(p2);
-            //p1.Strategy = new DefaultComputerStrategy(p1);
-            //p2.Strategy = new DefaultComputerStrategy(p2);
-
-
-            RealPlayersViewModels.Add(new RealPlayerViewModel(p1, this));
-            RealPlayersViewModels.Add(new RealPlayerViewModel(p2, this));
-
-            //
-
-            InitializePieces();
-            Game.GameStateChanged += Game_GameStateChanged;
-
-            //Commands
+            Commands = new Commands(this);
         }
 
         public Commands Commands { get; set; }
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+
+            set
+            {
+                _path = value;
+                RaisePropertyChanged(() => Path);
+            }
+        }
 
         public ObservableCollection<ChessPieceViewModel> ChessPiecesViewModels
         {
             get { return _chessPieces; }
             set { _chessPieces = value; }
         }
-        public ObservableCollection<RealPlayerViewModel> RealPlayersViewModels { get; set; }
+        public ObservableCollection<PlayerViewModel> PlayersViewModels { get; set; }
         public ObservableCollection<MakeMoveCommand> MoveCommands { get; set; }
-        public RealPlayerViewModel ActivePlayerViewModel { get; set; }
+        public PlayerViewModel ActivePlayerViewModel { get; set; }
         public ChessPieceViewModel SelectedPiece { get; set; }
 
         public Cell NextCell { get; set; }
@@ -69,33 +63,50 @@ namespace ChessUI.ViewModel
         public Game Game
         {
             get { return _game; }
-            set { _game = value; }
+            set { _game = value; RaisePropertyChanged(() => Game); }
         }
         public bool CanUndo { get { return Game.MoveCommands.Count > 0; } }
         public bool IsPaused { get { return Game.IsPaused; } }
-
-        public void InitializePieces()
-        {
-            ChessPiecesViewModels.Clear();
-            foreach (var item in Game.Board.AlivePieces)
-            {
-                ChessPiecesViewModels.Add(new ChessPieceViewModel(item, Game));
-            }
-        }
-
+      
         private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
             RaisePropertyChanged(() => PlayerType);
             RaisePropertyChanged(() => CanUndo);
             RaisePropertyChanged(() => IsPaused);
 
-            if (RealPlayersViewModels.Count > 0)
-                ActivePlayerViewModel = RealPlayersViewModels
+            if (PlayersViewModels.Count > 0)
+                ActivePlayerViewModel = PlayersViewModels
                     .FirstOrDefault(p => p.Player.PlayerColor == Game.CurrentPlayer.PlayerColor);
             if (e.IsCheckMate)
                 MessageBox.Show("Checkmate");
             else if (e.IsCheck)
                 MessageBox.Show("Check");
+        }
+
+        public void Initialize(Game game)
+        {
+            Game = game;
+            Game.Players.ForEach(p => PlayersViewModels.Add(new PlayerViewModel(p, this)));
+
+            InitializePieces();
+            Game.GameStateChanged += Game_GameStateChanged;
+            Game.Start();
+        }
+
+        public void Reset()
+        {
+            Game = null;
+            ChessPiecesViewModels.Clear();
+            PlayersViewModels.Clear();
+            MoveCommands.Clear();
+        }
+        private void InitializePieces()
+        {
+            ChessPiecesViewModels.Clear();
+            foreach (var item in Game.Board.AlivePieces)
+            {
+                ChessPiecesViewModels.Add(new ChessPieceViewModel(item, Game));
+            }
         }
     }
 }

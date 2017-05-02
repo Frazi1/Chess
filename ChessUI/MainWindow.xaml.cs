@@ -88,11 +88,14 @@ namespace ChessUI
                 {
                     Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        _gameViewModel.MoveCommands.Clear();
-                        var list = _gameViewModel.Game.MoveCommands;
-                        for (int i = list.Count - 1; i >= 0; i--)
+                        if (_gameViewModel.Game != null)
                         {
-                            _gameViewModel.MoveCommands.Add(list[i]);
+                            _gameViewModel.MoveCommands.Clear();
+                            var list = _gameViewModel.Game.MoveCommands;
+                            for (int i = list.Count - 1; i >= 0; i--)
+                            {
+                                _gameViewModel.MoveCommands.Add(list[i]);
+                            }
                         }
                     }));
                     Thread.Sleep(500);
@@ -103,7 +106,7 @@ namespace ChessUI
         private void MenuItem_NewGame_Click(object sender, RoutedEventArgs e)
         {
             Window newGame = new NewGame();
-            newGame.Show();
+            newGame.ShowDialog();
         }
 
         private void MenuItem_SaveGame_Click(object sender, RoutedEventArgs e)
