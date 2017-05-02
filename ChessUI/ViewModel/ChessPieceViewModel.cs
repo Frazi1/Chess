@@ -17,29 +17,7 @@ namespace ChessUI.ViewModel
         public ChessPieceViewModel(Piece piece, Game game)
         {
             _piece = piece;
-            switch (piece.GetType().Name)
-            {
-                case "Pawn":
-                    PieceType = PieceType.Pawn;
-                    break;
-                case "Knight":
-                    PieceType = PieceType.Knight;
-                    break;
-                case "Bishop":
-                    PieceType = PieceType.Bishop;
-                    break;
-                case "Rook":
-                    PieceType = PieceType.Rook;
-                    break;
-                case "Queen":
-                    PieceType = PieceType.Queen;
-                    break;
-                case "King":
-                    PieceType = PieceType.King;
-                    break;
-                default:
-                    break;
-            }
+            PieceType = piece.PieceType;
             game.GameStateChanged += Game_GameStateChanged;
         }
 
