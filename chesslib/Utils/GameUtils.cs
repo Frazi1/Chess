@@ -32,7 +32,23 @@ namespace chesslib.Utils
             {
                 System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
                                     new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                bf.Serialize(fs, _game);
+                bf.Serialize(fs, _game.MoveCommands);
+                fs.Close();
+            }
+        }
+        public void LoadFromFile(string path)
+        {
+            while (_game.MoveCommands.Count > 0)
+            {
+                LoadPreviousState();
+            }
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open))
+            {
+                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
+                                    new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                MoveCommands moveCommands = (MoveCommands) bf.Deserialize(fs);
+                fs.Close();
+                _game.MoveCommands = moveCommands;
             }
         }
     }
