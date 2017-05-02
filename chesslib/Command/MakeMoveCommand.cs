@@ -3,20 +3,21 @@ using System;
 
 namespace chesslib.Command
 {
+    [Serializable]
     public class MakeMoveCommand : ICommand
     {
         private Piece _piece;
-        private IPlayer _player;
+        private PlayerColor _playerColor;
         private Cell _nextCell;
         private Cell _prevCell;
         private Piece _destroyedPiece;
 
-        public MakeMoveCommand(IPlayer player,
+        public MakeMoveCommand(PlayerColor playerColor,
             Piece piece,
             Cell nextCell)
         {
             _piece = piece;
-            _player = player;
+            _playerColor = playerColor;
             _nextCell = nextCell;
             _prevCell = _piece.CurrentCell;
         }
@@ -51,17 +52,17 @@ namespace chesslib.Command
             Game game = (Game) parameter;
             if (game.IsPaused || game.IsGameFinished)
                 return false;
-            if (_player != game.CurrentPlayer)
+            if (_playerColor != game.CurrentPlayer.PlayerColor)
                 return false;
-            if (_player.PlayerColor != _piece.PlayerType)
+            if (_playerColor != _piece.PlayerType)
                 return false;
             return _piece.CanMoveTo(_nextCell);
         }
 
         public void Execute(object parameter)
         {
-            if (CanExecute(parameter))
-            {
+            //if (CanExecute(parameter))
+            //{
                 Game game = (Game) parameter;
                 //game.GameUtils.SaveState();
                 _destroyedPiece = _nextCell.Piece;
@@ -70,7 +71,7 @@ namespace chesslib.Command
                 _piece.MoveTo(_nextCell);
                 //game.Update(game);
                 //game.ChangeTurn();
-            }
+            //}
         }
 
         public void Undo(object parameter)
