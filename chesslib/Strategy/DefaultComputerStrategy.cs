@@ -1,4 +1,5 @@
-﻿using chesslib.Player;
+﻿using chesslib.Field;
+using chesslib.Player;
 using chesslib.Strategy;
 using System;
 using System.Collections.Generic;
@@ -9,28 +10,20 @@ namespace chesslib.Strategy
 {
     public class DefaultComputerStrategy : IStrategy
     {
-        private IPlayer _player;
+        //private IPlayer _player;
 
-        private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
+        //private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
         private List<Piece> AlivePieces { get; set; }
 
-        public DefaultComputerStrategy(IPlayer player)
+        public DefaultComputerStrategy()
         {
-            _player = player;
-            AlivePieces = _player
-                .Game
-                .Board
-                .AlivePieces
-                .Where(p => p.PlayerType == _player.PlayerColor)
-                .ToList();
         }
-        public Tuple<Piece, Cell> PrepareMove()
+
+        public Tuple<Piece, Cell> PrepareMove(IPlayer player, Board board)
         {
-            AlivePieces = _player
-                            .Game
-                            .Board
+            AlivePieces = board
                             .AlivePieces
-                            .Where(p => p.PlayerType == _player.PlayerColor)
+                            .Where(p => p.PlayerType == player.PlayerColor)
                             .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
