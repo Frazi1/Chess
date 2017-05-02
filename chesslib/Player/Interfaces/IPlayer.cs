@@ -8,11 +8,10 @@ namespace chesslib.Player
     public interface IPlayer
     {
         PlayerColor PlayerColor { get; set; }
+        PlayerType PlayerType { get; }
         MakeMoveCommand MakeMoveCommand { get; set; }
 
-        Game Game { get; set; }
-
-        void DoTurn();
+        void DoTurn(Game game);
         void CancelTurn();
 
         event EventsDelegates.MoveDoneEventHandler MoveDone;

@@ -13,34 +13,30 @@ namespace chesslib.Player
 {
     public class RealPlayer : IPlayer
     {
-        private Game _game;
         private MakeMoveCommand _makeMoveCommand;
 
-        public RealPlayer(PlayerColor playerType)
+        public RealPlayer(PlayerColor playerColor)
         {
-            PlayerColor = playerType;
-        }
-        public Game Game
-        {
-            get { return _game; }
-            set { _game = value; }
+            PlayerColor = playerColor;
+            PlayerType = PlayerType.Human;
         }
         public PlayerColor PlayerColor { get; set; }
         public MakeMoveCommand MakeMoveCommand
         {
             get { return _makeMoveCommand; }
-            set { if (!_game.IsPaused) _makeMoveCommand = value; }
+            set { /*if (!_game.IsPaused) */_makeMoveCommand = value; }
         }
         public Thread CurrentThread { get; private set; }
+        public PlayerType PlayerType { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
         public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
 
-        public void DoTurn()
+        public void DoTurn(Game game)
         {
             if (MovingInProcess != null)
                 MovingInProcess(this, new MovingInProcessEventArgs(this));
-            CurrentThread = new Thread(MakeMove)
+            CurrentThread = new Thread(() => MakeMove(game))
             {
                 IsBackground = true
             };
@@ -52,10 +48,11 @@ namespace chesslib.Player
                 CurrentThread.Abort();
         }
 
-        private void MakeMove()
+        private void MakeMove(Game game)
         {
+            MakeMoveCommand = null;
             while (MakeMoveCommand == null 
-                || !MakeMoveCommand.CanExecute(Game))
+                || !MakeMoveCommand.CanExecute(game))
             {
                 Thread.Sleep(100);
             }
