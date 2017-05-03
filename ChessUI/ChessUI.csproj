@@ -86,7 +86,7 @@
       <DependentUpon>NewGame.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\GameViewModel.cs" />
-    <Compile Include="ViewModel\RealPlayerViewModel.cs" />
+    <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -85,6 +85,7 @@ namespace ChessUI.ViewModel
 
         public void Initialize(Game game)
         {
+            Reset();
             Game = game;
             Game.Players.ForEach(p => PlayersViewModels.Add(new PlayerViewModel(p, this)));
 
