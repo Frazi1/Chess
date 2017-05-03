@@ -30,12 +30,9 @@ namespace chesslib.Player
         public PlayerType PlayerType { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
-        public event EventsDelegates.MovingInProcessEventHandler MovingInProcess;
 
         public void DoTurn(Game game)
         {
-            if (MovingInProcess != null)
-                MovingInProcess(this, new MovingInProcessEventArgs(this));
             CurrentThread = new Thread(() => MakeMove(game))
             {
                 IsBackground = true
