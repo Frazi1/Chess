@@ -1,6 +1,7 @@
 ﻿using chesslib.Strategy;
 using ChessUI.ViewModel;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Win32;
 using System;
 using System.Threading;
 using System.Windows;
@@ -76,7 +77,7 @@ namespace ChessUI
 
         private void button_prev_Click(object sender, RoutedEventArgs e)
         {
-            _gameViewModel.Game.LoadPreviousState();
+            _gameViewModel.Game.GameUtils.LoadPreviousState();
         }
 
         private void ListView_Loaded(object sender, RoutedEventArgs e)
@@ -87,16 +88,38 @@ namespace ChessUI
                 {
                     Dispatcher.BeginInvoke((Action)(() =>
                     {
-                        _gameViewModel.MoveCommands.Clear();
-                        var list = _gameViewModel.Game.MoveCommands;
-                        for (int i = list.Count - 1; i >= 0; i--)
+                        if (_gameViewModel.Game != null)
                         {
-                            _gameViewModel.MoveCommands.Add(list[i]);
+                            _gameViewModel.MoveCommands.Clear();
+                            var list = _gameViewModel.Game.MoveCommands;
+                            for (int i = list.Count - 1; i >= 0; i--)
+                            {
+                                _gameViewModel.MoveCommands.Add(list[i]);
+                            }
                         }
                     }));
                     Thread.Sleep(500);
                 }
             });
+        }
+
+        private void MenuItem_NewGame_Click(object sender, RoutedEventArgs e)
+        {
+            Window newGame = new NewGame();
+            newGame.ShowDialog();
+        }
+
+        private void MenuItem_SaveGame_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Файлы игры (*.chess)|*.chess|Все файлы (*.*)|*.*";
+            if ((bool) sfd.ShowDialog())
+            {
+                string path = sfd.FileName;
+                _gameViewModel.Game.GameUtils.SaveToFile(path);
+            }
+
+            
         }
     }
 }

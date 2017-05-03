@@ -43,7 +43,7 @@ namespace chesslib
             return string.Format("{0}, {1}", PosX, PosY);
         }
 
-        public bool IsAttacked(PlayerType playerType)
+        public bool IsAttacked(PlayerColor playerType)
         {
             return AttackersList
                     .Where(a => a.PlayerType != playerType)

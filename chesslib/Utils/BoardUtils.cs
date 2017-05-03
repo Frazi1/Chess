@@ -17,7 +17,7 @@ namespace chesslib.Utils
                             y < chessBoard.GetLength(0);
         }
 
-        public static bool IsCheck(Board board, PlayerType playerType)
+        public static bool IsCheck(Board board, PlayerColor playerType)
         {
             return board
                     .AlivePieces

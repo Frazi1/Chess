@@ -1,4 +1,6 @@
-﻿using chesslib.Player;
+﻿using chesslib.Field;
+using chesslib.Player;
+using chesslib.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +10,25 @@ namespace chesslib.Strategy
 {
     public class DefaultComputerStrategy : IStrategy
     {
-        private IPlayer _player;
+        //private IPlayer _player;
 
-        private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
+        //private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
         private List<Piece> AlivePieces { get; set; }
 
-        public DefaultComputerStrategy(IPlayer player)
+        public Tuple<Cell, Cell> PrepareMove(IPlayer player, Board board)
         {
-            _player = player;
-            AlivePieces = _player
-                .Game
-                .Board
-                .AlivePieces
-                .Where(p => p.PlayerType == _player.PlayerType)
-                .ToList();
-        }
-        public Tuple<Piece, Cell> PrepareMove()
-        {
-            AlivePieces = _player
-                            .Game
-                            .Board
+            AlivePieces = board
                             .AlivePieces
-                            .Where(p => p.PlayerType == _player.PlayerType)
+                            .Where(p => p.PlayerType == player.PlayerColor)
                             .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
             Piece piece = AlivePieces.First(p => p.AllowedCells.Count > 0);
-            Cell cell = piece.AllowedCells
+            Cell nextCell = piece.AllowedCells
                 .OrderBy(p => r.Next()).First();
 
 
-            return new Tuple<Piece, Cell>(piece, cell);
+            return new Tuple<Cell, Cell>(piece.CurrentCell, nextCell);
         }
     }
 }

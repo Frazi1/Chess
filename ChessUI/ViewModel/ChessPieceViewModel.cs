@@ -17,29 +17,7 @@ namespace ChessUI.ViewModel
         public ChessPieceViewModel(Piece piece, Game game)
         {
             _piece = piece;
-            switch (piece.GetType().Name)
-            {
-                case "Pawn":
-                    PieceType = PieceType.Pawn;
-                    break;
-                case "Knight":
-                    PieceType = PieceType.Knight;
-                    break;
-                case "Bishop":
-                    PieceType = PieceType.Bishop;
-                    break;
-                case "Rook":
-                    PieceType = PieceType.Rook;
-                    break;
-                case "Queen":
-                    PieceType = PieceType.Queen;
-                    break;
-                case "King":
-                    PieceType = PieceType.King;
-                    break;
-                default:
-                    break;
-            }
+            PieceType = piece.PieceType;
             game.GameStateChanged += Game_GameStateChanged;
         }
 
@@ -57,7 +35,7 @@ namespace ChessUI.ViewModel
             get { return this._pieceType; }
             set { this._pieceType = value; RaisePropertyChanged(() => this.PieceType); }
         }
-        public PlayerType PlayerType
+        public PlayerColor PlayerType
         {
             get { return _piece.PlayerType; }
             //set { _piece.PlayerType = value; RaisePropertyChanged(() => _piece.PlayerType); }
@@ -66,9 +44,13 @@ namespace ChessUI.ViewModel
 
         private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
+            UpdatePiece();
+        }
+
+        public void UpdatePiece()
+        {
             RaisePropertyChanged(() => _piece.CurrentCell.PosY);
             RaisePropertyChanged(() => _piece.CurrentCell.PosX);
         }
-
     }
 }

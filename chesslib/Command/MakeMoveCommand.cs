@@ -1,102 +1,138 @@
 ﻿using chesslib.Player;
 using System;
+using chesslib.Field;
 
 namespace chesslib.Command
 {
+    [Serializable]
     public class MakeMoveCommand : ICommand
     {
-        private Piece _piece;
-        private IPlayer _player;
-        private Cell _nextCell;
-        private Cell _prevCell;
+        //private Piece _piece;
+        private PlayerColor _playerColor;
+        //private Cell _nextCell;
+        //private Cell _prevCell;
         private Piece _destroyedPiece;
 
-        public MakeMoveCommand(IPlayer player,
-            Piece piece,
-            Cell nextCell)
+        private int prevX;
+        private int prevY;
+        private int nextX;
+        private int nextY;
+
+        public MakeMoveCommand(PlayerColor playerColor, int prevX, int prevY, int nextX, int nextY)
         {
-            _piece = piece;
-            _player = player;
-            _nextCell = nextCell;
-            _prevCell = _piece.CurrentCell;
+            _playerColor = playerColor;
+            this.PrevX = prevX;
+            this.PrevY = prevY;
+            this.NextX = nextX;
+            this.NextY = nextY;
         }
 
-        public Cell NextCell
+        public int PrevX
         {
             get
             {
-                return _nextCell;
+                return prevX;
             }
 
-            private set
+            set
             {
-                _nextCell = value;
+                prevX = value;
             }
         }
-        public Cell PrevCell
+        public int PrevY
         {
             get
             {
-                return _prevCell;
+                return prevY;
             }
 
-            private set
+            set
             {
-                _prevCell = value;
+                prevY = value;
+            }
+        }
+        public int NextX
+        {
+            get
+            {
+                return nextX;
+            }
+
+            set
+            {
+                nextX = value;
+            }
+        }
+        public int NextY
+        {
+            get
+            {
+                return nextY;
+            }
+
+            set
+            {
+                nextY = value;
             }
         }
 
         public bool CanExecute(object parameter)
         {
             Game game = (Game) parameter;
+            Cell[,] chessBoard = game.Board.ChessBoard;
+            var nextCell = chessBoard[NextX, NextY];
+            var piece = chessBoard[PrevX, PrevY].Piece;
+
             if (game.IsPaused || game.IsGameFinished)
                 return false;
-            if (_player != game.CurrentPlayer)
+            if (_playerColor != game.CurrentPlayer.PlayerColor)
                 return false;
-            if (_player.PlayerType != _piece.PlayerType)
+            if (_playerColor != piece.PlayerType)
                 return false;
-            return _piece.CanMoveTo(_nextCell);
+            return piece.CanMoveTo(nextCell);
         }
 
         public void Execute(object parameter)
         {
-            if (CanExecute(parameter))
-            {
-                Game game = (Game) parameter;
-                //game.GameUtils.SaveState();
-                _destroyedPiece = _nextCell.Piece;
-                if (_destroyedPiece != null)
-                    game.Board.DestroyPiece(_destroyedPiece);
-                _piece.MoveTo(_nextCell);
-                //game.Update(game);
-                //game.ChangeTurn();
-            }
+            Game game = (Game) parameter;
+            Cell[,] chessBoard = game.Board.ChessBoard;
+            var nextCell = chessBoard[NextX, NextY];
+            var piece = chessBoard[PrevX, PrevY].Piece;
+
+            _destroyedPiece = nextCell.Piece;
+            if (_destroyedPiece != null)
+                game.Board.DestroyPiece(_destroyedPiece);
+            piece.MoveTo(nextCell);
         }
 
         public void Undo(object parameter)
         {
             Game game = (Game) parameter;
+            Cell[,] chessBoard = game.Board.ChessBoard;
+            var nextCell = chessBoard[NextX, NextY];
+            var prevCell = chessBoard[PrevX, PrevY];
+            var piece = chessBoard[NextX, NextY].Piece;
             game.ChangeTurn();
             //_piece.MoveTo(_prevCell, _player);
 
             //Удаляем фигуру из текущей клетки
-            _nextCell.Piece = null;
+            nextCell.Piece = null;
             //Ставим фигуру на предудущую клетку
-            _piece.CurrentCell = _prevCell;
-            _prevCell.Piece = _piece;
-            _piece.MovesCounter--;
+            piece.CurrentCell = prevCell;
+            prevCell.Piece = piece;
+            piece.MovesCounter--;
             if (_destroyedPiece != null)
             {
                 _destroyedPiece.IsInGame = true;
-                _nextCell.Piece = _destroyedPiece;
-                _destroyedPiece.CurrentCell = _nextCell;
+                nextCell.Piece = _destroyedPiece;
+                _destroyedPiece.CurrentCell = nextCell;
                 game.Board.AlivePieces.Add(_destroyedPiece);
             }
-
+  
         }
         public override string ToString()
         {
-            return string.Format("from {0} to {1}",_prevCell, NextCell);
+            return string.Format("from {0}, {1} to {2}, {3}", PrevX, PrevY, NextX, NextY);
         }
     }
 }

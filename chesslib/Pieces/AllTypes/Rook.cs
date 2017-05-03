@@ -11,7 +11,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Rook : Piece
     {
-        public Rook(Cell currentCell, PlayerType playerType, Board board) : base(currentCell, playerType, board)
+        public Rook(Cell currentCell, PlayerColor playerType, Board board) : base(currentCell, playerType, board)
         {
             PieceType = PieceType.Rook;
         }

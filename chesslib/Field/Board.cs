@@ -41,33 +41,33 @@ namespace chesslib.Field
         {
 
             //black
-            AlivePieces.Add(new Rook(ChessBoard[0, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Knight(ChessBoard[1, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Bishop(ChessBoard[2, 0], PlayerType.Black, this));
-            AlivePieces.Add(new King(ChessBoard[3, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Queen(ChessBoard[4, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Bishop(ChessBoard[5, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerType.Black, this));
-            AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerType.Black, this));
+            AlivePieces.Add(new Rook(ChessBoard[0, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Knight(ChessBoard[1, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Bishop(ChessBoard[2, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new King(ChessBoard[3, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Queen(ChessBoard[4, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Bishop(ChessBoard[5, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerColor.Black, this));
+            AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerColor.Black, this));
 
             for (int i = 0; i < SIZE; i++)
             {
-                AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerType.Black, this));
+                AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerColor.Black, this));
             }
 
             //white
-            AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerType.White, this));
-            AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerType.White, this));
-            AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerType.White, this));
-            AlivePieces.Add(new King(ChessBoard[4, 7], PlayerType.White, this));
-            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerType.White, this));
-            AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerType.White, this));
-            AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerType.White, this));
-            AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerType.White, this));
+            AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerColor.White, this));
+            AlivePieces.Add(new King(ChessBoard[4, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerColor.White, this));
 
             for (int i = 0; i < SIZE; i++)
             {
-                AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerType.White, this));
+                AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerColor.White, this));
             }
 
         }
