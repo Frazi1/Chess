@@ -155,28 +155,44 @@
             </MenuItem>
         </Menu>
         <!--ChessBoard-->
-        <Viewbox Grid.Column="1" Grid.Row="2">
-            <ItemsControl x:Name="ChessBoard" HorizontalContentAlignment="Stretch" Height="8" Width="8" HorizontalAlignment="Right" ItemsSource="{Binding Main.ChessPiecesViewModels}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" MouseDown="Canvas_MouseDown"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="1" Height="1">
-                            <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Left" Value="{Binding PosX}" />
-                        <Setter Property="Canvas.Top" Value="{Binding PosY}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-        </Viewbox>
+        <Grid Grid.Column="1" Grid.Row="2" x:Name="Board">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Right">
+                <TextBlock Text="A" FontSize="60" />
+                <TextBlock Text="B" FontSize="60" />
+                <TextBlock Text="C" FontSize="60" HorizontalAlignment="Right" />
+                <TextBlock Text="D" FontSize="60" />
+                <TextBlock Text="E" FontSize="60" />
+                <TextBlock Text="F" FontSize="60" />
+                <TextBlock Text="G" FontSize="60" />
+                <TextBlock Text="H" FontSize="60" />
+            </StackPanel>
+            <Viewbox Grid.Column="1">
+                <ItemsControl x:Name="ChessBoard" Height="8" Width="8" HorizontalAlignment="Left" ItemsSource="{Binding Main.ChessPiecesViewModels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" MouseDown="Canvas_MouseDown"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="1" Height="1">
+                                <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left" Value="{Binding PosX}" />
+                            <Setter Property="Canvas.Top" Value="{Binding PosY}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Viewbox>
+        </Grid>
         <!--Current Player-->
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource Locator}, Path=Main.PlayerType}" VerticalAlignment="Top" Width="87" Height="26" Grid.Row="1"/>
         <!--Button Start-->
@@ -201,3 +217,4 @@
         </ListView>
     </Grid>
 </Window>
+
