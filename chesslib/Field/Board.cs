@@ -9,7 +9,6 @@ namespace chesslib.Field
     {
         private readonly int SIZE;
 
-
         public Cell[,] ChessBoard { get; private set; }
         public List<Piece> AlivePieces { get; private set; }
 
@@ -72,12 +71,17 @@ namespace chesslib.Field
 
         }
 
+        internal void Start()
+        {
+            UpdatePiecesAndCells();
+            IsPaused = false;
+        }
+
         public void UpdatePiecesAndCells()
         {
             UpdateAttackedCells();
             UpdatePiecesMoves();
         }
-
         public void UpdateAttackedCells()
         {
             //Clear attackers lists
@@ -95,7 +99,6 @@ namespace chesslib.Field
                 p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
             }
         }
-
         public void UpdatePiecesMoves()
         {
             foreach (var p in AlivePieces)
@@ -103,7 +106,6 @@ namespace chesslib.Field
                 p.SetAllowedMoves();
             }
         }
-
         public void DestroyPiece(Piece piece)
         {
             if (AlivePieces.Contains(piece))
@@ -114,12 +116,5 @@ namespace chesslib.Field
             }
         }
 
-
-        internal void Start()
-        {
-            UpdatePiecesAndCells();
-            IsPaused = false;
-        }
-       
     }
 }

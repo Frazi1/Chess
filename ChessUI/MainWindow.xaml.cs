@@ -41,8 +41,7 @@ namespace ChessUI
                         {
                             _gameViewModel.NextCell = _gameViewModel
                                 .Game
-                                .Board
-                                .ChessBoard[x, y];
+                                .GetCell(x, y);
                             _gameViewModel
                                 .ActivePlayerViewModel.PushCommand();
 
@@ -63,7 +62,7 @@ namespace ChessUI
                 int x = (int) e.GetPosition(this.ChessBoard).X;
                 int y = (int) e.GetPosition(this.ChessBoard).Y;
                 string text = "";
-                var piece = _gameViewModel.Game.Board.ChessBoard[x, y].Piece;
+                var piece = _gameViewModel.Game.GetPiece(x, y);
                 if (piece != null)
                     piece.AllowedCells.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
                 MessageBox.Show(text);

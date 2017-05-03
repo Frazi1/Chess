@@ -96,27 +96,7 @@ namespace chesslib
             _moveCommands = new MoveCommands();
         }
 
-        public void Start()
-        {
-            Board.Start();
-            if (CurrentPlayer == null)
-                CurrentPlayer = Players.First(p => p.PlayerColor == PlayerColor.White);
-            if (!IsPaused && !IsGameFinished)
-                CurrentPlayer.DoTurn(this);
-            RaiseGameStateChange();
-        }
-        public void LoadFromFile(string path)
-        {
-            IsPaused = true;
-            GameUtils.LoadFromFile(path);
-            foreach (var comm in MoveCommands)
-            {
-                comm.Execute(this);
-                Board.UpdatePiecesAndCells();
-                ChangeTurn();
-            }
-        }
-
+        
         internal void ChangeTurn()
         {
             CurrentPlayer = CurrentPlayer == Players[0] ? Players[1] : Players[0];
@@ -169,5 +149,33 @@ namespace chesslib
             }
         }
 
+        public Piece GetPiece(int x, int y)
+        {
+            return GetCell(x, y).Piece;
+        }
+        public Cell GetCell(int x, int y)
+        {
+            return Board.ChessBoard[x, y];
+        }
+        public void Start()
+        {
+            Board.Start();
+            if (CurrentPlayer == null)
+                CurrentPlayer = Players.First(p => p.PlayerColor == PlayerColor.White);
+            if (!IsPaused && !IsGameFinished)
+                CurrentPlayer.DoTurn(this);
+            RaiseGameStateChange();
+        }
+        public void LoadFromFile(string path)
+        {
+            IsPaused = true;
+            GameUtils.LoadFromFile(path);
+            foreach (var comm in MoveCommands)
+            {
+                comm.Execute(this);
+                Board.UpdatePiecesAndCells();
+                ChangeTurn();
+            }
+        }
     }
 }
