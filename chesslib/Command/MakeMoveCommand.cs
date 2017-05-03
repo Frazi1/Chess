@@ -1,6 +1,4 @@
-﻿using chesslib.Player;
-using System;
-using chesslib.Field;
+﻿using System;
 
 namespace chesslib.Command
 {
@@ -21,10 +19,10 @@ namespace chesslib.Command
         public MakeMoveCommand(PlayerColor playerColor, int prevX, int prevY, int nextX, int nextY)
         {
             _playerColor = playerColor;
-            this.PrevX = prevX;
-            this.PrevY = prevY;
-            this.NextX = nextX;
-            this.NextY = nextY;
+            PrevX = prevX;
+            PrevY = prevY;
+            NextX = nextX;
+            NextY = nextY;
         }
 
         public int PrevX

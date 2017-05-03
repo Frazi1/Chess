@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using chesslib.Command;
+﻿using chesslib.Command;
 using chesslib.Strategy;
 using System.Threading;
 using chesslib.Events;
@@ -13,8 +9,8 @@ namespace chesslib.Player
     {
         public PlayerColor PlayerColor { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
-        public IStrategy Strategy { get; set; }
-        public Thread CurrentThread { get; private set; }
+        private IStrategy Strategy { get; set; }
+        private Thread CurrentThread { get; set; }
         public PlayerType PlayerType { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
@@ -47,7 +43,10 @@ namespace chesslib.Player
 
         public void DoTurn(Game game)
         {
-            Thread CurrentThread = new Thread(() => MakeMove(game));
+            CurrentThread = new Thread(() => MakeMove(game))
+            {
+                IsBackground = true
+            };
             CurrentThread.Start();
         }
         public void CancelTurn()

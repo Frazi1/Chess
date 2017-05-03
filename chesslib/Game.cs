@@ -11,7 +11,7 @@ namespace chesslib
 {
     public class Game
     {
-        private const int SIZE = 8;
+        private const int Size = 8;
         private MoveCommands _moveCommands;
         private IPlayer _currentPlayer;
         private List<IPlayer> _players;
@@ -90,26 +90,12 @@ namespace chesslib
 
         public Game()
         {
-            Board = new Board(SIZE);
+            Board = new Board(Size);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
             _moveCommands = new MoveCommands();
         }
 
-        public void AddPlayer(IPlayer player)
-        {
-            if (Players.Any(p => p.PlayerColor == player.PlayerColor))
-                throw new ArgumentException("Игрок такого цвета уже добавлен");
-
-            if (Players.Count < 2)
-            {
-                player.MoveDone += Player_MoveDone;
-                //player.Game = this;
-                Players.Add(player);
-                return;
-            }
-            return;
-        }
         public void Start()
         {
             Board.Start();
@@ -131,6 +117,34 @@ namespace chesslib
             }
         }
 
+        internal void ChangeTurn()
+        {
+            CurrentPlayer = CurrentPlayer == Players[0] ? Players[1] : Players[0];
+            CheckMate();
+            if (!Board.IsPaused)
+                CurrentPlayer.DoTurn(this);
+            RaiseGameStateChange();
+        }
+        internal void RaiseGameStateChange()
+        {
+            if (GameStateChanged != null)
+                GameStateChanged(this, new GameStateChangedEventArgs(this));
+        }
+        internal void AddPlayer(IPlayer player)
+        {
+            if (Players.Any(p => p.PlayerColor == player.PlayerColor))
+                throw new ArgumentException("Игрок такого цвета уже добавлен");
+
+            if (Players.Count < 2)
+            {
+                player.MoveDone += Player_MoveDone;
+                //player.Game = this;
+                Players.Add(player);
+                return;
+            }
+            return;
+        }
+
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)
         {
             if (e.MoveCommand.CanExecute(this))
@@ -141,10 +155,9 @@ namespace chesslib
                 ChangeTurn();
             }
         }
-        private bool IsCheckMate()
+        private void CheckMate()
         {
-            bool checkMate = Board.AlivePieces.Where(p => p.PlayerType == CurrentPlayer.PlayerColor)
-                   .All(p => p.AllowedCells.Count == 0);
+            bool checkMate = BoardUtils.IsCheckMate(Board, CurrentPlayer.PlayerColor);
             if (checkMate)
             {
                 Board.IsGameFinished = true;
@@ -154,22 +167,6 @@ namespace chesslib
             {
                 Board.IsGameFinished = false;
             }
-            return checkMate;
-
-        }
-
-        public void RaiseGameStateChange()
-        {
-            if (GameStateChanged != null)
-                GameStateChanged(this, new GameStateChangedEventArgs(this));
-        }
-        internal void ChangeTurn()
-        {
-            CurrentPlayer = CurrentPlayer == Players[0] ? Players[1] : Players[0];
-            IsCheckMate();
-            if (!Board.IsPaused)
-                CurrentPlayer.DoTurn(this);
-            RaiseGameStateChange();
         }
 
     }

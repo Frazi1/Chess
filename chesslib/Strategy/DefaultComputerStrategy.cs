@@ -1,10 +1,8 @@
 ﻿using chesslib.Field;
 using chesslib.Player;
-using chesslib.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace chesslib.Strategy
 {

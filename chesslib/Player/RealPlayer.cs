@@ -1,11 +1,4 @@
-﻿using chesslib.Field;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using chesslib.Command;
-using chesslib.Strategy;
-using System.Threading.Tasks;
+﻿using chesslib.Command;
 using chesslib.Events;
 using System.Threading;
 
@@ -26,7 +19,8 @@ namespace chesslib.Player
             get { return _makeMoveCommand; }
             set { /*if (!_game.IsPaused) */_makeMoveCommand = value; }
         }
-        public Thread CurrentThread { get; private set; }
+
+        private Thread CurrentThread { get; set; }
         public PlayerType PlayerType { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;

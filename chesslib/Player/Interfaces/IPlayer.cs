@@ -1,7 +1,5 @@
 ﻿using chesslib.Command;
 using chesslib.Events;
-using chesslib.Strategy;
-using System;
 
 namespace chesslib.Player
 {

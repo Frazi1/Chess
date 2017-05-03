@@ -1,11 +1,5 @@
 ﻿using chesslib.Field;
-using chesslib.Player;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace chesslib.Figures
 {
@@ -47,7 +41,7 @@ namespace chesslib.Figures
                     if (y > 0 && x > 0)
                     {
                         if (chessBoard[x - 1, y - 1].IsTaken &&
-                            chessBoard[x - 1, y - 1].Piece.PlayerType != this.PlayerType)
+                            chessBoard[x - 1, y - 1].Piece.PlayerType != PlayerType)
                         {
                             TryMoveToCell(x - 1, y - 1);
                         }
@@ -57,7 +51,7 @@ namespace chesslib.Figures
                     if (y > 0 && x < size - 1)
                     {
                         if (chessBoard[x + 1, y - 1].IsTaken &&
-                            chessBoard[x + 1, y - 1].Piece.PlayerType != this.PlayerType)
+                            chessBoard[x + 1, y - 1].Piece.PlayerType != PlayerType)
                         {
                             TryMoveToCell(x + 1, y - 1);
                         }
@@ -81,7 +75,7 @@ namespace chesslib.Figures
                     if (y > 0 && x > 0)
                     {
                         if (chessBoard[x - 1, y + 1].IsTaken &&
-                            chessBoard[x - 1, y + 1].Piece.PlayerType != this.PlayerType)
+                            chessBoard[x - 1, y + 1].Piece.PlayerType != PlayerType)
                         {
                             TryMoveToCell(x - 1, y + 1);
                         }
@@ -91,7 +85,7 @@ namespace chesslib.Figures
                     if (y > 0 && x < size - 1)
                     {
                         if (chessBoard[x + 1, y + 1].IsTaken &&
-                            chessBoard[x + 1, y + 1].Piece.PlayerType != this.PlayerType)
+                            chessBoard[x + 1, y + 1].Piece.PlayerType != PlayerType)
                         {
                             TryMoveToCell(x + 1, y + 1);
                         }

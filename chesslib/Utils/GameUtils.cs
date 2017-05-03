@@ -1,10 +1,11 @@
-﻿using chesslib.Command;
+﻿using System.IO;
+using chesslib.Command;
 
 namespace chesslib.Utils
 {
     public class GameUtils
     {
-        private Game _game;
+        private readonly Game _game;
 
         public GameUtils(Game game)
         {
@@ -28,7 +29,7 @@ namespace chesslib.Utils
 
         public void SaveToFile(string path)
         {
-            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create))
+            using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
                                     new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -42,7 +43,7 @@ namespace chesslib.Utils
             {
                 LoadPreviousState();
             }
-            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open))
+            using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
                                     new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();

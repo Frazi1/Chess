@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Runtime.Serialization.Formatters.Binary;
 
 namespace chesslib.Utils
 {
@@ -11,7 +8,7 @@ namespace chesslib.Utils
         {
             using (var ms = new System.IO.MemoryStream())
             {
-                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                var formatter = new BinaryFormatter();
                 formatter.Serialize(ms, input);
                 ms.Seek(0, System.IO.SeekOrigin.Begin);
 

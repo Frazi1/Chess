@@ -1,9 +1,6 @@
 ﻿using chesslib.Field;
-using chesslib.Figures;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace chesslib.Utils
 {
@@ -21,34 +18,14 @@ namespace chesslib.Utils
         {
             return board
                     .AlivePieces
-                    .Where(p => p.PieceType == PieceType.King && p.PlayerType == playerType && p.IsUnderAttack)
-                    .Count() > 0;
+                    .Count(p => p.PieceType == PieceType.King && p.PlayerType == playerType && p.IsUnderAttack) > 0;
         }
 
-        //public static bool IsCheckOnNextTurn(Piece piece, Cell nextCell)
-        //{
-        //    Cell prevCell = piece.CurrentCell;
-
-        //    if (!prevCell.IsAttacked(piece.PlayerType))
-        //        return false;
-
-        //    Piece nextPiece = nextCell.Piece;
-        //    piece.MoveTo(nextCell);
-        //    prevCell
-        //        .AttackersList
-        //        .Where(a => a.PlayerType != piece.PlayerType)
-        //        .ToList()
-        //        .ForEach(a => a.SetAllowedMoves());
-        //    Piece underCheck = BoardUtils.IsCheck(piece.Board, piece.PlayerType);
-        //    piece.MoveTo(prevCell);
-        //    piece.MovesCounter -= 2;
-        //    nextCell.Piece = nextPiece;
-        //    prevCell.AttackersList.ForEach(a => a.SetAllowedMoves());
-        //    if (underCheck != null)
-        //        return true;
-
-        //    return false;
-        //}
+        public static bool IsCheckMate(Board board, PlayerColor currentPlayerPlayerColor)
+        {
+            return board.AlivePieces.Where(p => p.PlayerType == currentPlayerPlayerColor)
+                .All(p => p.AllowedCells.Count == 0);
+        }
 
         public static bool IsCheckOnNextTurn(Tuple<Piece,Cell> move)
         {
@@ -69,10 +46,9 @@ namespace chesslib.Utils
             newPiece.MoveTo(newCell);
             board.UpdateAttackedCells();
 
-            if (IsCheck(board, newPiece.PlayerType))
-                return true;
-            return false;
-
+            return IsCheck(board, newPiece.PlayerType);
         }
+
+
     }
 }
