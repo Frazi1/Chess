@@ -67,7 +67,7 @@ namespace ChessUI.ViewModel
         }
         public bool CanUndo { get { return Game.MoveCommands.Count > 0; } }
         public bool IsPaused { get { return Game.IsPaused; } }
-      
+
         private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
             RaisePropertyChanged(() => PlayerType);

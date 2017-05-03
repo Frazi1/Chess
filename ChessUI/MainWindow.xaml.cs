@@ -1,7 +1,6 @@
 ﻿using chesslib.Strategy;
 using ChessUI.ViewModel;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Win32;
 using System;
 using System.Threading;
 using System.Windows;
@@ -31,7 +30,7 @@ namespace ChessUI
                     if (_gameViewModel.SelectedPiece == null)
                     {
                         var img = e.OriginalSource as Image;
-                        if(img!=null)
+                        if (img != null)
                             _gameViewModel.SelectedPiece = img.DataContext as ChessPieceViewModel;
                     }
                     else
@@ -64,8 +63,9 @@ namespace ChessUI
                 int x = (int) e.GetPosition(this.ChessBoard).X;
                 int y = (int) e.GetPosition(this.ChessBoard).Y;
                 string text = "";
-                //_gameViewModel.Game.Board.ChessBoard[x, y].AttackersList.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
-                _gameViewModel.Game.Board.ChessBoard[x, y].Piece?.AllowedCells.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
+                var piece = _gameViewModel.Game.Board.ChessBoard[x, y].Piece;
+                if (piece != null)
+                    piece.AllowedCells.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
                 MessageBox.Show(text);
             }
         }
@@ -86,18 +86,18 @@ namespace ChessUI
             {
                 while (true)
                 {
-                    Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        if (_gameViewModel.Game != null)
-                        {
-                            _gameViewModel.MoveCommands.Clear();
-                            var list = _gameViewModel.Game.MoveCommands;
-                            for (int i = list.Count - 1; i >= 0; i--)
-                            {
-                                _gameViewModel.MoveCommands.Add(list[i]);
-                            }
-                        }
-                    }));
+                    Dispatcher.BeginInvoke((Action) (() =>
+                     {
+                         if (_gameViewModel.Game != null)
+                         {
+                             _gameViewModel.MoveCommands.Clear();
+                             var list = _gameViewModel.Game.MoveCommands;
+                             for (int i = list.Count - 1; i >= 0; i--)
+                             {
+                                 _gameViewModel.MoveCommands.Add(list[i]);
+                             }
+                         }
+                     }));
                     Thread.Sleep(500);
                 }
             });
@@ -107,19 +107,6 @@ namespace ChessUI
         {
             Window newGame = new NewGame();
             newGame.ShowDialog();
-        }
-
-        private void MenuItem_SaveGame_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Файлы игры (*.chess)|*.chess|Все файлы (*.*)|*.*";
-            if ((bool) sfd.ShowDialog())
-            {
-                string path = sfd.FileName;
-                _gameViewModel.Game.GameUtils.SaveToFile(path);
-            }
-
-            
         }
     }
 }
