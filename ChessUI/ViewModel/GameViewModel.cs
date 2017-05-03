@@ -94,7 +94,7 @@ namespace ChessUI.ViewModel
             Game.Start();
         }
 
-        public void Reset()
+        private void Reset()
         {
             Game = null;
             ChessPiecesViewModels.Clear();
@@ -106,7 +106,9 @@ namespace ChessUI.ViewModel
             ChessPiecesViewModels.Clear();
             foreach (var item in Game.Board.AlivePieces)
             {
-                ChessPiecesViewModels.Add(new ChessPieceViewModel(item, Game));
+                var chessPieceViewModel = new ChessPieceViewModel(item, Game);
+                ChessPiecesViewModels.Add(chessPieceViewModel);
+                //chessPieceViewModel.UpdatePiece();
             }
         }
     }

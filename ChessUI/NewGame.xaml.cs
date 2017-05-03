@@ -46,7 +46,7 @@ namespace ChessUI
         {
             List<IPlayer> players = new List<IPlayer>();
             GameCreationParams param = new GameCreationParams();
-            MessageBox.Show(ComboBox_Player1.SelectedValue.ToString());
+            //MessageBox.Show(ComboBox_Player1.SelectedValue.ToString());
             switch (ComboBox_Player1.SelectedValue)
             {
                 case PlayerType.Computer:

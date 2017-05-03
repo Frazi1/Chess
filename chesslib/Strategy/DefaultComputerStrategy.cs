@@ -15,11 +15,7 @@ namespace chesslib.Strategy
         //private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
         private List<Piece> AlivePieces { get; set; }
 
-        public DefaultComputerStrategy()
-        {
-        }
-
-        public Tuple<Piece, Cell> PrepareMove(IPlayer player, Board board)
+        public Tuple<Cell, Cell> PrepareMove(IPlayer player, Board board)
         {
             AlivePieces = board
                             .AlivePieces
@@ -28,11 +24,11 @@ namespace chesslib.Strategy
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
             Piece piece = AlivePieces.First(p => p.AllowedCells.Count > 0);
-            Cell cell = piece.AllowedCells
+            Cell nextCell = piece.AllowedCells
                 .OrderBy(p => r.Next()).First();
 
 
-            return new Tuple<Piece, Cell>(piece, cell);
+            return new Tuple<Cell, Cell>(piece.CurrentCell, nextCell);
         }
     }
 }

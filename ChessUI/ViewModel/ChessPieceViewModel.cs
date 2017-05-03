@@ -44,9 +44,13 @@ namespace ChessUI.ViewModel
 
         private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
+            UpdatePiece();
+        }
+
+        public void UpdatePiece()
+        {
             RaisePropertyChanged(() => _piece.CurrentCell.PosY);
             RaisePropertyChanged(() => _piece.CurrentCell.PosX);
         }
-
     }
 }

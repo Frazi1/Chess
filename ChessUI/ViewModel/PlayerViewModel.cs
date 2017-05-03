@@ -11,8 +11,8 @@ namespace ChessUI.ViewModel
 {
     public class PlayerViewModel : ViewModelBase
     {
-        private GameViewModel _gameViewModel;
-        public IPlayer Player { get; set; }
+        private readonly GameViewModel _gameViewModel;
+        public IPlayer Player { get; private set; }
         public PlayerViewModel(IPlayer player, GameViewModel gvm)
         {
             _gameViewModel = gvm;
@@ -21,9 +21,11 @@ namespace ChessUI.ViewModel
         public void PushCommand()
         {
             //if (!_gameViewModel.IsPaused)
-                Player.MakeMoveCommand = new chesslib.Command.MakeMoveCommand(Player.PlayerColor,
-                    _gameViewModel.SelectedPiece.Piece,
-                    _gameViewModel.NextCell);
+                Player.MakeMoveCommand = new chesslib.Command.MakeMoveCommand(Player.PlayerColor, 
+                    _gameViewModel.SelectedPiece.PosX,
+                    _gameViewModel.SelectedPiece.PosY,
+                    _gameViewModel.NextCell.PosX,
+                    _gameViewModel.NextCell.PosY);
         }
 
     }

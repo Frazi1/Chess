@@ -96,7 +96,7 @@ namespace chesslib
             _moveCommands = new MoveCommands();
         }
 
-        public bool AddPlayer(IPlayer player)
+        public void AddPlayer(IPlayer player)
         {
             if (Players.Any(p => p.PlayerColor == player.PlayerColor))
                 throw new ArgumentException("Игрок такого цвета уже добавлен");
@@ -106,9 +106,9 @@ namespace chesslib
                 player.MoveDone += Player_MoveDone;
                 //player.Game = this;
                 Players.Add(player);
-                return true;
+                return;
             }
-            return false;
+            return;
         }
         public void Start()
         {
@@ -165,10 +165,7 @@ namespace chesslib
         }
         internal void ChangeTurn()
         {
-            if (CurrentPlayer == Players[0])
-                CurrentPlayer = Players[1];
-            else
-                CurrentPlayer = Players[0];
+            CurrentPlayer = CurrentPlayer == Players[0] ? Players[1] : Players[0];
             IsCheckMate();
             if (!Board.IsPaused)
                 CurrentPlayer.DoTurn(this);

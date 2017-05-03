@@ -188,9 +188,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=PrevCell}"/>
+                        <TextBlock Text="{Binding Path=PrevX}"/>
+                        <TextBlock Text=", "/>
+                        <TextBlock Text="{Binding Path=PrevY}"/>
                         <TextBlock Text=" - "/>
-                        <TextBlock Text="{Binding Path=NextCell}"/>
+                        <TextBlock Text="{Binding Path=NextX}"/>
+                        <TextBlock Text=", "/>
+                        <TextBlock Text="{Binding Path=NextY}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
