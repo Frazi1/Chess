@@ -47,7 +47,7 @@ namespace ChessUI
             List<IPlayer> players = new List<IPlayer>();
             GameCreationParams param = new GameCreationParams();
             //MessageBox.Show(ComboBox_Player1.SelectedValue.ToString());
-            switch (ComboBox_Player1.SelectedValue)
+            switch ((PlayerType) ComboBox_Player1.SelectedValue)
             {
                 case PlayerType.Computer:
                     players.Add(new ComputerPlayer(PlayerColor.White, new DefaultComputerStrategy()));
@@ -56,7 +56,7 @@ namespace ChessUI
                     players.Add(new RealPlayer(PlayerColor.White));
                     break;
             }
-            switch (ComboBox_Player2.SelectedValue)
+            switch ((PlayerType) ComboBox_Player2.SelectedValue)
             {
                 case PlayerType.Computer:
                     players.Add(new ComputerPlayer(PlayerColor.Black, new DefaultComputerStrategy()));

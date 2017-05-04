@@ -55,7 +55,8 @@ namespace ChessUI.ViewModel
         {
             get
             {
-                if (Game.CurrentPlayer != null)
+                
+                if (Game!=null && Game.CurrentPlayer != null)
                     return Game.CurrentPlayer.PlayerColor;
                 return PlayerColor.None;
             }
@@ -65,8 +66,8 @@ namespace ChessUI.ViewModel
             get { return _game; }
             set { _game = value; RaisePropertyChanged(() => Game); }
         }
-        public bool CanUndo { get { return Game.MoveCommands.Count > 0; } }
-        public bool IsPaused { get { return Game.IsPaused; } }
+        public bool CanUndo { get { return Game != null ? Game.MoveCommands.Count > 0 : false; } }
+        public bool IsPaused { get { return Game != null ? Game.IsPaused : true; } }
 
         private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
         {
