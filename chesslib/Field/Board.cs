@@ -1,6 +1,7 @@
 ﻿using chesslib.Figures;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace chesslib.Field
 {
@@ -116,5 +117,11 @@ namespace chesslib.Field
             }
         }
 
+        public List<Piece> GetAlivePieces(PlayerColor playerColor)
+        {
+            return AlivePieces
+                .Where(p => p.PlayerType == playerColor)
+                .ToList();
+        }
     }
 }
