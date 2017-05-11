@@ -78,7 +78,7 @@ namespace chesslib.Field
             IsPaused = false;
         }
 
-        public void UpdatePiecesAndCells()
+        private void UpdatePiecesAndCells()
         {
             UpdateAttackedCells();
             UpdatePiecesMoves();
@@ -117,6 +117,18 @@ namespace chesslib.Field
             }
         }
 
+        public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
+        {
+            Piece destroyedPiece = nextCell.Piece;
+            if (destroyedPiece != null)
+                DestroyPiece(destroyedPiece);
+            piece.MoveTo(nextCell);
+            if (updateMoves)
+                UpdatePiecesMoves();
+            if (updateAttacked)
+                UpdateAttackedCells();
+            return destroyedPiece;
+        }
         public List<Piece> GetAlivePieces(PlayerColor playerColor)
         {
             return AlivePieces

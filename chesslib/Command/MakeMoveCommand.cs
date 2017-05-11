@@ -97,10 +97,7 @@ namespace chesslib.Command
             var nextCell = chessBoard[NextX, NextY];
             var piece = chessBoard[PrevX, PrevY].Piece;
 
-            _destroyedPiece = nextCell.Piece;
-            if (_destroyedPiece != null)
-                game.Board.DestroyPiece(_destroyedPiece);
-            piece.MoveTo(nextCell);
+            _destroyedPiece = game.Board.MovePiece(piece, nextCell, true, true);
         }
 
         public void Undo(object parameter)

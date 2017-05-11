@@ -50,7 +50,7 @@ namespace ChessUI
             switch ((PlayerType) ComboBox_Player1.SelectedValue)
             {
                 case PlayerType.Computer:
-                    players.Add(new ComputerPlayer(PlayerColor.White, new DefaultComputerStrategy()));
+                    players.Add(new ComputerPlayer(PlayerColor.White, new IntelligentComputerStrategy(0)));
                     break;
                 case PlayerType.Human:
                     players.Add(new RealPlayer(PlayerColor.White));
@@ -59,7 +59,7 @@ namespace ChessUI
             switch ((PlayerType) ComboBox_Player2.SelectedValue)
             {
                 case PlayerType.Computer:
-                    players.Add(new ComputerPlayer(PlayerColor.Black, new DefaultComputerStrategy()));
+                    players.Add(new ComputerPlayer(PlayerColor.Black, new IntelligentComputerStrategy(0)));
                     break;
                 case PlayerType.Human:
                     players.Add(new RealPlayer(PlayerColor.Black));

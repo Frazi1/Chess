@@ -11,6 +11,16 @@ namespace chesslib
     {
         public Board Board { get; private set; }
 
+        public int PosX
+        {
+            get { return CurrentCell.PosX; }
+        }
+
+        public int PosY
+        {
+            get { return CurrentCell.PosY; }
+        }
+
         public Cell CurrentCell { get; internal set; }
         public PlayerColor PlayerType { get; internal set; }
         public PieceType PieceType { get; protected set; }

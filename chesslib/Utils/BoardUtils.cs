@@ -29,6 +29,37 @@ namespace chesslib.Utils
 
         public static bool IsCheckOnNextTurn(Tuple<Piece,Cell> move)
         {
+            //Piece oldPiece = move.Item1;
+            //Cell oldCell = move.Item2;
+            //Board board = oldPiece.Board.DeepCopy();
+            //int px = oldPiece.CurrentCell.PosX;
+            //int py = oldPiece.CurrentCell.PosY;
+
+            //int cx = oldCell.PosX;
+            //int cy = oldCell.PosY;
+
+            ////Piece and cell from copied board:
+            //Cell newCell = board.ChessBoard[cx, cy];
+            //Piece newPiece = board.ChessBoard[px, py].Piece;
+
+            //board.DestroyPiece(newCell.Piece);
+            //newPiece.MoveTo(newCell);
+            //board.UpdateAttackedCells();
+
+
+            var virtualBoard = VirtualMove(move, false, true);
+            return IsCheck(virtualBoard, move.Item1.PlayerType);
+        }
+
+        public static Board VirtualMove(Tuple<Piece,Cell> move, bool updateMoves, bool updateAttacked)
+        {
+            Piece p;
+            return VirtualMove(move, updateMoves, updateAttacked, out p);
+        }
+
+        public static Board VirtualMove(Tuple<Piece, Cell> move, bool updateMoves, bool updateAttacked, out Piece piece)
+        {
+
             Piece oldPiece = move.Item1;
             Cell oldCell = move.Item2;
             Board board = oldPiece.Board.DeepCopy();
@@ -42,13 +73,10 @@ namespace chesslib.Utils
             Cell newCell = board.ChessBoard[cx, cy];
             Piece newPiece = board.ChessBoard[px, py].Piece;
 
-            board.DestroyPiece(newCell.Piece);
-            newPiece.MoveTo(newCell);
-            board.UpdateAttackedCells();
-
-            return IsCheck(board, newPiece.PlayerType);
+            board.MovePiece(newPiece, newCell, updateMoves, updateAttacked);
+            piece = newPiece;
+            return board;
         }
-
 
     }
 }

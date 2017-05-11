@@ -131,7 +131,7 @@ namespace chesslib
             {
                 e.MoveCommand.Execute(this);
                 GameUtils.SaveState(e.MoveCommand);
-                Board.UpdatePiecesAndCells();
+                //Board.UpdatePiecesAndCells();
                 ChangeTurn();
             }
         }
@@ -173,7 +173,7 @@ namespace chesslib
             foreach (var comm in MoveCommands)
             {
                 comm.Execute(this);
-                Board.UpdatePiecesAndCells();
+                //Board.UpdatePiecesAndCells();
                 ChangeTurn();
             }
         }

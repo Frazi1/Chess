@@ -50,6 +50,7 @@
     <Compile Include="Events\EventsDelegates.cs" />
     <Compile Include="Command\MoveCommands.cs" />
     <Compile Include="Player\PlayerType.cs" />
+    <Compile Include="Strategy\IntelligentComputerStrategy.cs" />
     <Compile Include="Utils\BoardUtils.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Utils\GameFactory\GameCreationParams.cs" />
