@@ -26,11 +26,7 @@ namespace chesslib.Player
         {
             Thread.Sleep(500);
             var move = Strategy.PrepareMove(this, game.Board);
-            MakeMoveCommand = new MakeMoveCommand(PlayerColor,
-                move.Item1.PosX,
-                move.Item1.PosY,
-                move.Item2.PosX,
-                move.Item2.PosY);
+            MakeMoveCommand = new MakeMoveCommand(PlayerColor, move);
             if (MoveDone != null)
                 MoveDone(this, new MoveDoneEventArgs(MakeMoveCommand));
 

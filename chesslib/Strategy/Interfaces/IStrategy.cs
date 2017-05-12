@@ -6,6 +6,6 @@ namespace chesslib.Strategy
 {
     public interface IStrategy
     {
-        Tuple<Cell,Cell> PrepareMove(IPlayer player, Board board);
+        Move PrepareMove(IPlayer player, Board board);
     }
 }

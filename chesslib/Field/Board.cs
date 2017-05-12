@@ -74,16 +74,10 @@ namespace chesslib.Field
 
         internal void Start()
         {
-            UpdatePiecesAndCells();
+            Update(MoveFlags.UpdateAttacked|MoveFlags.UpdateMoves);
             IsPaused = false;
         }
-
-        private void UpdatePiecesAndCells()
-        {
-            UpdateAttackedCells();
-            UpdatePiecesMoves();
-        }
-        public void UpdateAttackedCells()
+        private void UpdateAttackedCells()
         {
             //Clear attackers lists
             for (int i = 0; i < ChessBoard.GetLength(0); i++)
@@ -100,12 +94,19 @@ namespace chesslib.Field
                 p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
             }
         }
-        public void UpdatePiecesMoves()
+        private void UpdatePiecesMoves()
         {
             foreach (var p in AlivePieces)
             {
                 p.SetAllowedMoves();
             }
+        }
+        public void Update(MoveFlags moveFlags)
+        {
+            if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
+                UpdateAttackedCells();
+            if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
+                UpdatePiecesMoves();
         }
 
         public void DestroyPiece(Piece piece)
@@ -116,6 +117,13 @@ namespace chesslib.Field
                 piece.IsInGame = false;
                 piece.CurrentCell = null;
             }
+        }
+        public void RestorePiece(Piece destroyedPiece, Cell cell)
+        {
+            destroyedPiece.IsInGame = true;
+            cell.Piece = destroyedPiece;
+            destroyedPiece.CurrentCell = cell;
+            AlivePieces.Add(destroyedPiece);
         }
         //public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
         //{
@@ -142,11 +150,22 @@ namespace chesslib.Field
             if (destroyedPiece != null)
                 DestroyPiece(destroyedPiece);
             piece.MoveTo(nextCell);
-            if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
-                UpdatePiecesMoves();
-            if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
-                UpdateAttackedCells();
+            Update(moveFlags);
             return destroyedPiece;
+        }
+        public void UndoMove(Cell prevCell, Cell nextCell, Piece destroyedPiece, MoveFlags moveFlags)
+        {
+            var piece = nextCell.Piece;
+            nextCell.Piece = null;
+            //Ставим фигуру на предудущую клетку
+            piece.CurrentCell = prevCell;
+            prevCell.Piece = piece;
+            piece.MovesCounter--;
+            if (destroyedPiece != null)
+            {
+                RestorePiece(destroyedPiece, nextCell);
+            }
+            Update(moveFlags);
         }
 
         public List<Piece> GetAlivePieces(PlayerColor playerColor)

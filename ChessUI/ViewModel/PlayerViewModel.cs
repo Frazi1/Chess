@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using chesslib.Field;
 
 namespace ChessUI.ViewModel
 {
@@ -22,10 +23,10 @@ namespace ChessUI.ViewModel
         {
             //if (!_gameViewModel.IsPaused)
                 Player.MakeMoveCommand = new chesslib.Command.MakeMoveCommand(Player.PlayerColor, 
-                    _gameViewModel.SelectedPiece.PosX,
+                    new Move(_gameViewModel.SelectedPiece.PosX,
                     _gameViewModel.SelectedPiece.PosY,
                     _gameViewModel.NextCell.PosX,
-                    _gameViewModel.NextCell.PosY);
+                    _gameViewModel.NextCell.PosY));
         }
 
     }

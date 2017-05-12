@@ -18,28 +18,21 @@ namespace chesslib.Strategy
             this.steps = steps;
         }
 
-        public Tuple<Cell, Cell> PrepareMove(IPlayer player, Board board)
+        public Move PrepareMove(IPlayer player, Board board)
         {
             var move = GetBestMove(board, player.PlayerColor);
-            return new Tuple<Cell, Cell>(move.Item1.CurrentCell, move.Item2);
+            return move;
         }
 
-        private double EstimateMove(Board currentBoard, Tuple<Piece, Cell> move, int steps)
+        private double EstimateMove(Board virtualBoard, Move move, int steps)
         {
             double estimation = 0;
-            Piece piece = move.Item1;
-            Cell cell = move.Item2;
+            Piece piece = virtualBoard.GetPiece(move.FromX, move.FromY);
+            Cell cell = virtualBoard.GetCell(move.ToX, move.ToY);
 
             int allowedMovesCount = piece
                 .AllowedCells
                 .Count;
-
-            //if (currentBoard == null)
-            //{
-            //    Board board = piece.Board.DeepCopy();
-            //    piece = board.ChessBoard[piece.PosX, piece.PosY].Piece;
-            //    cell = board.ChessBoard[cell.PosX, cell.PosY];
-            //}
 
             if (cell.IsTaken && cell.Piece.PlayerType!= piece.PlayerType)
             {
@@ -54,17 +47,19 @@ namespace chesslib.Strategy
             return estimation;
         }
 
-        private Tuple<Piece, Cell> GetBestMove(Board currentBoard, PlayerColor playerColor)
+        private Move GetBestMove(Board currentBoard, PlayerColor playerColor)
         {
-            var alivePieces = currentBoard.GetAlivePieces(playerColor);
-            var estimatedMoves = new List<Tuple<Tuple<Piece, Cell>, double>>();
-            foreach (var p in alivePieces)
+            List<Piece> alivePieces = currentBoard.GetAlivePieces(playerColor);
+            Board virtualBoard = currentBoard.DeepCopy();
+            List<Tuple<Move, double>> estimatedMoves = new List<Tuple<Move, double>>();
+            foreach (Piece p in alivePieces)
             {
-                foreach (var c in p.AllowedCells)
+                foreach (Cell c in p.AllowedCells)
                 {
-                    var move = new Tuple<Piece, Cell>(p, c);
-                    var estimatedMove = new Tuple<Tuple<Piece, Cell>, double>
-                        (move, EstimateMove(currentBoard, move, 1));
+                    //Tuple<Piece, Cell> move = new Tuple<Piece, Cell>(p, c);
+                    Move move = new Move(p.PosX,p.PosY,c.PosX,c.PosY);
+                    var estimatedMove = new Tuple<Move, double>
+                        (move, EstimateMove(virtualBoard, move, 1));
                     estimatedMoves.Add(estimatedMove);
                 }
             }

@@ -13,7 +13,7 @@ namespace chesslib.Strategy
         //private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
         private List<Piece> AlivePieces { get; set; }
 
-        public Tuple<Cell, Cell> PrepareMove(IPlayer player, Board board)
+        public Move PrepareMove(IPlayer player, Board board)
         {
             AlivePieces = board
                             .AlivePieces
@@ -26,7 +26,7 @@ namespace chesslib.Strategy
                 .OrderBy(p => r.Next()).First();
 
 
-            return new Tuple<Cell, Cell>(piece.CurrentCell, nextCell);
+            return new Move(piece.PosX,piece.PosY, nextCell.PosX,nextCell.PosY);
         }
     }
 }
