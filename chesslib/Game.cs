@@ -6,13 +6,15 @@ using chesslib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace chesslib
 {
     public class Game
     {
         private const int Size = 8;
-        private MoveCommands _moveCommands;
+        //private MoveCommands _moveCommands;
+        private List<MakeMoveCommand> _moveCommands;
         private IPlayer _currentPlayer;
         private List<IPlayer> _players;
         private Board _board;
@@ -49,7 +51,7 @@ namespace chesslib
                 }
             }
         }
-        public MoveCommands MoveCommands
+        public List<MakeMoveCommand> MoveCommands
         {
             get
             {
@@ -93,7 +95,8 @@ namespace chesslib
             Board = new Board(Size);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
-            _moveCommands = new MoveCommands();
+            //_moveCommands = new MoveCommands();
+            MoveCommands = new List<MakeMoveCommand>();
         }
 
         
@@ -168,6 +171,16 @@ namespace chesslib
                 //Board.UpdatePiecesAndCells();
                 ChangeTurn();
             }
+        }
+
+        public Cell GetCell(int x, int y)
+        {
+            return Board.GetCell(x, y);
+        }
+
+        public Piece GetPiece(int x, int y)
+        {
+            return Board.GetPiece(x, y);
         }
     }
 }

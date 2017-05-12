@@ -8,7 +8,7 @@ namespace chesslib.Field
     [Serializable]
     public class Board
     {
-        private readonly int SIZE;
+        private readonly int _size;
 
         public Cell[,] ChessBoard { get; private set; }
         public List<Piece> AlivePieces { get; private set; }
@@ -18,7 +18,7 @@ namespace chesslib.Field
 
         public Board(int size)
         {
-            SIZE = size;
+            _size = size;
             ChessBoard = new Cell[size, size];
             AlivePieces = new List<Piece>();
             IsGameFinished = false;
@@ -29,9 +29,9 @@ namespace chesslib.Field
 
         private void Initialize()
         {
-            for (int i = 0; i < SIZE; i++)
+            for (int i = 0; i < _size; i++)
             {
-                for (int j = 0; j < SIZE; j++)
+                for (int j = 0; j < _size; j++)
                 {
                     ChessBoard[i, j] = new Cell(i, j);
                 }
@@ -50,7 +50,7 @@ namespace chesslib.Field
             AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerColor.Black, this));
             AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerColor.Black, this));
 
-            for (int i = 0; i < SIZE; i++)
+            for (int i = 0; i < _size; i++)
             {
                 AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerColor.Black, this));
             }
@@ -65,7 +65,7 @@ namespace chesslib.Field
             AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerColor.White, this));
             AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerColor.White, this));
 
-            for (int i = 0; i < SIZE; i++)
+            for (int i = 0; i < _size; i++)
             {
                 AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerColor.White, this));
             }
@@ -107,6 +107,7 @@ namespace chesslib.Field
                 p.SetAllowedMoves();
             }
         }
+
         public void DestroyPiece(Piece piece)
         {
             if (AlivePieces.Contains(piece))
@@ -116,7 +117,6 @@ namespace chesslib.Field
                 piece.CurrentCell = null;
             }
         }
-
         //public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
         //{
         //    Piece destroyedPiece = nextCell.Piece;
@@ -129,6 +129,13 @@ namespace chesslib.Field
         //        UpdateAttackedCells();
         //    return destroyedPiece;
         //}
+        /// <summary>
+        /// Moves the piece from its current cell to the nextCell, updates lists of attacked cells and allowed moves (accordingly to specified moveFlags)
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="nextCell"></param>
+        /// <param name="moveFlags"></param>
+        /// <returns>Return the piece that was destroyed after move (can be null if no piece destroyed)</returns>
         public Piece MovePiece(Piece piece, Cell nextCell, MoveFlags moveFlags)
         {
             Piece destroyedPiece = nextCell.Piece;
@@ -141,11 +148,20 @@ namespace chesslib.Field
                 UpdateAttackedCells();
             return destroyedPiece;
         }
+
         public List<Piece> GetAlivePieces(PlayerColor playerColor)
         {
             return AlivePieces
                 .Where(p => p.PlayerType == playerColor)
                 .ToList();
+        }
+        public Cell GetCell(int x, int y)
+        {
+            return ChessBoard[x, y];
+        }
+        public Piece GetPiece(int x, int y)
+        {
+            return GetCell(x, y).Piece;
         }
     }
 

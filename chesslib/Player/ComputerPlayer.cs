@@ -7,12 +7,12 @@ namespace chesslib.Player
 {
     public class ComputerPlayer : IPlayer
     {
+        private IStrategy Strategy { get; }
+        private Thread CurrentThread { get; set; }
+
         public PlayerColor PlayerColor { get; set; }
         public MakeMoveCommand MakeMoveCommand { get; set; }
-        private IStrategy Strategy { get; set; }
-        private Thread CurrentThread { get; set; }
-        public PlayerType PlayerType { get; private set; }
-
+        public PlayerType PlayerType { get; }
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
 
         public ComputerPlayer(PlayerColor playerColor, IStrategy strategy)

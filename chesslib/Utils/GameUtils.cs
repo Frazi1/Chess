@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using chesslib.Command;
 
 namespace chesslib.Utils
@@ -31,8 +33,7 @@ namespace chesslib.Utils
         {
             using (FileStream fs = new FileStream(path, FileMode.Create))
             {
-                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
-                                    new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(fs, _game.MoveCommands);
                 fs.Close();
             }
@@ -45,9 +46,8 @@ namespace chesslib.Utils
             }
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
-                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf =
-                                    new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                MoveCommands moveCommands = (MoveCommands) bf.Deserialize(fs);
+                BinaryFormatter bf = new BinaryFormatter();
+                List<MakeMoveCommand> moveCommands = (List<MakeMoveCommand>)bf.Deserialize(fs);
                 fs.Close();
                 _game.MoveCommands = moveCommands;
             }

@@ -15,12 +15,10 @@ namespace chesslib
         {
             get { return CurrentCell.PosX; }
         }
-
         public int PosY
         {
             get { return CurrentCell.PosY; }
         }
-
         public Cell CurrentCell { get; internal set; }
         public PlayerColor PlayerType { get; internal set; }
         public PieceType PieceType { get; protected set; }
@@ -31,14 +29,12 @@ namespace chesslib
             get
             {
                 return CurrentCell.AttackersList
-                                  .Where(a => a.PlayerType != PlayerType)
-                                  .Count() > 0;
+                                  .Count(a => a.PlayerType != PlayerType) > 0;
             }
         }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
         public List<Cell> AllowedCells { get; protected set; }
         public List<Cell> AttackedCells { get; protected set; }
-
 
         protected Piece(Cell currentCell, PlayerColor playerType, Board board)
         {

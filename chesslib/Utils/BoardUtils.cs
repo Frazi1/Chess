@@ -23,30 +23,13 @@ namespace chesslib.Utils
 
         public static bool IsCheckMate(Board board, PlayerColor currentPlayerPlayerColor)
         {
-            return board.AlivePieces.Where(p => p.PlayerType == currentPlayerPlayerColor)
+            return board.AlivePieces
+                .Where(p => p.PlayerType == currentPlayerPlayerColor)
                 .All(p => p.AllowedCells.Count == 0);
         }
 
         public static bool IsCheckOnNextTurn(Tuple<Piece, Cell> move)
         {
-            //Piece oldPiece = move.Item1;
-            //Cell oldCell = move.Item2;
-            //Board board = oldPiece.Board.DeepCopy();
-            //int px = oldPiece.CurrentCell.PosX;
-            //int py = oldPiece.CurrentCell.PosY;
-
-            //int cx = oldCell.PosX;
-            //int cy = oldCell.PosY;
-
-            ////Piece and cell from copied board:
-            //Cell newCell = board.ChessBoard[cx, cy];
-            //Piece newPiece = board.ChessBoard[px, py].Piece;
-
-            //board.DestroyPiece(newCell.Piece);
-            //newPiece.MoveTo(newCell);
-            //board.UpdateAttackedCells();
-
-
             var virtualBoard = VirtualMove(move, MoveFlags.UpdateAttacked);
             return IsCheck(virtualBoard, move.Item1.PlayerType);
         }
@@ -76,6 +59,5 @@ namespace chesslib.Utils
             piece = newPiece;
             return board;
         }
-
     }
 }

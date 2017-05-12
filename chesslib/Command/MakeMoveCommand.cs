@@ -6,16 +6,13 @@ namespace chesslib.Command
     [Serializable]
     public class MakeMoveCommand : ICommand
     {
-        //private Piece _piece;
-        private PlayerColor _playerColor;
-        //private Cell _nextCell;
-        //private Cell _prevCell;
+        private readonly PlayerColor _playerColor;
         private Piece _destroyedPiece;
 
-        private int prevX;
-        private int prevY;
-        private int nextX;
-        private int nextY;
+        private int _prevX;
+        private int _prevY;
+        private int _nextX;
+        private int _nextY;
 
         public MakeMoveCommand(PlayerColor playerColor, int prevX, int prevY, int nextX, int nextY)
         {
@@ -30,48 +27,48 @@ namespace chesslib.Command
         {
             get
             {
-                return prevX;
+                return _prevX;
             }
 
             set
             {
-                prevX = value;
+                _prevX = value;
             }
         }
         public int PrevY
         {
             get
             {
-                return prevY;
+                return _prevY;
             }
 
             set
             {
-                prevY = value;
+                _prevY = value;
             }
         }
         public int NextX
         {
             get
             {
-                return nextX;
+                return _nextX;
             }
 
             set
             {
-                nextX = value;
+                _nextX = value;
             }
         }
         public int NextY
         {
             get
             {
-                return nextY;
+                return _nextY;
             }
 
             set
             {
-                nextY = value;
+                _nextY = value;
             }
         }
 
@@ -90,7 +87,6 @@ namespace chesslib.Command
                 return false;
             return piece.CanMoveTo(nextCell);
         }
-
         public void Execute(object parameter)
         {
             Game game = (Game)parameter;
@@ -100,7 +96,6 @@ namespace chesslib.Command
 
             _destroyedPiece = game.Board.MovePiece(piece, nextCell, MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
         }
-
         public void Undo(object parameter)
         {
             Game game = (Game)parameter;

@@ -8,6 +8,8 @@ namespace chesslib.Player
     {
         private MakeMoveCommand _makeMoveCommand;
 
+        private Thread CurrentThread { get; set; }
+
         public RealPlayer(PlayerColor playerColor)
         {
             PlayerColor = playerColor;
@@ -19,25 +21,9 @@ namespace chesslib.Player
             get { return _makeMoveCommand; }
             set { /*if (!_game.IsPaused) */_makeMoveCommand = value; }
         }
-
-        private Thread CurrentThread { get; set; }
         public PlayerType PlayerType { get; private set; }
 
         public event EventsDelegates.MoveDoneEventHandler MoveDone;
-
-        public void DoTurn(Game game)
-        {
-            CurrentThread = new Thread(() => MakeMove(game))
-            {
-                IsBackground = true
-            };
-            CurrentThread.Start();
-        }
-        public void CancelTurn()
-        {
-            if (CurrentThread != null && CurrentThread.IsAlive)
-                CurrentThread.Abort();
-        }
 
         private void MakeMove(Game game)
         {
@@ -55,6 +41,20 @@ namespace chesslib.Player
         private void OnMove()
         {
             MakeMoveCommand = null;
+        }
+
+        public void DoTurn(Game game)
+        {
+            CurrentThread = new Thread(() => MakeMove(game))
+            {
+                IsBackground = true
+            };
+            CurrentThread.Start();
+        }
+        public void CancelTurn()
+        {
+            if (CurrentThread != null && CurrentThread.IsAlive)
+                CurrentThread.Abort();
         }
     }
 }
