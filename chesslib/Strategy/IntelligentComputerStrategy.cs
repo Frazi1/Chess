@@ -34,15 +34,17 @@ namespace chesslib.Strategy
                 .AllowedCells
                 .Count;
 
-            if (cell.IsTaken && cell.Piece.PlayerColor!= piece.PlayerColor)
+            if (cell.IsTaken && cell.Piece.PlayerColor != piece.PlayerColor)
             {
                 estimation += cell.Piece.GetPieceValue();
             }
 
-            //Piece pieceCopy;
-            //BoardUtils.VirtualMove(move, true, true, out pieceCopy);
-            //if (allowedMovesCount < pieceCopy.AllowedCells.Count)
-            //    estimation += 2 * pieceCopy.AllowedCells.Count / (double)allowedMovesCount;
+            Piece pieceCopy, destroyedPieceCopy;
+            MoveFlags moveFlags = MoveFlags.UpdateMoves;
+            BoardUtils.VirtualMove(virtualBoard, false, move, moveFlags, out pieceCopy, out destroyedPieceCopy);
+            if (allowedMovesCount < pieceCopy.AllowedCells.Count)
+                estimation += 1;
+            virtualBoard.UndoMove(move, destroyedPieceCopy, moveFlags);
 
             return estimation;
         }
@@ -57,7 +59,7 @@ namespace chesslib.Strategy
                 foreach (Cell c in p.AllowedCells)
                 {
                     //Tuple<Piece, Cell> move = new Tuple<Piece, Cell>(p, c);
-                    Move move = new Move(p.PosX,p.PosY,c.PosX,c.PosY);
+                    Move move = new Move(p.PosX, p.PosY, c.PosX, c.PosY);
                     var estimatedMove = new Tuple<Move, double>
                         (move, EstimateMove(virtualBoard, move, 1));
                     estimatedMoves.Add(estimatedMove);

@@ -14,6 +14,11 @@ namespace chesslib.Utils
                             y < chessBoard.GetLength(0);
         }
 
+        public static bool Continue(Cell cell)
+        {
+            return !cell.IsTaken;
+        }
+
         public static bool IsCheck(Board board, PlayerColor playerType)
         {
             return board
@@ -30,23 +35,25 @@ namespace chesslib.Utils
 
         public static bool IsCheckOnNextTurn(Board currentBoard, Move move, PlayerColor playerColor)
         {
-            var virtualBoard = VirtualMove(currentBoard,move, MoveFlags.UpdateAttacked);
+            var virtualBoard = VirtualMove(currentBoard, true, move, MoveFlags.UpdateAttacked);
             return IsCheck(virtualBoard, playerColor);
         }
 
-        public static Board VirtualMove(Board currentBoard, Move move, MoveFlags moveFlags)
+        public static Board VirtualMove(Board currentBoard, bool copy, Move move, MoveFlags moveFlags)
         {
-            Piece p;
-            return VirtualMove(currentBoard, move, moveFlags, out p);
+            Piece movedPiece, destroyedPiece;
+            return VirtualMove(currentBoard, copy, move, moveFlags, out movedPiece, out destroyedPiece);
         }
 
-        public static Board VirtualMove(Board currentBoard, Move move, MoveFlags moveFlags, out Piece piece)
+        public static Board VirtualMove(Board currentBoard, bool copy, Move move, MoveFlags moveFlags, out Piece movedPiece, out Piece destroyedPiece)
         {
-            Board virtualBoard = currentBoard.DeepCopy();
+            Board board = currentBoard;
+            if (copy)
+                board = currentBoard.DeepCopy();
 
-            virtualBoard.MovePiece(move, moveFlags);
-            piece = virtualBoard.GetPiece(move.ToX, move.ToY);
-            return virtualBoard;
+            destroyedPiece = board.MovePiece(move, moveFlags);
+            movedPiece = board.GetPiece(move.ToX, move.ToY);
+            return board;
         }
     }
 }

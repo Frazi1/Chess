@@ -1,5 +1,6 @@
 ﻿using chesslib.Field;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using chesslib.Utils;
@@ -7,7 +8,7 @@ using chesslib.Utils;
 namespace chesslib
 {
     [Serializable]
-    public abstract class Piece
+    public abstract class Piece : IMovable
     {
         public Board Board { get; private set; }
 
@@ -68,13 +69,24 @@ namespace chesslib
             return true;
         }
 
-        public virtual void GetAttackedCells()
+        public virtual void SetAttackedCells()
         {
             AttackedCells.Clear();
+            foreach (var cell in GetAttackPattern())
+            {
+                TryAttackCell(cell.PosX, cell.PosY);
+            }
         }
         public virtual void SetAllowedMoves()
         {
             AllowedCells.Clear();
+
+            IEnumerable<Cell> e = GetMovePattern();
+
+            foreach (var cell in e)
+            {
+                TryMoveToCell(cell.PosX, cell.PosY);
+            }
         }
 
         /// <summary>
@@ -85,62 +97,27 @@ namespace chesslib
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>True or fasle</returns>
-        public bool TryMoveToCell(int x, int y)
+        public void TryMoveToCell(int x, int y)
         {
-            var chessBoard = Board.ChessBoard;
-            if (BoardUtils.IsValidCell(chessBoard, x, y))
+            Move move = new Move(PosX, PosY, x, y);
+            Cell cell = Board.GetCell(x,y);
+            if (!cell.IsTaken || (cell.IsTaken && cell.Piece.PlayerColor != PlayerColor))
             {
-                if (CurrentCell.PosX == x && CurrentCell.PosY == y)
-                    return false;
-
-
-                Move move = new Move(PosX,PosY,x,y);
-                if (!chessBoard[x, y].IsTaken)
-                {
-                    if (!BoardUtils.IsCheckOnNextTurn(Board,move,PlayerColor))
-                    {
-                        AllowedCells.Add(chessBoard[x, y]);
-                        return true;
-                    }
-                }
-                else if (chessBoard[x, y].IsTaken &&
-                    chessBoard[x, y].Piece.PlayerColor != PlayerColor)
-                {
-                    if (!BoardUtils.IsCheckOnNextTurn(Board, move, PlayerColor))
-                    {
-                        AllowedCells.Add(chessBoard[x, y]);
-                        return false;
-                    }
-                }
-
+                if (!BoardUtils.IsCheckOnNextTurn(Board, move, PlayerColor))
+                    AllowedCells.Add(Board.GetCell(x, y));
             }
-            return false;
         }
-        public bool TryAttackCell(int x, int y)
+        public void TryAttackCell(int x, int y)
         {
-            var chessBoard = Board.ChessBoard;
-            if (BoardUtils.IsValidCell(chessBoard, x, y))
-            {
-                if (CurrentCell.PosX == x && CurrentCell.PosY == y)
-                    return false;
-                if (!chessBoard[x, y].IsTaken)
-                {
-                    AttackedCells.Add(chessBoard[x, y]);
-                    return true;
-                }
-                else if (chessBoard[x, y].IsTaken)
-                {
-                    AttackedCells.Add(chessBoard[x, y]);
-                    return false;
-                }
-            }
-            return false;
-
+            AttackedCells.Add(Board.GetCell(x, y));
         }
 
         public override string ToString()
         {
             return GetType().Name + " - " + PlayerColor.ToString();
         }
+
+        public abstract IEnumerable<Cell> GetAttackPattern();
+        public abstract IEnumerable<Cell> GetMovePattern();
     }
 }

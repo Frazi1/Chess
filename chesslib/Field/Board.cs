@@ -74,10 +74,11 @@ namespace chesslib.Field
 
         internal void Start()
         {
-            Update(MoveFlags.UpdateAttacked|MoveFlags.UpdateMoves);
+            UpdateAll(MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
             IsPaused = false;
         }
-        private void UpdateAttackedCells()
+
+        private void UpdateAllAttackedCells()
         {
             //Clear attackers lists
             for (int i = 0; i < ChessBoard.GetLength(0); i++)
@@ -90,24 +91,40 @@ namespace chesslib.Field
             }
             foreach (var p in AlivePieces)
             {
-                p.GetAttackedCells();
-                p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
+                p.SetAttackedCells();
+                //p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
             }
         }
-        private void UpdatePiecesMoves()
+        private void UpdateAllPiecesMoves()
         {
             foreach (var p in AlivePieces)
             {
                 p.SetAllowedMoves();
             }
         }
-        public void Update(MoveFlags moveFlags)
+        private void UpdateAttackedCells(Move move)
+        {
+        }
+        private void UpdatePiecesMoves(Move move)
+        {
+        }
+
+        public void Update(Move move, MoveFlags moveFlags)
         {
             if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
-                UpdateAttackedCells();
+                UpdateAttackedCells(move);
             if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
-                UpdatePiecesMoves();
+                UpdatePiecesMoves(move);
         }
+        public void UpdateAll(MoveFlags moveFlags)
+        {
+            if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
+                UpdateAllAttackedCells();
+            if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
+                UpdateAllPiecesMoves();
+        }
+
+
 
         public void DestroyPiece(Piece piece)
         {
@@ -125,6 +142,7 @@ namespace chesslib.Field
             destroyedPiece.CurrentCell = cell;
             AlivePieces.Add(destroyedPiece);
         }
+
         /// <summary>
         /// Moves the piece from its current cell to the nextCell, updates lists of attacked cells and allowed moves (accordingly to specified moveFlags)
         /// </summary>
@@ -135,14 +153,24 @@ namespace chesslib.Field
         {
             Piece piece = GetPiece(move.FromX, move.FromY);
             Cell nextCell = GetCell(move.ToX, move.ToY);
+            Cell prevCell = GetCell(move.FromX, move.FromY);
+
+
+            //piece.AttackedCells.ForEach(c => c.AttackersList.Remove(piece));
+            //piece.AttackedCells.Clear();
 
             Piece destroyedPiece = nextCell.Piece;
             if (destroyedPiece != null)
                 DestroyPiece(destroyedPiece);
             piece.MoveTo(nextCell);
-            Update(moveFlags);
+
+            UpdateAll(moveFlags);
+
+
             return destroyedPiece;
+
         }
+
         public void UndoMove(Move move, Piece destroyedPiece, MoveFlags moveFlags)
         {
             Cell prevCell = GetCell(move.FromX, move.FromY);
@@ -157,7 +185,8 @@ namespace chesslib.Field
             {
                 RestorePiece(destroyedPiece, nextCell);
             }
-            Update(moveFlags);
+            Move reverseMove = new Move(move.ToX, move.ToY, move.FromX, move.FromY);
+            Update(reverseMove, moveFlags);
         }
 
         public List<Piece> GetAlivePieces(PlayerColor playerColor)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using chesslib.Field;
+using chesslib.Utils;
 
 namespace chesslib.Figures
 {
@@ -12,44 +13,16 @@ namespace chesslib.Figures
             PieceType = PieceType.Knight;
         }
 
-        public override void SetAllowedMoves()
+        public override IEnumerable<Cell> GetAttackPattern()
         {
-            base.SetAllowedMoves();
-            int x = CurrentCell.PosX;
-            int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.ChessBoard;
-
-            int size = Board.ChessBoard.GetLength(0);
-
-            List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
-            {
-                //влево
-                new Tuple<int, int>(x-2,y-1),
-                new Tuple<int, int>(x-2,y+1),
-                new Tuple<int, int>(x-1,y+2),
-                new Tuple<int, int>(x-1,y-2),
-                //вправо
-                new Tuple<int, int>(x+2,y-1),
-                new Tuple<int, int>(x+2,y+1),
-                new Tuple<int, int>(x+1,y+2),
-                new Tuple<int, int>(x+1,y-2),
-            };
-
-            foreach (var move in toCheck)
-            {
-                TryMoveToCell(move.Item1, move.Item2);
-            }
+            return GetMovePattern();
         }
 
-        public override void GetAttackedCells()
+        public override IEnumerable<Cell> GetMovePattern()
         {
-            base.GetAttackedCells();
-
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-            Cell[,] chessBoard = Board.ChessBoard;
 
-            int size = Board.ChessBoard.GetLength(0);
 
             List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
             {
@@ -67,7 +40,10 @@ namespace chesslib.Figures
 
             foreach (var move in toCheck)
             {
-                TryAttackCell(move.Item1, move.Item2);
+                int i = move.Item1;
+                int j = move.Item2;
+                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
+                    yield return Board.GetCell(i, j);
             }
         }
     }

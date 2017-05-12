@@ -49,6 +49,7 @@
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
     <Compile Include="Field\Move.cs" />
+    <Compile Include="Pieces\IMovable.cs" />
     <Compile Include="Player\PlayerType.cs" />
     <Compile Include="Strategy\IntelligentComputerStrategy.cs" />
     <Compile Include="Utils\BoardUtils.cs" />
