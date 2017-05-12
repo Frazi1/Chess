@@ -26,7 +26,7 @@ namespace chesslib.Utils
                 .ForEach(c =>
                 {
                     if (c.IsTaken
-                    && c.Piece.PlayerType != inputPiece.PlayerType)
+                    && c.Piece.PlayerColor != inputPiece.PlayerColor)
                         list.Add(c.Piece);
                 });
             return list;

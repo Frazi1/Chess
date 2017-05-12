@@ -6,7 +6,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Queen : Piece
     {
-        public Queen(Cell currentCell, PlayerColor playerType, Board board) : base(currentCell, playerType, board)
+        public Queen(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Queen;
         }

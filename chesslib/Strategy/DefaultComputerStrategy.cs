@@ -17,7 +17,7 @@ namespace chesslib.Strategy
         {
             AlivePieces = board
                             .AlivePieces
-                            .Where(p => p.PlayerType == player.PlayerColor)
+                            .Where(p => p.PlayerColor == player.PlayerColor)
                             .ToList();
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();

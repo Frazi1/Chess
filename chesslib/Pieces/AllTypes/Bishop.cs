@@ -6,7 +6,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Bishop : Piece
     {
-        public Bishop(Cell currentCell, PlayerColor playerType, Board board) : base(currentCell, playerType, board)
+        public Bishop(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Bishop;
         }

@@ -44,7 +44,7 @@ namespace chesslib
         public bool IsAttacked(PlayerColor playerType)
         {
             return AttackersList
-                    .Count(a => a.PlayerType != playerType)
+                    .Count(a => a.PlayerColor != playerType)
                     > 0;
         }
     }

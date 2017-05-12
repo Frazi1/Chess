@@ -18,46 +18,35 @@ namespace chesslib.Utils
         {
             return board
                     .AlivePieces
-                    .Count(p => p.PieceType == PieceType.King && p.PlayerType == playerType && p.IsUnderAttack) > 0;
+                    .Count(p => p.PieceType == PieceType.King && p.PlayerColor == playerType && p.IsUnderAttack) > 0;
         }
 
         public static bool IsCheckMate(Board board, PlayerColor currentPlayerPlayerColor)
         {
             return board.AlivePieces
-                .Where(p => p.PlayerType == currentPlayerPlayerColor)
+                .Where(p => p.PlayerColor == currentPlayerPlayerColor)
                 .All(p => p.AllowedCells.Count == 0);
         }
 
-        public static bool IsCheckOnNextTurn(Tuple<Piece, Cell> move)
+        public static bool IsCheckOnNextTurn(Board currentBoard, Move move, PlayerColor playerColor)
         {
-            var virtualBoard = VirtualMove(move, MoveFlags.UpdateAttacked);
-            return IsCheck(virtualBoard, move.Item1.PlayerType);
+            var virtualBoard = VirtualMove(currentBoard,move, MoveFlags.UpdateAttacked);
+            return IsCheck(virtualBoard, playerColor);
         }
 
-        public static Board VirtualMove(Tuple<Piece, Cell> move, MoveFlags moveFlags)
+        public static Board VirtualMove(Board currentBoard, Move move, MoveFlags moveFlags)
         {
             Piece p;
-            return VirtualMove(move, moveFlags, out p);
+            return VirtualMove(currentBoard, move, moveFlags, out p);
         }
 
-        public static Board VirtualMove(Tuple<Piece, Cell> move, MoveFlags moveFlags, out Piece piece)
+        public static Board VirtualMove(Board currentBoard, Move move, MoveFlags moveFlags, out Piece piece)
         {
-            Piece oldPiece = move.Item1;
-            Cell oldCell = move.Item2;
-            Board board = oldPiece.Board.DeepCopy();
-            int px = oldPiece.CurrentCell.PosX;
-            int py = oldPiece.CurrentCell.PosY;
+            Board virtualBoard = currentBoard.DeepCopy();
 
-            int cx = oldCell.PosX;
-            int cy = oldCell.PosY;
-
-            //Piece and cell from copied board:
-            Cell newCell = board.ChessBoard[cx, cy];
-            Piece newPiece = board.ChessBoard[px, py].Piece;
-
-            board.MovePiece(newPiece, newCell, moveFlags);
-            piece = newPiece;
-            return board;
+            virtualBoard.MovePiece(move, moveFlags);
+            piece = virtualBoard.GetPiece(move.ToX, move.ToY);
+            return virtualBoard;
         }
     }
 }

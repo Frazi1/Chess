@@ -46,29 +46,21 @@ namespace chesslib.Command
                 return false;
             if (_playerColor != game.CurrentPlayer.PlayerColor)
                 return false;
-            if (_playerColor != piece.PlayerType)
+            if (_playerColor != piece.PlayerColor)
                 return false;
             return piece.CanMoveTo(nextCell);
         }
         public void Execute(object parameter)
         {
             Game game = (Game)parameter;
-            //Cell[,] chessBoard = game.Board.ChessBoard;
-            Cell nextCell = game.GetCell(NextX, NextY); /*chessBoard[NextX, NextY];*/
-            Piece piece = /*chessBoard[PrevX, PrevY].Piece;*/ game.GetPiece(PrevX, PrevY);
-
-            _destroyedPiece = game.Board.MovePiece(piece, nextCell, MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
+            _destroyedPiece = game.Board.MovePiece(Move, MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
         }
         public void Undo(object parameter)
         {
             Game game = (Game)parameter;
-            //Cell[,] chessBoard = game.Board.ChessBoard;
-            Cell nextCell = /*chessBoard[NextX, NextY];*/ game.GetCell(NextX, NextY);
-            Cell prevCell = /*chessBoard[PrevX, PrevY];*/ game.GetCell(PrevX, PrevY);
-            //var piece = chessBoard[NextX, NextY].Piece;
+
             game.ChangeTurn();
-            game.Board.UndoMove(prevCell,
-                nextCell,
+            game.Board.UndoMove(Move,
                 _destroyedPiece,
                 MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
         }

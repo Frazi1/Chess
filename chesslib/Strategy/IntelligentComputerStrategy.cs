@@ -34,7 +34,7 @@ namespace chesslib.Strategy
                 .AllowedCells
                 .Count;
 
-            if (cell.IsTaken && cell.Piece.PlayerType!= piece.PlayerType)
+            if (cell.IsTaken && cell.Piece.PlayerColor!= piece.PlayerColor)
             {
                 estimation += cell.Piece.GetPieceValue();
             }

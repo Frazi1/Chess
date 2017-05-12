@@ -37,8 +37,8 @@ namespace ChessUI.ViewModel
         }
         public PlayerColor PlayerType
         {
-            get { return _piece.PlayerType; }
-            //set { _piece.PlayerType = value; RaisePropertyChanged(() => _piece.PlayerType); }
+            get { return _piece.PlayerColor; }
+            //set { _piece.PlayerColor = value; RaisePropertyChanged(() => _piece.PlayerColor); }
         }
         public bool IsInGame { get { return _piece.IsInGame; } }
 

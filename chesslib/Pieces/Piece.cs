@@ -20,7 +20,7 @@ namespace chesslib
             get { return CurrentCell.PosY; }
         }
         public Cell CurrentCell { get; internal set; }
-        public PlayerColor PlayerType { get; internal set; }
+        public PlayerColor PlayerColor { get; internal set; }
         public PieceType PieceType { get; protected set; }
         public int MovesCounter { get; internal set; }
         public bool IsInGame { get; internal set; }
@@ -29,19 +29,19 @@ namespace chesslib
             get
             {
                 return CurrentCell.AttackersList
-                                  .Count(a => a.PlayerType != PlayerType) > 0;
+                                  .Count(a => a.PlayerColor != PlayerColor) > 0;
             }
         }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
         public List<Cell> AllowedCells { get; protected set; }
         public List<Cell> AttackedCells { get; protected set; }
 
-        protected Piece(Cell currentCell, PlayerColor playerType, Board board)
+        protected Piece(Cell currentCell, PlayerColor playerColor, Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)
                 CurrentCell.Piece = this;
-            PlayerType = playerType;
+            PlayerColor = playerColor;
             IsInGame = true;
             Board = board;
             MovesCounter = 0;
@@ -94,19 +94,19 @@ namespace chesslib
                     return false;
 
 
-
+                Move move = new Move(PosX,PosY,x,y);
                 if (!chessBoard[x, y].IsTaken)
                 {
-                    if (!BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this, chessBoard[x, y])))
+                    if (!BoardUtils.IsCheckOnNextTurn(Board,move,PlayerColor))
                     {
                         AllowedCells.Add(chessBoard[x, y]);
                         return true;
                     }
                 }
                 else if (chessBoard[x, y].IsTaken &&
-                    chessBoard[x, y].Piece.PlayerType != PlayerType)
+                    chessBoard[x, y].Piece.PlayerColor != PlayerColor)
                 {
-                    if (!BoardUtils.IsCheckOnNextTurn(new Tuple<Piece, Cell>(this, chessBoard[x, y])))
+                    if (!BoardUtils.IsCheckOnNextTurn(Board, move, PlayerColor))
                     {
                         AllowedCells.Add(chessBoard[x, y]);
                         return false;
@@ -140,7 +140,7 @@ namespace chesslib
 
         public override string ToString()
         {
-            return GetType().Name + " - " + PlayerType.ToString();
+            return GetType().Name + " - " + PlayerColor.ToString();
         }
     }
 }

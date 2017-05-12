@@ -125,27 +125,17 @@ namespace chesslib.Field
             destroyedPiece.CurrentCell = cell;
             AlivePieces.Add(destroyedPiece);
         }
-        //public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
-        //{
-        //    Piece destroyedPiece = nextCell.Piece;
-        //    if (destroyedPiece != null)
-        //        DestroyPiece(destroyedPiece);
-        //    piece.MoveTo(nextCell);
-        //    if (updateMoves)
-        //        UpdatePiecesMoves();
-        //    if (updateAttacked)
-        //        UpdateAttackedCells();
-        //    return destroyedPiece;
-        //}
         /// <summary>
         /// Moves the piece from its current cell to the nextCell, updates lists of attacked cells and allowed moves (accordingly to specified moveFlags)
         /// </summary>
-        /// <param name="piece"></param>
-        /// <param name="nextCell"></param>
+        /// <param name="move"></param>
         /// <param name="moveFlags"></param>
         /// <returns>Return the piece that was destroyed after move (can be null if no piece destroyed)</returns>
-        public Piece MovePiece(Piece piece, Cell nextCell, MoveFlags moveFlags)
+        public Piece MovePiece(Move move, MoveFlags moveFlags)
         {
+            Piece piece = GetPiece(move.FromX, move.FromY);
+            Cell nextCell = GetCell(move.ToX, move.ToY);
+
             Piece destroyedPiece = nextCell.Piece;
             if (destroyedPiece != null)
                 DestroyPiece(destroyedPiece);
@@ -153,9 +143,11 @@ namespace chesslib.Field
             Update(moveFlags);
             return destroyedPiece;
         }
-        public void UndoMove(Cell prevCell, Cell nextCell, Piece destroyedPiece, MoveFlags moveFlags)
+        public void UndoMove(Move move, Piece destroyedPiece, MoveFlags moveFlags)
         {
-            var piece = nextCell.Piece;
+            Cell prevCell = GetCell(move.FromX, move.FromY);
+            Cell nextCell = GetCell(move.ToX, move.ToY);
+            Piece piece = nextCell.Piece;
             nextCell.Piece = null;
             //Ставим фигуру на предудущую клетку
             piece.CurrentCell = prevCell;
@@ -171,7 +163,7 @@ namespace chesslib.Field
         public List<Piece> GetAlivePieces(PlayerColor playerColor)
         {
             return AlivePieces
-                .Where(p => p.PlayerType == playerColor)
+                .Where(p => p.PlayerColor == playerColor)
                 .ToList();
         }
         public Cell GetCell(int x, int y)
