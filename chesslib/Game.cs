@@ -149,14 +149,6 @@ namespace chesslib
             }
         }
 
-        public Piece GetPiece(int x, int y)
-        {
-            return GetCell(x, y).Piece;
-        }
-        public Cell GetCell(int x, int y)
-        {
-            return Board.ChessBoard[x, y];
-        }
         public void Start()
         {
             Board.Start();

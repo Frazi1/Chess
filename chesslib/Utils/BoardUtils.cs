@@ -27,7 +27,7 @@ namespace chesslib.Utils
                 .All(p => p.AllowedCells.Count == 0);
         }
 
-        public static bool IsCheckOnNextTurn(Tuple<Piece,Cell> move)
+        public static bool IsCheckOnNextTurn(Tuple<Piece, Cell> move)
         {
             //Piece oldPiece = move.Item1;
             //Cell oldCell = move.Item2;
@@ -47,19 +47,18 @@ namespace chesslib.Utils
             //board.UpdateAttackedCells();
 
 
-            var virtualBoard = VirtualMove(move, false, true);
+            var virtualBoard = VirtualMove(move, MoveFlags.UpdateAttacked);
             return IsCheck(virtualBoard, move.Item1.PlayerType);
         }
 
-        public static Board VirtualMove(Tuple<Piece,Cell> move, bool updateMoves, bool updateAttacked)
+        public static Board VirtualMove(Tuple<Piece, Cell> move, MoveFlags moveFlags)
         {
             Piece p;
-            return VirtualMove(move, updateMoves, updateAttacked, out p);
+            return VirtualMove(move, moveFlags, out p);
         }
 
-        public static Board VirtualMove(Tuple<Piece, Cell> move, bool updateMoves, bool updateAttacked, out Piece piece)
+        public static Board VirtualMove(Tuple<Piece, Cell> move, MoveFlags moveFlags, out Piece piece)
         {
-
             Piece oldPiece = move.Item1;
             Cell oldCell = move.Item2;
             Board board = oldPiece.Board.DeepCopy();
@@ -73,7 +72,7 @@ namespace chesslib.Utils
             Cell newCell = board.ChessBoard[cx, cy];
             Piece newPiece = board.ChessBoard[px, py].Piece;
 
-            board.MovePiece(newPiece, newCell, updateMoves, updateAttacked);
+            board.MovePiece(newPiece, newCell, moveFlags);
             piece = newPiece;
             return board;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using chesslib.Field;
 
 namespace chesslib.Command
 {
@@ -76,7 +77,7 @@ namespace chesslib.Command
 
         public bool CanExecute(object parameter)
         {
-            Game game = (Game) parameter;
+            Game game = (Game)parameter;
             Cell[,] chessBoard = game.Board.ChessBoard;
             var nextCell = chessBoard[NextX, NextY];
             var piece = chessBoard[PrevX, PrevY].Piece;
@@ -92,17 +93,17 @@ namespace chesslib.Command
 
         public void Execute(object parameter)
         {
-            Game game = (Game) parameter;
+            Game game = (Game)parameter;
             Cell[,] chessBoard = game.Board.ChessBoard;
             var nextCell = chessBoard[NextX, NextY];
             var piece = chessBoard[PrevX, PrevY].Piece;
 
-            _destroyedPiece = game.Board.MovePiece(piece, nextCell, true, true);
+            _destroyedPiece = game.Board.MovePiece(piece, nextCell, MoveFlags.UpdateAttacked | MoveFlags.UpdateMoves);
         }
 
         public void Undo(object parameter)
         {
-            Game game = (Game) parameter;
+            Game game = (Game)parameter;
             Cell[,] chessBoard = game.Board.ChessBoard;
             var nextCell = chessBoard[NextX, NextY];
             var prevCell = chessBoard[PrevX, PrevY];
@@ -123,7 +124,7 @@ namespace chesslib.Command
                 _destroyedPiece.CurrentCell = nextCell;
                 game.Board.AlivePieces.Add(_destroyedPiece);
             }
-  
+
         }
         public override string ToString()
         {

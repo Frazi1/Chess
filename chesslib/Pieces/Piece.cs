@@ -40,7 +40,7 @@ namespace chesslib
         public List<Cell> AttackedCells { get; protected set; }
 
 
-        public Piece(Cell currentCell, PlayerColor playerType, Board board)
+        protected Piece(Cell currentCell, PlayerColor playerType, Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)
@@ -80,13 +80,12 @@ namespace chesslib
         {
             AllowedCells.Clear();
         }
+
         /// <summary>
         /// If cell at x,y is free, it will be added to allowedMoves list and TRUE will be returned
         /// If cell is occupied by an enemy piece, it will be added to allowedMoves and FALSE will be returned
         /// Otherwise, FALSE returned
         /// </summary>
-        /// <param name="allowedMoves"></param>
-        /// <param name="chessBoard"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>True or fasle</returns>

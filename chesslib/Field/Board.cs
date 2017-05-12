@@ -117,15 +117,27 @@ namespace chesslib.Field
             }
         }
 
-        public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
+        //public Piece MovePiece(Piece piece, Cell nextCell, bool updateMoves, bool updateAttacked)
+        //{
+        //    Piece destroyedPiece = nextCell.Piece;
+        //    if (destroyedPiece != null)
+        //        DestroyPiece(destroyedPiece);
+        //    piece.MoveTo(nextCell);
+        //    if (updateMoves)
+        //        UpdatePiecesMoves();
+        //    if (updateAttacked)
+        //        UpdateAttackedCells();
+        //    return destroyedPiece;
+        //}
+        public Piece MovePiece(Piece piece, Cell nextCell, MoveFlags moveFlags)
         {
             Piece destroyedPiece = nextCell.Piece;
             if (destroyedPiece != null)
                 DestroyPiece(destroyedPiece);
             piece.MoveTo(nextCell);
-            if (updateMoves)
+            if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
                 UpdatePiecesMoves();
-            if (updateAttacked)
+            if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
                 UpdateAttackedCells();
             return destroyedPiece;
         }
@@ -135,5 +147,13 @@ namespace chesslib.Field
                 .Where(p => p.PlayerType == playerColor)
                 .ToList();
         }
+    }
+
+    [Flags]
+    public enum MoveFlags
+    {
+        None = 1,
+        UpdateAttacked = 2,
+        UpdateMoves = 4
     }
 }
