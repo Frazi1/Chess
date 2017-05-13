@@ -33,6 +33,11 @@ namespace chesslib
                                   .Count(a => a.PlayerColor != PlayerColor) > 0;
             }
         }
+        public bool IsUnderProtect
+        {
+            get { return CurrentCell.
+                    AttackersList.Count(p => p.PlayerColor == PlayerColor) > 0; }
+        }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
         public List<Cell> AllowedCells { get; protected set; }
         public List<Cell> AttackedCells { get; protected set; }

@@ -14,6 +14,11 @@ namespace chesslib.Utils
                             y < chessBoard.GetLength(0);
         }
 
+        public static bool PieceCanMoveTo(Piece piece, Cell cell)
+        {
+            return !cell.IsTaken || cell.IsTaken && cell.Piece.PlayerColor != piece.PlayerColor;
+        }
+
         public static bool Continue(Cell cell)
         {
             return !cell.IsTaken;

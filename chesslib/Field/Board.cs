@@ -56,14 +56,14 @@ namespace chesslib.Field
             }
 
             //white
-            AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerColor.White, this));
             AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerColor.White, this));
             AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerColor.White, this));
             AlivePieces.Add(new King(ChessBoard[4, 7], PlayerColor.White, this));
-            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[0, 7], PlayerColor.White, this));
             AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerColor.White, this));
             AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerColor.White, this));
-            AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[7, 7], PlayerColor.White, this));
 
             for (int i = 0; i < _size; i++)
             {
@@ -202,6 +202,10 @@ namespace chesslib.Field
         public Piece GetPiece(int x, int y)
         {
             return GetCell(x, y).Piece;
+        }
+        public int GetAllowedMovesNumber(PlayerColor playerColor)
+        {
+            return GetAlivePieces(playerColor).Sum(p => p.AllowedCells.Count);
         }
     }
 

@@ -30,9 +30,11 @@ namespace chesslib.Strategy
             Piece piece = virtualBoard.GetPiece(move.FromX, move.FromY);
             Cell cell = virtualBoard.GetCell(move.ToX, move.ToY);
 
-            int allowedMovesCount = piece
-                .AllowedCells
-                .Count;
+            int allowedMovesCount = piece.AllowedCells.Count;
+            int allMoves = virtualBoard.GetAllowedMovesNumber(piece.PlayerColor);
+            bool isUnderAttack = piece.IsUnderAttack;
+            bool isUnderProtect = piece.IsUnderProtect;
+
 
             if (cell.IsTaken && cell.Piece.PlayerColor != piece.PlayerColor)
             {
@@ -43,7 +45,10 @@ namespace chesslib.Strategy
             MoveFlags moveFlags = MoveFlags.UpdateMoves;
             BoardUtils.VirtualMove(virtualBoard, false, move, moveFlags, out pieceCopy, out destroyedPieceCopy);
             if (allowedMovesCount < pieceCopy.AllowedCells.Count)
+                estimation += 0.5;
+            if (allMoves < virtualBoard.GetAllowedMovesNumber(piece.PlayerColor))
                 estimation += 1;
+
             virtualBoard.UndoMove(move, destroyedPieceCopy, moveFlags);
 
             return estimation;
@@ -54,6 +59,7 @@ namespace chesslib.Strategy
             List<Piece> alivePieces = currentBoard.GetAlivePieces(playerColor);
             Board virtualBoard = currentBoard.DeepCopy();
             List<Tuple<Move, double>> estimatedMoves = new List<Tuple<Move, double>>();
+
             foreach (Piece p in alivePieces)
             {
                 foreach (Cell c in p.AllowedCells)
@@ -65,6 +71,8 @@ namespace chesslib.Strategy
                     estimatedMoves.Add(estimatedMove);
                 }
             }
+
+
             var orderedEnumerable = estimatedMoves
                 .OrderByDescending(x => x.Item2)
                 .ToList();

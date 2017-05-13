@@ -17,10 +17,10 @@ namespace chesslib.Figures
 
         public override IEnumerable<Cell> GetAttackPattern()
         {
-            return GetMovePattern();
+            return GetPattern((Piece p, Cell c)=>true);
         }
 
-        public override IEnumerable<Cell> GetMovePattern()
+        private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
         {
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
@@ -34,13 +34,17 @@ namespace chesslib.Figures
                         if (i == PosX && j == PosX)
                             continue;
 
-                        var cell = Board.GetCell(i, j);
-                        yield return cell;
-                        if (!BoardUtils.Continue(cell))
-                            break;
+                        Cell cell = Board.GetCell(i, j);
+                        if (checker(this, cell))
+                            yield return cell;
                     }
                 }
             }
+        }
+
+        public override IEnumerable<Cell> GetMovePattern()
+        {
+            return GetPattern(BoardUtils.PieceCanMoveTo);
         }
 
     }

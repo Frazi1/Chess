@@ -15,73 +15,59 @@ namespace chesslib.Figures
 
         public override IEnumerable<Cell> GetAttackPattern()
         {
-            return GetMovePattern();
+            return GetPattern((p, c) => true);
         }
 
         public override IEnumerable<Cell> GetMovePattern()
         {
+            return GetPattern(BoardUtils.PieceCanMoveTo);
+        }
+
+        private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
+        {
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
-
             int size = Board.ChessBoard.GetLength(0);
 
             Cell cell;
+            
             //Вправо
             for (int i = x + 1, j = y; i < size; i++)
             {
-                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
-                {
-                    if (i == PosX && j == PosX)
-                        continue;
-
-                    cell = Board.GetCell(i, j);
+                cell = Board.GetCell(i, j);
+                if (checker(this, cell))
                     yield return cell;
-                    if (!BoardUtils.Continue(cell))
-                        break;
-                }
+                if (!BoardUtils.Continue(cell))
+                    break;
             }
             //Влево
             for (int i = x - 1, j = y; i >= 0; i--)
             {
-                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
-                {
-                    if (i == PosX && j == PosX)
-                        continue;
-
-                    cell = Board.GetCell(i, j);
+                cell = Board.GetCell(i, j);
+                if (checker(this, cell))
                     yield return cell;
-                    if (!BoardUtils.Continue(cell))
-                        break;
-                }
+                if (!BoardUtils.Continue(cell))
+                    break;
             }
             //Вниз
             for (int i = x, j = y + 1; j < size; j++)
             {
-                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
-                {
-                    if (i == PosX && j == PosX)
-                        continue;
-
-                    cell = Board.GetCell(i, j);
+                cell = Board.GetCell(i, j);
+                if (checker(this, cell))
                     yield return cell;
-                    if (!BoardUtils.Continue(cell))
-                        break;
-                }
+                if (!BoardUtils.Continue(cell))
+                    break;
             }
             //Вверх
             for (int i = x, j = y - 1; j >= 0; j--)
             {
-                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
-                {
-                    if (i == PosX && j == PosX)
-                        continue;
-
-                    cell = Board.GetCell(i, j);
+                cell = Board.GetCell(i, j);
+                if (checker(this, cell))
                     yield return cell;
-                    if (!BoardUtils.Continue(cell))
-                        break;
-                }
+                if (!BoardUtils.Continue(cell))
+                    break;
             }
+
         }
 
     }
