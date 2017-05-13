@@ -22,14 +22,14 @@ namespace chesslib.Figures
 
         private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
         {
-            int x = CurrentCell.PosX;
-            int y = CurrentCell.PosY;
+            int x = PosX;
+            int y = PosY;
 
             for (int i = x - 1; i <= x + 1; i++)
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
+                    if (BoardUtils.IsValidCell(Board.Size, i, j))
                     {
                         if (i == PosX && j == PosX)
                             continue;

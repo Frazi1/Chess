@@ -27,9 +27,9 @@ namespace chesslib.Figures
 
         private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
         {
-            int x = CurrentCell.PosX;
-            int y = CurrentCell.PosY;
-            int size = Board.ChessBoard.GetLength(0);
+            int x = PosX;
+            int y = PosY;
+            int size = Board.Size;
 
             Cell cell;
             //Вправо вверх

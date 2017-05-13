@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using chesslib;
 
 namespace ChessUI
 {
@@ -24,6 +25,10 @@ namespace ChessUI
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            int x = (int)e.GetPosition(this.ChessBoard).X;
+            int y = (int)e.GetPosition(this.ChessBoard).Y;
+            string text = "";
+
             if (e.LeftButton == e.ButtonState)
                 if (_gameViewModel.ActivePlayerViewModel != null)
                 {
@@ -35,8 +40,8 @@ namespace ChessUI
                     }
                     else
                     {
-                        int x = (int) e.GetPosition(this.ChessBoard).X;
-                        int y = (int) e.GetPosition(this.ChessBoard).Y;
+                        //int x = (int) e.GetPosition(this.ChessBoard).X;
+                        //int y = (int) e.GetPosition(this.ChessBoard).Y;
                         try
                         {
                             _gameViewModel.NextCell = _gameViewModel
@@ -57,14 +62,35 @@ namespace ChessUI
                     }
 
                 }
-            if (e.RightButton == e.ButtonState)
+
+
+            if (e.RightButton == MouseButtonState.Pressed)
             {
-                int x = (int) e.GetPosition(this.ChessBoard).X;
-                int y = (int) e.GetPosition(this.ChessBoard).Y;
-                string text = "";
+                //int x = (int) e.GetPosition(this.ChessBoard).X;
+                //int y = (int) e.GetPosition(this.ChessBoard).Y;
+                //string text = "";
                 var piece = _gameViewModel.Game.GetPiece(x, y);
                 if (piece != null)
-                    piece.AllowedCells.ForEach(a => { text += a.ToString(); text += Environment.NewLine; });
+                {
+                    piece.AllowedCells.ForEach(a =>
+                    {
+                        text += a.ToString();
+                        text += Environment.NewLine;
+                    });
+                }
+                MessageBox.Show(text);
+            }
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                Cell cell = _gameViewModel.Game.GetCell(x, y);
+                if (cell != null)
+                {
+                    cell.AttackersList.ForEach(a =>
+                    {
+                        text += a.ToString();
+                        text += Environment.NewLine;
+                    });
+                }
                 MessageBox.Show(text);
             }
         }

@@ -8,17 +8,17 @@ namespace chesslib.Field
     [Serializable]
     public class Board
     {
-        private readonly int _size;
+        public int Size { get; }
 
-        public Cell[,] ChessBoard { get; private set; }
-        public List<Piece> AlivePieces { get; private set; }
+        protected Cell[,] ChessBoard { get; }
+        public List<Piece> AlivePieces { get; }
 
         public bool IsPaused { get; internal set; }
         public bool IsGameFinished { get; internal set; }
 
         public Board(int size)
         {
-            _size = size;
+            Size = size;
             ChessBoard = new Cell[size, size];
             AlivePieces = new List<Piece>();
             IsGameFinished = false;
@@ -29,9 +29,9 @@ namespace chesslib.Field
 
         private void Initialize()
         {
-            for (int i = 0; i < _size; i++)
+            for (int i = 0; i < Size; i++)
             {
-                for (int j = 0; j < _size; j++)
+                for (int j = 0; j < Size; j++)
                 {
                     ChessBoard[i, j] = new Cell(i, j);
                 }
@@ -50,22 +50,22 @@ namespace chesslib.Field
             AlivePieces.Add(new Knight(ChessBoard[6, 0], PlayerColor.Black, this));
             AlivePieces.Add(new Rook(ChessBoard[7, 0], PlayerColor.Black, this));
 
-            for (int i = 0; i < _size; i++)
+            for (int i = 0; i < Size; i++)
             {
                 AlivePieces.Add(new Pawn(ChessBoard[i, 1], PlayerColor.Black, this));
             }
 
             //white
-            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Rook(ChessBoard[0, 7], PlayerColor.White, this));
             AlivePieces.Add(new Knight(ChessBoard[1, 7], PlayerColor.White, this));
             AlivePieces.Add(new Bishop(ChessBoard[2, 7], PlayerColor.White, this));
             AlivePieces.Add(new King(ChessBoard[4, 7], PlayerColor.White, this));
-            AlivePieces.Add(new Queen(ChessBoard[0, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Queen(ChessBoard[3, 7], PlayerColor.White, this));
             AlivePieces.Add(new Bishop(ChessBoard[5, 7], PlayerColor.White, this));
             AlivePieces.Add(new Knight(ChessBoard[6, 7], PlayerColor.White, this));
-            AlivePieces.Add(new Queen(ChessBoard[7, 7], PlayerColor.White, this));
+            AlivePieces.Add(new Rook(ChessBoard[7, 7], PlayerColor.White, this));
 
-            for (int i = 0; i < _size; i++)
+            for (int i = 0; i < Size; i++)
             {
                 AlivePieces.Add(new Pawn(ChessBoard[i, 6], PlayerColor.White, this));
             }
@@ -78,50 +78,64 @@ namespace chesslib.Field
             IsPaused = false;
         }
 
-        private void UpdateAllAttackedCells()
-        {
-            //Clear attackers lists
-            for (int i = 0; i < ChessBoard.GetLength(0); i++)
-            {
-                for (int j = 0; j < ChessBoard.GetLength(1); j++)
-                {
-                    var cell = ChessBoard[i, j];
-                    cell.AttackersList.Clear();
-                }
-            }
-            foreach (var p in AlivePieces)
-            {
-                p.SetAttackedCells();
-                //p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
-            }
-        }
-        private void UpdateAllPiecesMoves()
-        {
-            foreach (var p in AlivePieces)
-            {
-                p.SetAllowedMoves();
-            }
-        }
-        private void UpdateAttackedCells(Move move)
-        {
-        }
-        private void UpdatePiecesMoves(Move move)
-        {
-        }
-
         public void Update(Move move, MoveFlags moveFlags)
         {
+            if (moveFlags.HasFlag(MoveFlags.None)) return;
+
+            Cell from = GetCell(move.FromX, move.FromY);
+            Cell to = GetCell(move.ToX, move.ToY);
+            Piece[] piecesToUpdate1 = new Piece[from.AttackersList.Count];
+            Piece[] piecesToUpdate2 = new Piece[to.AttackersList.Count];
+            from.AttackersList.CopyTo(piecesToUpdate1, 0);
+            to.AttackersList.CopyTo(piecesToUpdate2, 0);
+            Piece piece = to.Piece;
+
+            piece.AttackedCells.ForEach(c => c.AttackersList.Remove(piece));
+            piece.AttackedCells.Clear();
+
             if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
-                UpdateAttackedCells(move);
+            {
+                foreach (Piece itemPiece in piecesToUpdate1)
+                    itemPiece.SetAttackedCells();
+                foreach (Piece itemPiece in piecesToUpdate2)
+                    itemPiece.SetAttackedCells();
+                piece.SetAttackedCells();
+            }
             if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
-                UpdatePiecesMoves(move);
+            {
+                foreach (Piece itemPiece in piecesToUpdate1)
+                    itemPiece.SetAllowedMoves();
+                foreach (Piece itemPiece in piecesToUpdate2)
+                    itemPiece.SetAllowedMoves();
+                piece.SetAllowedMoves();
+            }
         }
         public void UpdateAll(MoveFlags moveFlags)
         {
             if (moveFlags.HasFlag(MoveFlags.UpdateAttacked))
-                UpdateAllAttackedCells();
+            {
+                //Clear attackers lists
+                for (int i = 0; i < ChessBoard.GetLength(0); i++)
+                {
+                    for (int j = 0; j < ChessBoard.GetLength(1); j++)
+                    {
+                        var cell = ChessBoard[i, j];
+                        cell.AttackersList.Clear();
+                    }
+                }
+                foreach (var p in AlivePieces)
+                {
+                    p.SetAttackedCells();
+                    //p.AttackedCells.ForEach(x => x.AttackersList.Add(p));
+                }
+            }
             if (moveFlags.HasFlag(MoveFlags.UpdateMoves))
-                UpdateAllPiecesMoves();
+            {
+                foreach (var p in AlivePieces)
+                {
+                    p.SetAllowedMoves();
+                }
+            }
         }
 
 
@@ -130,6 +144,7 @@ namespace chesslib.Field
         {
             if (AlivePieces.Contains(piece))
             {
+                piece.AttackedCells.ForEach(c => c.AttackersList.Remove(piece));
                 AlivePieces.Remove(piece);
                 piece.IsInGame = false;
                 piece.CurrentCell = null;
@@ -141,6 +156,9 @@ namespace chesslib.Field
             cell.Piece = destroyedPiece;
             destroyedPiece.CurrentCell = cell;
             AlivePieces.Add(destroyedPiece);
+
+            destroyedPiece.SetAllowedMoves();
+            destroyedPiece.SetAttackedCells();
         }
 
         /// <summary>
@@ -151,24 +169,19 @@ namespace chesslib.Field
         /// <returns>Return the piece that was destroyed after move (can be null if no piece destroyed)</returns>
         public Piece MovePiece(Move move, MoveFlags moveFlags)
         {
-            Piece piece = GetPiece(move.FromX, move.FromY);
             Cell nextCell = GetCell(move.ToX, move.ToY);
             Cell prevCell = GetCell(move.FromX, move.FromY);
-
-
-            //piece.AttackedCells.ForEach(c => c.AttackersList.Remove(piece));
-            //piece.AttackedCells.Clear();
+            Piece piece = prevCell.Piece;
 
             Piece destroyedPiece = nextCell.Piece;
             if (destroyedPiece != null)
                 DestroyPiece(destroyedPiece);
             piece.MoveTo(nextCell);
 
+            //Update(move,moveFlags);
             UpdateAll(moveFlags);
 
-
             return destroyedPiece;
-
         }
 
         public void UndoMove(Move move, Piece destroyedPiece, MoveFlags moveFlags)

@@ -35,8 +35,11 @@ namespace chesslib
         }
         public bool IsUnderProtect
         {
-            get { return CurrentCell.
-                    AttackersList.Count(p => p.PlayerColor == PlayerColor) > 0; }
+            get
+            {
+                return CurrentCell.
+                  AttackersList.Count(p => p.PlayerColor == PlayerColor) > 0;
+            }
         }
         public bool HasAlreadyMoved { get { return MovesCounter > 0; } }
         public List<Cell> AllowedCells { get; protected set; }
@@ -94,27 +97,19 @@ namespace chesslib
             }
         }
 
-        /// <summary>
-        /// If cell at x,y is free, it will be added to allowedMoves list and TRUE will be returned
-        /// If cell is occupied by an enemy piece, it will be added to allowedMoves and FALSE will be returned
-        /// Otherwise, FALSE returned
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns>True or fasle</returns>
-        public void TryMoveToCell(int x, int y)
+        protected void TryMoveToCell(int x, int y)
         {
             Move move = new Move(PosX, PosY, x, y);
-            Cell cell = Board.GetCell(x,y);
-            if (!cell.IsTaken || (cell.IsTaken && cell.Piece.PlayerColor != PlayerColor))
-            {
-                if (!BoardUtils.IsCheckOnNextTurn(Board, move, PlayerColor))
-                    AllowedCells.Add(Board.GetCell(x, y));
-            }
+            Cell cell = Board.GetCell(x, y);
+            
+            if (!BoardUtils.IsCheckOnNextTurn(Board, move, PlayerColor))
+                AllowedCells.Add(cell);
         }
-        public void TryAttackCell(int x, int y)
+        protected void TryAttackCell(int x, int y)
         {
-            AttackedCells.Add(Board.GetCell(x, y));
+            Cell cell = Board.GetCell(x, y);
+            AttackedCells.Add(cell);
+            cell.AttackersList.Add(this);
         }
 
         public override string ToString()

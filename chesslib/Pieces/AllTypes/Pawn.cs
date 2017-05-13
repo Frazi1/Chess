@@ -20,7 +20,7 @@ namespace chesslib.Figures
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
 
-            int size = Board.ChessBoard.GetLength(0);
+            int size = Board.Size;
 
             if (PlayerColor == PlayerColor.White)
             {
@@ -55,9 +55,9 @@ namespace chesslib.Figures
 
         public override IEnumerable<Cell> GetMovePattern()
         {
-            int x = CurrentCell.PosX;
-            int y = CurrentCell.PosY;
-            int size = Board.ChessBoard.GetLength(0);
+            int x = PosX;
+            int y = PosY;
+            int size = Board.Size;
 
 
 

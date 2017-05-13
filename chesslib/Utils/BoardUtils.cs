@@ -6,12 +6,12 @@ namespace chesslib.Utils
 {
     public static class BoardUtils
     {
-        public static bool IsValidCell(Cell[,] chessBoard, int x, int y)
+        public static bool IsValidCell(int size, int x, int y)
         {
             return x >= 0 &&
-                            x < chessBoard.GetLength(0) &&
+                            x < size &&
                             y >= 0 &&
-                            y < chessBoard.GetLength(0);
+                            y < size;
         }
 
         public static bool PieceCanMoveTo(Piece piece, Cell cell)

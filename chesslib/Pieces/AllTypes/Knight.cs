@@ -20,8 +20,8 @@ namespace chesslib.Figures
 
         private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
         {
-            int x = CurrentCell.PosX;
-            int y = CurrentCell.PosY;
+            int x = PosX;
+            int y = PosY;
 
 
             List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
@@ -42,7 +42,7 @@ namespace chesslib.Figures
             {
                 int i = move.Item1;
                 int j = move.Item2;
-                if (BoardUtils.IsValidCell(Board.ChessBoard, i, j))
+                if (BoardUtils.IsValidCell(Board.Size, i, j))
                 {
                     Cell cell = Board.GetCell(i, j);
                     if (checker(this, cell))
