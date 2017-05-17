@@ -17,6 +17,7 @@ namespace ChessUI.ViewModel
         private ObservableCollection<ChessPieceViewModel> _chessPieces;
         private Game _game;
         private string _path;
+        public MainWindow ViewWindow { get; set; }
 
         public GameViewModel()
         {
@@ -83,6 +84,8 @@ namespace ChessUI.ViewModel
                 MessageBox.Show("Checkmate");
             else if (e.IsCheck)
                 MessageBox.Show("Check");
+
+            ViewWindow.UpdateMovesHistory();
         }
 
         public void Initialize(Game game)

@@ -200,7 +200,7 @@
         <!--Button Prev-->
         <Button Grid.Row="1" x:Name="button_prev" Content="Prev" HorizontalAlignment="Left" Margin="111,0,0,0" VerticalAlignment="Top" Width="74" Click="button_prev_Click" IsEnabled="{Binding Path=Main.CanUndo}"/>
         <!--Move History-->
-        <ListView HorizontalAlignment="Left" Height="248" Margin="10,52,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Main.MoveCommands}" IsSynchronizedWithCurrentItem="True" Loaded="ListView_Loaded">
+        <ListView HorizontalAlignment="Left" Height="248" Margin="10,52,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Main.MoveCommands}" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

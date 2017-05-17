@@ -22,6 +22,7 @@ namespace ChessUI
         {
             InitializeComponent();
             _gameViewModel = ServiceLocator.Current.GetInstance<GameViewModel>();
+            _gameViewModel.ViewWindow = this;
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -106,27 +107,32 @@ namespace ChessUI
             _gameViewModel.Game.GameUtils.LoadPreviousState();
         }
 
-        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        //private void ListView_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    ThreadPool.QueueUserWorkItem((x) =>
+        //    {
+        //        while (true)
+        //        {
+        //            UpdateMovesHistory();
+        //            Thread.Sleep(500);
+        //        }
+        //    });
+        //}
+
+        public System.Windows.Threading.DispatcherOperation UpdateMovesHistory()
         {
-            ThreadPool.QueueUserWorkItem((x) =>
+            return Dispatcher.BeginInvoke((Action)(() =>
             {
-                while (true)
+                if (_gameViewModel.Game != null)
                 {
-                    Dispatcher.BeginInvoke((Action) (() =>
-                     {
-                         if (_gameViewModel.Game != null)
-                         {
-                             _gameViewModel.MoveCommands.Clear();
-                             var list = _gameViewModel.Game.MoveCommands;
-                             for (int i = list.Count - 1; i >= 0; i--)
-                             {
-                                 _gameViewModel.MoveCommands.Add(list[i]);
-                             }
-                         }
-                     }));
-                    Thread.Sleep(500);
+                    _gameViewModel.MoveCommands.Clear();
+                    var list = _gameViewModel.Game.MoveCommands;
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        _gameViewModel.MoveCommands.Add(list[i]);
+                    }
                 }
-            });
+            }));
         }
 
         private void MenuItem_NewGame_Click(object sender, RoutedEventArgs e)

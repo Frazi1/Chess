@@ -157,8 +157,8 @@ namespace chesslib.Board
             destroyedPiece.CurrentCell = cell;
             AlivePieces.Add(destroyedPiece);
 
-            destroyedPiece.SetAllowedMoves();
-            destroyedPiece.SetAttackedCells();
+            //destroyedPiece.SetAllowedMoves();
+            //destroyedPiece.SetAttackedCells();
         }
 
         /// <summary>
@@ -199,7 +199,8 @@ namespace chesslib.Board
                 RestorePiece(destroyedPiece, nextCell);
             }
             Move reverseMove = new Move(move.ToX, move.ToY, move.FromX, move.FromY);
-            Update(reverseMove, moveFlags);
+            //Update(reverseMove, moveFlags);
+            UpdateAll(moveFlags);
         }
 
         public List<Piece> GetAlivePieces(PlayerColor playerColor)
