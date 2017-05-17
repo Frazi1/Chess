@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace chesslib
+namespace chesslib.Board
 {
     [Serializable]
     public class Cell

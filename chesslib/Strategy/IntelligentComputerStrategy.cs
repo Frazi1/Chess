@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using chesslib.Field;
+using chesslib.Board;
 using chesslib.Player;
 using chesslib.Utils;
 
@@ -18,13 +18,13 @@ namespace chesslib.Strategy
             this.steps = steps;
         }
 
-        public Move PrepareMove(IPlayer player, Board board)
+        public Move PrepareMove(IPlayer player, Board.Board board)
         {
             var move = GetBestMove(board, player.PlayerColor);
             return move;
         }
 
-        private double EstimateMove(Board virtualBoard, Move move, int steps)
+        private double EstimateMove(Board.Board virtualBoard, Move move, int steps)
         {
             double estimation = 0;
             Piece piece = virtualBoard.GetPiece(move.FromX, move.FromY);
@@ -54,10 +54,10 @@ namespace chesslib.Strategy
             return estimation;
         }
 
-        private Move GetBestMove(Board currentBoard, PlayerColor playerColor)
+        private Move GetBestMove(Board.Board currentBoard, PlayerColor playerColor)
         {
             List<Piece> alivePieces = currentBoard.GetAlivePieces(playerColor);
-            Board virtualBoard = currentBoard.DeepCopy();
+            Board.Board virtualBoard = currentBoard.DeepCopy();
             List<Tuple<Move, double>> estimatedMoves = new List<Tuple<Move, double>>();
 
             foreach (Piece p in alivePieces)

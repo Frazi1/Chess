@@ -1,12 +1,12 @@
 ﻿using chesslib.Command;
 using chesslib.Events;
-using chesslib.Field;
 using chesslib.Player;
 using chesslib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using chesslib.Board;
 
 namespace chesslib
 {
@@ -17,10 +17,10 @@ namespace chesslib
         private List<MakeMoveCommand> _moveCommands;
         private IPlayer _currentPlayer;
         private List<IPlayer> _players;
-        private Board _board;
+        private Board.Board _board;
         private GameUtils _gameUtils;
 
-        public Board Board
+        public Board.Board Board
         {
             get
             {
@@ -92,7 +92,7 @@ namespace chesslib
 
         public Game()
         {
-            Board = new Board(Size);
+            Board = new Board.Board(Size);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
             //_moveCommands = new MoveCommands();

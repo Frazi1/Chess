@@ -1,5 +1,5 @@
 ﻿using System;
-using chesslib.Field;
+using chesslib.Board;
 
 namespace chesslib.Command
 {

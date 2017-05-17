@@ -1,13 +1,13 @@
-﻿using chesslib.Field;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using chesslib.Board;
 
 namespace chesslib.Figures
 {
     [Serializable]
     public class Pawn : Piece
     {
-        public Pawn(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
+        public Pawn(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
         {
             IsPromoted = false;
             PieceType = PieceType.Pawn;

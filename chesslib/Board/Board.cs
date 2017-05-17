@@ -1,9 +1,9 @@
-﻿using chesslib.Figures;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using chesslib.Figures;
 
-namespace chesslib.Field
+namespace chesslib.Board
 {
     [Serializable]
     public class Board

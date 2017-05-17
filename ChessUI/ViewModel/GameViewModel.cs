@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using chesslib.Board;
 
 namespace ChessUI.ViewModel
 {

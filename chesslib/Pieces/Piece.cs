@@ -1,8 +1,8 @@
-﻿using chesslib.Field;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using chesslib.Board;
 using chesslib.Utils;
 
 namespace chesslib
@@ -10,7 +10,7 @@ namespace chesslib
     [Serializable]
     public abstract class Piece : IMovable
     {
-        public Board Board { get; private set; }
+        public Board.Board Board { get; private set; }
 
         public int PosX
         {
@@ -45,7 +45,7 @@ namespace chesslib
         public List<Cell> AllowedCells { get; protected set; }
         public List<Cell> AttackedCells { get; protected set; }
 
-        protected Piece(Cell currentCell, PlayerColor playerColor, Board board)
+        protected Piece(Cell currentCell, PlayerColor playerColor, Board.Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)
