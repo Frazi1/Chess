@@ -157,6 +157,42 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bishop_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\king_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\knight_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pawn_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\queen_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\rook_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bishop_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\king_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\knight_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pawn_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\queen_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\rook_black.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

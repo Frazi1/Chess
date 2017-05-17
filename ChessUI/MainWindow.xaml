@@ -39,7 +39,8 @@
                         <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Pawn}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_pawn_T.png" />
+                    <!--<Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_pawn_T.png" />-->
+                    <Setter Property="Source" Value="Resources/pawn_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -47,7 +48,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_rook_T.png" />
+                    <Setter Property="Source" Value="Resources/rook_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -55,7 +56,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_knight_T.png" />
+                    <Setter Property="Source" Value="Resources/knight_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -63,7 +64,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_bishop_T.png" />
+                    <Setter Property="Source" Value="Resources/bishop_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -71,7 +72,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_queen_T.png" />
+                    <Setter Property="Source" Value="Resources/queen_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -79,7 +80,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_king_T.png" />
+                    <Setter Property="Source" Value="Resources/king_white.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -87,7 +88,7 @@
                         <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Pawn}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_pawn_T.png" />
+                    <Setter Property="Source" Value="Resources/pawn_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -95,7 +96,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_rook_T.png" />
+                    <Setter Property="Source" Value="Resources/rook_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -103,7 +104,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_knight_T.png" />
+                    <Setter Property="Source" Value="Resources/knight_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -111,7 +112,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_bishop_T.png" />
+                    <Setter Property="Source" Value="Resources/bishop_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -119,7 +120,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_queen_T.png" />
+                    <Setter Property="Source" Value="Resources/queen_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -127,7 +128,7 @@
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
-                    <Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_king_T.png" />
+                    <Setter Property="Source" Value="Resources/king_black.png" />
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
