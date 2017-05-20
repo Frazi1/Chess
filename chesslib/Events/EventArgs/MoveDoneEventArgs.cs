@@ -1,5 +1,5 @@
-﻿using chesslib.Command;
-using System;
+﻿using System;
+using chesslib.Command;
 
 namespace chesslib.Events
 {

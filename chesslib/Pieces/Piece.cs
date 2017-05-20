@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib
@@ -10,7 +9,7 @@ namespace chesslib
     [Serializable]
     public abstract class Piece : IMovable
     {
-        public Board.Board Board { get; private set; }
+        public Board Board { get; private set; }
 
         public int PosX
         {
@@ -45,7 +44,7 @@ namespace chesslib
         public List<Cell> AllowedCells { get; protected set; }
         public List<Cell> AttackedCells { get; protected set; }
 
-        protected Piece(Cell currentCell, PlayerColor playerColor, Board.Board board)
+        protected Piece(Cell currentCell, PlayerColor playerColor, Board board)
         {
             CurrentCell = currentCell;
             if (CurrentCell.Piece == null)
@@ -114,7 +113,7 @@ namespace chesslib
 
         public override string ToString()
         {
-            return GetType().Name + " - " + PlayerColor.ToString();
+            return GetType().Name + " - " + PlayerColor;
         }
 
         public abstract IEnumerable<Cell> GetAttackPattern();

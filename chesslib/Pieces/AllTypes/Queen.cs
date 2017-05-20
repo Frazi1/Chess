@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib.Figures
@@ -8,7 +8,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Queen : Piece
     {
-        public Queen(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
+        public Queen(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Queen;
         }

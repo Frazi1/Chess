@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib.Figures
@@ -8,14 +8,14 @@ namespace chesslib.Figures
     [Serializable]
     public class Knight : Piece
     {
-        public Knight(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
+        public Knight(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Knight;
         }
 
         public override IEnumerable<Cell> GetAttackPattern()
         {
-            return GetPattern((Piece p, Cell c)=>true);
+            return GetPattern((p, c)=>true);
         }
 
         private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
@@ -24,7 +24,7 @@ namespace chesslib.Figures
             int y = PosY;
 
 
-            List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>()
+            List<Tuple<int, int>> toCheck = new List<Tuple<int, int>>
             {
                 //влево
                 new Tuple<int, int>(x-2,y-1),
@@ -35,7 +35,7 @@ namespace chesslib.Figures
                 new Tuple<int, int>(x+2,y-1),
                 new Tuple<int, int>(x+2,y+1),
                 new Tuple<int, int>(x+1,y+2),
-                new Tuple<int, int>(x+1,y-2),
+                new Tuple<int, int>(x+1,y-2)
             };
 
             foreach (var move in toCheck)

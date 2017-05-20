@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib.Figures
@@ -8,7 +8,7 @@ namespace chesslib.Figures
     [Serializable]
     public class King : Piece
     {
-        public King(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
+        public King(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.King;
         }
@@ -17,7 +17,7 @@ namespace chesslib.Figures
 
         public override IEnumerable<Cell> GetAttackPattern()
         {
-            return GetPattern((Piece p, Cell c)=>true);
+            return GetPattern((p, c)=>true);
         }
 
         private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)

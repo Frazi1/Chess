@@ -1,11 +1,6 @@
 ﻿using chesslib;
+using chesslib.Events;
 using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ChessUI.ViewModel
 {
@@ -32,8 +27,8 @@ namespace ChessUI.ViewModel
         public Piece Piece { get { return _piece; } }
         public PieceType PieceType
         {
-            get { return this._pieceType; }
-            set { this._pieceType = value; RaisePropertyChanged(() => this.PieceType); }
+            get { return _pieceType; }
+            set { _pieceType = value; RaisePropertyChanged(() => PieceType); }
         }
         public PlayerColor PlayerType
         {
@@ -42,7 +37,7 @@ namespace ChessUI.ViewModel
         }
         public bool IsInGame { get { return _piece.IsInGame; } }
 
-        private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
+        private void Game_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
             UpdatePiece();
         }

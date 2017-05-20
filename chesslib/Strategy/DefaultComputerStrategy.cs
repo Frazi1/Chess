@@ -1,8 +1,8 @@
-﻿using chesslib.Player;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using chesslib.Board;
+using chesslib.Field;
+using chesslib.Player;
 
 namespace chesslib.Strategy
 {
@@ -13,7 +13,7 @@ namespace chesslib.Strategy
         //private Cell[,] ChessBoard { get { return _player.Game.Board.ChessBoard; } }
         private List<Piece> AlivePieces { get; set; }
 
-        public Move PrepareMove(IPlayer player, Board.Board board)
+        public Move PrepareMove(IPlayer player, Board board)
         {
             AlivePieces = board
                             .AlivePieces

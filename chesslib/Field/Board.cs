@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using chesslib.Figures;
 
-namespace chesslib.Board
+namespace chesslib.Field
 {
     [Serializable]
     public class Board

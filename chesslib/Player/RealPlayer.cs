@@ -1,6 +1,6 @@
-﻿using chesslib.Command;
+﻿using System.Threading;
+using chesslib.Command;
 using chesslib.Events;
-using System.Threading;
 
 namespace chesslib.Player
 {

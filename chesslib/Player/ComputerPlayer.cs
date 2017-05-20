@@ -1,7 +1,7 @@
-﻿using chesslib.Command;
-using chesslib.Strategy;
-using System.Threading;
+﻿using System.Threading;
+using chesslib.Command;
 using chesslib.Events;
+using chesslib.Strategy;
 
 namespace chesslib.Player
 {

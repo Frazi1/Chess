@@ -1,13 +1,11 @@
-﻿using chesslib.Strategy;
-using ChessUI.ViewModel;
-using Microsoft.Practices.ServiceLocation;
-using System;
-using System.Threading;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using chesslib;
-using chesslib.Board;
+using System.Windows.Threading;
+using chesslib.Field;
+using ChessUI.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ChessUI
 {
@@ -27,8 +25,8 @@ namespace ChessUI
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            int x = (int)e.GetPosition(this.ChessBoard).X;
-            int y = (int)e.GetPosition(this.ChessBoard).Y;
+            int x = (int)e.GetPosition(ChessBoard).X;
+            int y = (int)e.GetPosition(ChessBoard).Y;
             string text = "";
 
             if (e.LeftButton == e.ButtonState)
@@ -119,7 +117,7 @@ namespace ChessUI
         //    });
         //}
 
-        public System.Windows.Threading.DispatcherOperation UpdateMovesHistory()
+        public DispatcherOperation UpdateMovesHistory()
         {
             return Dispatcher.BeginInvoke((Action)(() =>
             {

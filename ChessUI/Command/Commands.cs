@@ -1,13 +1,7 @@
 ﻿using chesslib;
-using chesslib.Utils;
 using ChessUI.ViewModel;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 
 namespace ChessUI.Command
 {
@@ -15,7 +9,7 @@ namespace ChessUI.Command
     {
         public Commands(GameViewModel gameViewModel)
         {
-            SaveGameCommand = new RelayCommand<Game>((game) =>
+            SaveGameCommand = new RelayCommand<Game>(game =>
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Файлы игры (*.chess)|*.chess|Все файлы (*.*)|*.*";

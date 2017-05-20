@@ -1,12 +1,11 @@
-﻿using chesslib.Command;
-using chesslib.Events;
-using chesslib.Player;
-using chesslib.Utils;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Security.Cryptography.X509Certificates;
-using chesslib.Board;
+using chesslib.Command;
+using chesslib.Events;
+using chesslib.Field;
+using chesslib.Player;
+using chesslib.Utils;
 
 namespace chesslib
 {
@@ -17,10 +16,10 @@ namespace chesslib
         private List<MakeMoveCommand> _moveCommands;
         private IPlayer _currentPlayer;
         private List<IPlayer> _players;
-        private Board.Board _board;
+        private Board _board;
         private GameUtils _gameUtils;
 
-        public Board.Board Board
+        public Board Board
         {
             get
             {
@@ -92,7 +91,7 @@ namespace chesslib
 
         public Game()
         {
-            Board = new Board.Board(Size);
+            Board = new Board(Size);
             GameUtils = new GameUtils(this);
             Players = new List<IPlayer>();
             //_moveCommands = new MoveCommands();
@@ -125,7 +124,6 @@ namespace chesslib
                 Players.Add(player);
                 return;
             }
-            return;
         }
 
         private void Player_MoveDone(object sender, MoveDoneEventArgs e)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib.Figures
@@ -8,7 +8,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Rook : Piece
     {
-        public Rook(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
+        public Rook(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Rook;
         }

@@ -1,14 +1,12 @@
-﻿using chesslib;
-using chesslib.Command;
-using chesslib.Player;
-using chesslib.Strategy;
-using chesslib.Utils;
-using ChessUI.Command;
-using GalaSoft.MvvmLight;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using chesslib.Board;
+using chesslib;
+using chesslib.Command;
+using chesslib.Events;
+using chesslib.Field;
+using ChessUI.Command;
+using GalaSoft.MvvmLight;
 
 namespace ChessUI.ViewModel
 {
@@ -71,7 +69,7 @@ namespace ChessUI.ViewModel
         public bool CanUndo { get { return Game != null ? Game.MoveCommands.Count > 0 : false; } }
         public bool IsPaused { get { return Game != null ? Game.IsPaused : true; } }
 
-        private void Game_GameStateChanged(object sender, chesslib.Events.GameStateChangedEventArgs e)
+        private void Game_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
             RaisePropertyChanged(() => PlayerType);
             RaisePropertyChanged(() => CanUndo);

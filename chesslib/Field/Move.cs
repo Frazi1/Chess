@@ -1,4 +1,4 @@
-﻿namespace chesslib.Board
+﻿namespace chesslib.Field
 {
     public class Move
     {

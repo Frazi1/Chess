@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace chesslib.Utils
@@ -8,11 +9,11 @@ namespace chesslib.Utils
     {
         public static T DeepCopy<T>(this T input)
         {
-            using (var ms = new System.IO.MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(ms, input);
-                ms.Seek(0, System.IO.SeekOrigin.Begin);
+                ms.Seek(0, SeekOrigin.Begin);
 
                 return (T) formatter.Deserialize(ms);
             }
@@ -49,7 +50,7 @@ namespace chesslib.Utils
                 case PieceType.King:
                     return 8;
                 default:
-                    throw new System.Exception("no type");
+                    throw new Exception("no type");
             }
         }
     }

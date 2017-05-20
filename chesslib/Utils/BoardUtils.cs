@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using chesslib.Board;
+﻿using System.Linq;
+using chesslib.Field;
 
 namespace chesslib.Utils
 {
@@ -24,35 +23,35 @@ namespace chesslib.Utils
             return !cell.IsTaken;
         }
 
-        public static bool IsCheck(Board.Board board, PlayerColor playerType)
+        public static bool IsCheck(Board board, PlayerColor playerType)
         {
             return board
                     .AlivePieces
                     .Count(p => p.PieceType == PieceType.King && p.PlayerColor == playerType && p.IsUnderAttack) > 0;
         }
 
-        public static bool IsCheckMate(Board.Board board, PlayerColor currentPlayerPlayerColor)
+        public static bool IsCheckMate(Board board, PlayerColor currentPlayerPlayerColor)
         {
             return board.AlivePieces
                 .Where(p => p.PlayerColor == currentPlayerPlayerColor)
                 .All(p => p.AllowedCells.Count == 0);
         }
 
-        public static bool IsCheckOnNextTurn(Board.Board currentBoard, Move move, PlayerColor playerColor)
+        public static bool IsCheckOnNextTurn(Board currentBoard, Move move, PlayerColor playerColor)
         {
             var virtualBoard = VirtualMove(currentBoard, true, move, MoveFlags.UpdateAttacked);
             return IsCheck(virtualBoard, playerColor);
         }
 
-        public static Board.Board VirtualMove(Board.Board currentBoard, bool copy, Move move, MoveFlags moveFlags)
+        public static Board VirtualMove(Board currentBoard, bool copy, Move move, MoveFlags moveFlags)
         {
             Piece movedPiece, destroyedPiece;
             return VirtualMove(currentBoard, copy, move, moveFlags, out movedPiece, out destroyedPiece);
         }
 
-        public static Board.Board VirtualMove(Board.Board currentBoard, bool copy, Move move, MoveFlags moveFlags, out Piece movedPiece, out Piece destroyedPiece)
+        public static Board VirtualMove(Board currentBoard, bool copy, Move move, MoveFlags moveFlags, out Piece movedPiece, out Piece destroyedPiece)
         {
-            Board.Board board = currentBoard;
+            Board board = currentBoard;
             if (copy)
                 board = currentBoard.DeepCopy();
 

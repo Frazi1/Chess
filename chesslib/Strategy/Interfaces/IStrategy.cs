@@ -1,11 +1,10 @@
-﻿using chesslib.Player;
-using System;
-using chesslib.Board;
+﻿using chesslib.Field;
+using chesslib.Player;
 
 namespace chesslib.Strategy
 {
     public interface IStrategy
     {
-        Move PrepareMove(IPlayer player, Board.Board board);
+        Move PrepareMove(IPlayer player, Board board);
     }
 }

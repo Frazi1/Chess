@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using chesslib.Board;
+using chesslib.Field;
 using chesslib.Utils;
 
 namespace chesslib.Figures
@@ -9,7 +8,7 @@ namespace chesslib.Figures
     [Serializable]
     public class Bishop : Piece
     {
-        public Bishop(Cell currentCell, PlayerColor playerColor, Board.Board board) : base(currentCell, playerColor, board)
+        public Bishop(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             PieceType = PieceType.Bishop;
         }

@@ -44,11 +44,11 @@
     <Compile Include="Command\MakeMoveCommand.cs" />
     <Compile Include="Command\Interfaces\ICommand.cs" />
     <Compile Include="Events\EventArgs\GameStateChangedEventArgs.cs" />
-    <Compile Include="Board\Cell.cs" />
-    <Compile Include="Board\Board.cs" />
+    <Compile Include="Field\Cell.cs" />
+    <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
-    <Compile Include="Board\Move.cs" />
+    <Compile Include="Field\Move.cs" />
     <Compile Include="Pieces\IMovable.cs" />
     <Compile Include="Player\PlayerType.cs" />
     <Compile Include="Strategy\IntelligentComputerStrategy.cs" />
