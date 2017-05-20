@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using chesslib.Field;
 
 namespace chesslib.Utils
 {
     public static class BoardUtils
     {
-        public static bool IsValidCell(int size, int x, int y)
+        private static int size = 8;
+        public static bool IsValidCell(int x, int y)
         {
             return x >= 0 &&
                             x < size &&

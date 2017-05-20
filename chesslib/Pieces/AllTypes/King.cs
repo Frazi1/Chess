@@ -29,7 +29,7 @@ namespace chesslib.Figures
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if (BoardUtils.IsValidCell(Board.Size, i, j))
+                    if (BoardUtils.IsValidCell(i, j))
                     {
                         if (i == PosX && j == PosX)
                             continue;

@@ -10,7 +10,7 @@ namespace chesslib.Field
     {
         public int Size { get; }
 
-        protected Cell[,] ChessBoard { get; }
+        private Cell[,] ChessBoard { get; }
         public List<Piece> AlivePieces { get; }
 
         public bool IsPaused { get; internal set; }

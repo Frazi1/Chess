@@ -42,7 +42,7 @@ namespace chesslib.Figures
             {
                 int i = move.Item1;
                 int j = move.Item2;
-                if (BoardUtils.IsValidCell(Board.Size, i, j))
+                if (BoardUtils.IsValidCell(i, j))
                 {
                     Cell cell = Board.GetCell(i, j);
                     if (checker(this, cell))
