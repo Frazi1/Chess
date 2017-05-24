@@ -7,19 +7,15 @@ namespace chesslib.Field
     [Serializable]
     public class Cell
     {
-        private int _posX;
-        private int _posY;
         private Piece _piece;
 
         public int PosX
         {
-            get { return _posX; }
-            set { _posX = value; }
+            get;
         }
         public int PosY
         {
-            get { return _posY; }
-            set { _posY = value; }
+            get;
         }
         public Piece Piece
         {
@@ -27,7 +23,7 @@ namespace chesslib.Field
             set { _piece = value; }
         }
         public bool IsTaken { get { return _piece != null; } }
-        public List<Piece> AttackersList { get; set; }
+        public List<Piece> AttackersList { get; }
 
         public Cell(int x, int y)
         {

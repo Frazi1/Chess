@@ -7,10 +7,6 @@
         public int ToX { get; }
         public int ToY { get; }
 
-        public Move()
-        { 
-        }
-
         public Move(int fromX, int fromY, int toX, int toY)
         {
             FromX = fromX;

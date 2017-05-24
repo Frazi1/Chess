@@ -48,6 +48,9 @@
     <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
+    <Compile Include="Field\EnumBoard.cs" />
+    <Compile Include="Field\EnumCell.cs" />
+    <Compile Include="Field\IBoard.cs" />
     <Compile Include="Field\Move.cs" />
     <Compile Include="Pieces\IMovable.cs" />
     <Compile Include="Player\PlayerType.cs" />
