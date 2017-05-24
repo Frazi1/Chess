@@ -25,13 +25,13 @@ namespace tester
             //s.Stop();
             //Console.WriteLine("Serialization: "+ s.Elapsed);
 
-            s.Restart();
-            for (int i = 0; i < TestsNumber; i++)
-            {
-                var t = board.GetCopyTest();
-            }
-            s.Stop();
-            Console.WriteLine("Constructor: "+ s.Elapsed);
+            //s.Restart();
+            //for (int i = 0; i < TestsNumber; i++)
+            //{
+            //    var t = board.GetCopyTest();
+            //}
+            //s.Stop();
+            //Console.WriteLine("Constructor: "+ s.Elapsed);
 
             Console.ReadKey();
 

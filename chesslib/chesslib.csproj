@@ -48,8 +48,11 @@
     <Compile Include="Field\Board.cs" />
     <Compile Include="Events\EventArgs\MoveDoneEventArgs.cs" />
     <Compile Include="Events\EventsDelegates.cs" />
-    <Compile Include="Field\EnumBoard.cs" />
-    <Compile Include="Field\EnumCell.cs" />
+    <Compile Include="Field\BitBoard\EnumBoard.cs" />
+    <Compile Include="Field\BitBoard\EnumCell.cs" />
+    <Compile Include="Field\SmartBoard\SmartBoard.cs" />
+    <Compile Include="Field\SmartBoard\SmartCell.cs" />
+    
     <Compile Include="Field\IBoard.cs" />
     <Compile Include="Field\Move.cs" />
     <Compile Include="Pieces\IMovable.cs" />
