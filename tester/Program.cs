@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using chesslib.Field;
-using chesslib.Field.BitBoard;
+using chesslib.Field.Bit;
 
 namespace tester
 {

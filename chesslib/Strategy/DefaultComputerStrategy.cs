@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using chesslib.Field;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
 using chesslib.Player;
 
 namespace chesslib.Strategy
@@ -22,7 +24,7 @@ namespace chesslib.Strategy
             Random r = new Random();
             AlivePieces = AlivePieces.OrderBy(p => r.Next()).ToList();
             Piece piece = AlivePieces.First(p => p.AllowedCells.Count > 0);
-            Cell nextCell = piece.AllowedCells
+            SmartCell nextCell = piece.AllowedCells
                 .OrderBy(p => r.Next()).First();
 
 

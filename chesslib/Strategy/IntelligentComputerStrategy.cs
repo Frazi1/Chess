@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using chesslib.Field;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
 using chesslib.Player;
 using chesslib.Utils;
 
@@ -27,7 +29,7 @@ namespace chesslib.Strategy
         {
             double estimation = 0;
             Piece piece = virtualBoard.GetPiece(move.FromX, move.FromY);
-            Cell cell = virtualBoard.GetCell(move.ToX, move.ToY);
+            SmartCell cell = virtualBoard.GetCell(move.ToX, move.ToY);
 
             int allowedMovesCount = piece.AllowedCells.Count;
             int allMoves = virtualBoard.GetAllowedMovesNumber(piece.PlayerColor);
@@ -61,7 +63,7 @@ namespace chesslib.Strategy
 
             foreach (Piece p in alivePieces)
             {
-                foreach (Cell c in p.AllowedCells)
+                foreach (SmartCell c in p.AllowedCells)
                 {
                     //Tuple<Piece, Cell> move = new Tuple<Piece, Cell>(p, c);
                     Move move = new Move(p.PosX, p.PosY, c.PosX, c.PosY);

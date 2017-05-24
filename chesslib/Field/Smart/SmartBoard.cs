@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace chesslib.Field.SmartBoard
+namespace chesslib.Field.Smart
 {
+    [Serializable]
     public class SmartBoard : IBoard<SmartCell>
     {
         public IEnumerator<SmartCell> GetEnumerator()

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:ChessUI"
         xmlns:chesslib="clr-namespace:chesslib;assembly=chesslib"
+        xmlns:chesspiece="clr-namespace:chesslib.Field.Bit;assembly=chesslib"
         xmlns:ViewModel="clr-namespace:ChessUI.ViewModel" x:Class="ChessUI.MainWindow"
         Title="MainWindow" Height="673" Width="951">
 
@@ -36,7 +37,7 @@
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Pawn}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WPawn}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                     </MultiDataTrigger.Conditions>
                     <!--<Setter Property="Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_pawn_T.png" />-->
@@ -44,7 +45,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Rook}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WRook}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -52,7 +53,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Knight}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WKnight}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -60,7 +61,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Bishop}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WBishop}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -68,7 +69,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Queen}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WQueen}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -76,7 +77,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.King}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.WKing}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.White}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -85,14 +86,14 @@
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Pawn}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BPawn}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                     </MultiDataTrigger.Conditions>
                     <Setter Property="Source" Value="Resources/pawn_black.png" />
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Rook}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BRook}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -100,7 +101,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Knight}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BKnight}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -108,7 +109,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Bishop}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BBishop}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -116,7 +117,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.Queen}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BQueen}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>
@@ -124,7 +125,7 @@
                 </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding PieceType}" Value="{x:Static chesslib:PieceType.King}"/>
+                        <Condition Binding="{Binding EnumPiece}" Value="{x:Static chesspiece:EnumPiece.BKing}"/>
                         <Condition Binding="{Binding PlayerType}" Value="{x:Static chesslib:PlayerColor.Black}"/>
                         <Condition Binding="{Binding IsInGame}" Value="true"/>
                     </MultiDataTrigger.Conditions>

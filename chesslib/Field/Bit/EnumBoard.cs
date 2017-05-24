@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace chesslib.Field.BitBoard
+namespace chesslib.Field.Bit
 {
     [Serializable]
-    public class EnumBoard : IBoard<EnumCell>
+    public class EnumBoard : IBoard<EnumPiece>
     {
         public byte Size { get; }
-        public EnumCell[,] Board { get; set; }
+        public EnumPiece[,] Board { get; set; }
 
-        public EnumCell this[int index0, int index1]
+        public EnumPiece this[int index0, int index1]
         {
             get { return Board[index0, index1]; }
             private set { Board[index0, index1] = value; }
@@ -20,7 +20,7 @@ namespace chesslib.Field.BitBoard
         public EnumBoard(byte size)
         {
             Size = size;
-            Board = new EnumCell[Size, Size];
+            Board = new EnumPiece[Size, Size];
         }
 
         public void Initialize()
@@ -29,7 +29,7 @@ namespace chesslib.Field.BitBoard
             {
                 for (int j = 0; j < Size; j++)
                 {
-                    this[i, j] = EnumCell.Empty;
+                    this[i, j] = EnumPiece.Empty;
                 }
             }
         }
@@ -39,12 +39,12 @@ namespace chesslib.Field.BitBoard
             throw new System.NotImplementedException();
         }
 
-        public EnumCell GetCell(int index0, int index1)
+        public EnumPiece GetCell(int index0, int index1)
         {
             return this[index0, index1];
         }
 
-        public IBoard<EnumCell> GetCopy()
+        public IBoard<EnumPiece> GetCopy()
         {
             EnumBoard copyBoard = new EnumBoard(Size);
             for (int i = 0; i < Size; i++)
@@ -53,12 +53,12 @@ namespace chesslib.Field.BitBoard
             return copyBoard;
         }
 
-        public List<EnumCell> GetAlivePiecesList()
+        public List<EnumPiece> GetAlivePiecesList()
         {
-            return this.Where(enumCell => enumCell != EnumCell.Empty).ToList();
+            return this.Where(enumCell => enumCell != EnumPiece.Empty).ToList();
         }
 
-        public IEnumerator<EnumCell> GetEnumerator()
+        public IEnumerator<EnumPiece> GetEnumerator()
         {
             for (int i = 0; i < Size; i++)
             {

@@ -4,6 +4,8 @@ using System.Linq;
 using chesslib.Command;
 using chesslib.Events;
 using chesslib.Field;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
 using chesslib.Player;
 using chesslib.Utils;
 
@@ -171,7 +173,7 @@ namespace chesslib
             }
         }
 
-        public Cell GetCell(int x, int y)
+        public SmartCell GetCell(int x, int y)
         {
             return Board.GetCell(x, y);
         }

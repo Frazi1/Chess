@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using chesslib.Field.BitBoard;
+using chesslib.Field.Smart.Pieces;
 
-namespace chesslib.Field.SmartBoard
+namespace chesslib.Field.Smart
 {
+    [Serializable]
     public class SmartCell
     {
         public byte PosX { get; }

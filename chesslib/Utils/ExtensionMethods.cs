@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using chesslib.Field.Smart.Pieces;
 
 namespace chesslib.Utils
 {
@@ -15,7 +16,7 @@ namespace chesslib.Utils
                 formatter.Serialize(ms, input);
                 ms.Seek(0, SeekOrigin.Begin);
 
-                return (T) formatter.Deserialize(ms);
+                return (T)formatter.Deserialize(ms);
             }
         }
 
@@ -35,23 +36,24 @@ namespace chesslib.Utils
 
         public static double GetPieceValue(this Piece inputPiece)
         {
-            switch (inputPiece.PieceType)
-            {
-                case PieceType.Pawn:
-                    return 2;
-                case PieceType.Rook:
-                    return 6;
-                case PieceType.Knight:
-                    return 5;
-                case PieceType.Bishop:
-                    return 5;
-                case PieceType.Queen:
-                    return 10;
-                case PieceType.King:
-                    return 8;
-                default:
-                    throw new Exception("no type");
-            }
+            //switch (inputPiece.PieceType)
+            //{
+            //    case PieceType.Pawn:
+            //        return 2;
+            //    case PieceType.Rook:
+            //        return 6;
+            //    case PieceType.Knight:
+            //        return 5;
+            //    case PieceType.Bishop:
+            //        return 5;
+            //    case PieceType.Queen:
+            //        return 10;
+            //    case PieceType.King:
+            //        return 8;
+            //    default:
+            //        throw new Exception("no type");
+            //}
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System.Drawing;
 using System.Linq;
 using chesslib.Field;
+using chesslib.Field.Bit;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
 
 namespace chesslib.Utils
 {
@@ -15,21 +18,22 @@ namespace chesslib.Utils
                             y < size;
         }
 
-        public static bool PieceCanMoveTo(Piece piece, Cell cell)
+        public static bool PieceCanMoveTo(Piece piece, SmartCell smartCell)
         {
-            return !cell.IsTaken || cell.IsTaken && cell.Piece.PlayerColor != piece.PlayerColor;
+            return !smartCell.IsTaken || smartCell.IsTaken && smartCell.Piece.PlayerColor != piece.PlayerColor;
         }
 
-        public static bool Continue(Cell cell)
+        public static bool Continue(SmartCell smartCell)
         {
-            return !cell.IsTaken;
+            return !smartCell.IsTaken;
         }
 
-        public static bool IsCheck(Board board, PlayerColor playerType)
+        public static bool IsCheck(Board board, PlayerColor playerColor)
         {
+            EnumPiece king = playerColor == PlayerColor.Black ? EnumPiece.BKing : EnumPiece.WKing;
             return board
                     .AlivePieces
-                    .Count(p => p.PieceType == PieceType.King && p.PlayerColor == playerType && p.IsUnderAttack) > 0;
+                    .Count(p => p.PieceType == king && p.IsUnderAttack) > 0;
         }
 
         public static bool IsCheckMate(Board board, PlayerColor currentPlayerPlayerColor)

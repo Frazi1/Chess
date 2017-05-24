@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using chesslib;
 using chesslib.Command;
 using chesslib.Events;
 using chesslib.Field;
+using chesslib.Field.Smart;
 using ChessUI.Command;
 using GalaSoft.MvvmLight;
 
@@ -50,7 +52,7 @@ namespace ChessUI.ViewModel
         public PlayerViewModel ActivePlayerViewModel { get; set; }
         public ChessPieceViewModel SelectedPiece { get; set; }
 
-        public Cell NextCell { get; set; }
+        public SmartCell NextCell { get; set; }
         public PlayerColor PlayerType
         {
             get
@@ -58,7 +60,7 @@ namespace ChessUI.ViewModel
                 
                 if (Game!=null && Game.CurrentPlayer != null)
                     return Game.CurrentPlayer.PlayerColor;
-                return PlayerColor.None;
+                throw new Exception();
             }
         }
         public Game Game

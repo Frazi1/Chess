@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using chesslib.Field;
+using chesslib.Field.Smart;
 using ChessUI.ViewModel;
 using Microsoft.Practices.ServiceLocation;
 
@@ -82,7 +83,7 @@ namespace ChessUI
             }
             if (e.MiddleButton == MouseButtonState.Pressed)
             {
-                Cell cell = _gameViewModel.Game.GetCell(x, y);
+                SmartCell cell = _gameViewModel.Game.GetCell(x, y);
                 if (cell != null)
                 {
                     cell.AttackersList.ForEach(a =>

@@ -1,5 +1,7 @@
 ﻿using System;
 using chesslib.Field;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
 
 namespace chesslib.Command
 {
@@ -39,7 +41,7 @@ namespace chesslib.Command
         {
             Game game = (Game)parameter;
             //Cell[,] chessBoard = game.Board.ChessBoard;
-            Cell nextCell = /*chessBoard[NextX, NextY];*/ game.GetCell(NextX, NextY);
+            SmartCell nextCell = /*chessBoard[NextX, NextY];*/ game.GetCell(NextX, NextY);
             Piece piece = /*chessBoard[PrevX, PrevY].Piece;*/ game.GetPiece(PrevX, PrevY);
 
             if (game.IsPaused || game.IsGameFinished)

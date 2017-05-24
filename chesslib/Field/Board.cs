@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using chesslib.Field.Smart;
+using chesslib.Field.Smart.Pieces;
+using chesslib.Field.Smart.Pieces.AllTypes;
 using chesslib.Figures;
 
 namespace chesslib.Field
@@ -10,7 +13,7 @@ namespace chesslib.Field
     {
         public int Size { get; }
 
-        private Cell[,] ChessBoard { get; }
+        private SmartCell[,] ChessBoard { get; }
         public List<Piece> AlivePieces { get; }
 
         public bool IsPaused { get; internal set; }
@@ -19,7 +22,7 @@ namespace chesslib.Field
         public Board(int size)
         {
             Size = size;
-            ChessBoard = new Cell[size, size];
+            ChessBoard = new SmartCell[size, size];
             AlivePieces = new List<Piece>();
             IsGameFinished = false;
             IsPaused = true;
@@ -29,11 +32,11 @@ namespace chesslib.Field
 
         private void Initialize()
         {
-            for (int i = 0; i < Size; i++)
+            for (byte i = 0; i < Size; i++)
             {
-                for (int j = 0; j < Size; j++)
+                for (byte j = 0; j < Size; j++)
                 {
-                    ChessBoard[i, j] = new Cell(i, j);
+                    ChessBoard[i, j] = new SmartCell(i, j);
                 }
             }
         }
@@ -82,8 +85,8 @@ namespace chesslib.Field
         {
             if (moveFlags.HasFlag(MoveFlags.None)) return;
 
-            Cell from = GetCell(move.FromX, move.FromY);
-            Cell to = GetCell(move.ToX, move.ToY);
+            SmartCell from = GetCell(move.FromX, move.FromY);
+            SmartCell to = GetCell(move.ToX, move.ToY);
             Piece[] piecesToUpdate1 = new Piece[from.AttackersList.Count];
             Piece[] piecesToUpdate2 = new Piece[to.AttackersList.Count];
             from.AttackersList.CopyTo(piecesToUpdate1, 0);
@@ -150,7 +153,7 @@ namespace chesslib.Field
                 piece.CurrentCell = null;
             }
         }
-        public void RestorePiece(Piece destroyedPiece, Cell cell)
+        public void RestorePiece(Piece destroyedPiece, SmartCell cell)
         {
             destroyedPiece.IsInGame = true;
             cell.Piece = destroyedPiece;
@@ -169,8 +172,8 @@ namespace chesslib.Field
         /// <returns>Return the piece that was destroyed after move (can be null if no piece destroyed)</returns>
         public Piece MovePiece(Move move, MoveFlags moveFlags)
         {
-            Cell nextCell = GetCell(move.ToX, move.ToY);
-            Cell prevCell = GetCell(move.FromX, move.FromY);
+            SmartCell nextCell = GetCell(move.ToX, move.ToY);
+            SmartCell prevCell = GetCell(move.FromX, move.FromY);
             Piece piece = prevCell.Piece;
 
             Piece destroyedPiece = nextCell.Piece;
@@ -186,8 +189,8 @@ namespace chesslib.Field
 
         public void UndoMove(Move move, Piece destroyedPiece, MoveFlags moveFlags)
         {
-            Cell prevCell = GetCell(move.FromX, move.FromY);
-            Cell nextCell = GetCell(move.ToX, move.ToY);
+            SmartCell prevCell = GetCell(move.FromX, move.FromY);
+            SmartCell nextCell = GetCell(move.ToX, move.ToY);
             Piece piece = nextCell.Piece;
             nextCell.Piece = null;
             //Ставим фигуру на предудущую клетку
@@ -209,7 +212,7 @@ namespace chesslib.Field
                 .Where(p => p.PlayerColor == playerColor)
                 .ToList();
         }
-        public Cell GetCell(int x, int y)
+        public SmartCell GetCell(int x, int y)
         {
             return ChessBoard[x, y];
         }

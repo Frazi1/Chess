@@ -1,5 +1,7 @@
 ﻿using chesslib;
 using chesslib.Events;
+using chesslib.Field.Bit;
+using chesslib.Field.Smart.Pieces;
 using GalaSoft.MvvmLight;
 
 namespace ChessUI.ViewModel
@@ -7,12 +9,12 @@ namespace ChessUI.ViewModel
     public class ChessPieceViewModel : ViewModelBase
     {
         private Piece _piece;
-        private PieceType _pieceType;
+        private EnumPiece _pieceType;
 
         public ChessPieceViewModel(Piece piece, Game game)
         {
             _piece = piece;
-            PieceType = piece.PieceType;
+            EnumPiece = piece.PieceType;
             game.GameStateChanged += Game_GameStateChanged;
         }
 
@@ -25,10 +27,10 @@ namespace ChessUI.ViewModel
             get { return IsInGame ? _piece.CurrentCell.PosY : -1; }
         }
         public Piece Piece { get { return _piece; } }
-        public PieceType PieceType
+        public EnumPiece EnumPiece
         {
             get { return _pieceType; }
-            set { _pieceType = value; RaisePropertyChanged(() => PieceType); }
+            set { _pieceType = value; RaisePropertyChanged(() => EnumPiece); }
         }
         public PlayerColor PlayerType
         {
