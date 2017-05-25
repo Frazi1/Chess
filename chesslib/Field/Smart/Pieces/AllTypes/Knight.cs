@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Field;
 using chesslib.Utils;
 
-namespace chesslib.Figures
+namespace chesslib.Field.Smart.Pieces.AllTypes
 {
     [Serializable]
     public class Knight : Piece
     {
-        public Knight(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
+        public Knight(SmartCell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
-            PieceType = PieceType.Knight;
+            PieceType = playerColor == PlayerColor.Black ? Field.Bit.EnumPiece.BKnight : Field.Bit.EnumPiece.WKnight;
         }
 
-        public override IEnumerable<Cell> GetAttackPattern()
+        public override IEnumerable<SmartCell> GetAttackPattern()
         {
             return GetPattern((p, c)=>true);
         }
 
-        private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
+        private IEnumerable<SmartCell> GetPattern(Func<Piece, SmartCell, bool> checker)
         {
             int x = PosX;
             int y = PosY;
@@ -44,14 +43,14 @@ namespace chesslib.Figures
                 int j = move.Item2;
                 if (BoardUtils.IsValidCell(i, j))
                 {
-                    Cell cell = Board.GetCell(i, j);
+                    SmartCell cell = Board.GetCell(i, j);
                     if (checker(this, cell))
                         yield return cell;
                 }
             }
         }
 
-        public override IEnumerable<Cell> GetMovePattern()
+        public override IEnumerable<SmartCell> GetMovePattern()
         {
             return GetPattern(BoardUtils.PieceCanMoveTo);
         }

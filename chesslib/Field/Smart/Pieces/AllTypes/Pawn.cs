@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Field;
+using chesslib.Field.Bit;
 using chesslib.Utils;
 
-namespace chesslib.Figures
+namespace chesslib.Field.Smart.Pieces.AllTypes
 {
     [Serializable]
     public class Pawn : Piece
     {
         public int Direction { get; }
-        public Pawn(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
+        public Pawn(SmartCell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
             IsPromoted = false;
-            PieceType = PieceType.Pawn;
-            Direction = playerColor == PlayerColor.White ? -1 : 1;
+            PieceType = playerColor == PlayerColor.Black ? EnumPiece.BPawn : EnumPiece.WPawn;
+            Direction = playerColor == PlayerColor.Black ? 1 : -1;
         }
 
         public bool IsPromoted { get; set; }
 
-        public override IEnumerable<Cell> GetAttackPattern()
+        public override IEnumerable<SmartCell> GetAttackPattern()
         {
             int x = CurrentCell.PosX;
             int y = CurrentCell.PosY;
@@ -36,7 +36,7 @@ namespace chesslib.Figures
             }
         }
 
-        public override IEnumerable<Cell> GetMovePattern()
+        public override IEnumerable<SmartCell> GetMovePattern()
         {
             int x = PosX;
             int y = PosY;
@@ -44,11 +44,11 @@ namespace chesslib.Figures
             if (!BoardUtils.IsValidCell(x, y + Direction))
                 yield break;
 
-            Cell cell1 = Board.GetCell(x, y + Direction);
+            SmartCell cell1 = Board.GetCell(x, y + Direction);
             if (!cell1.IsTaken)
             {
                 yield return cell1;
-                Cell cell2 = Board.GetCell(x, y + 2 * Direction);
+                SmartCell cell2 = Board.GetCell(x, y + 2 * Direction);
                 if (!HasAlreadyMoved && !cell2.IsTaken)
                     yield return cell2;
             }
@@ -56,7 +56,7 @@ namespace chesslib.Figures
             //Атака вперед влево
             if (BoardUtils.IsValidCell(x-1,y+Direction))
             {
-                Cell cell = Board.GetCell(x - 1, y + Direction);
+                SmartCell cell = Board.GetCell(x - 1, y + Direction);
                 if (cell.IsTaken &&
                     cell.Piece.PlayerColor != PlayerColor)
                 {
@@ -67,7 +67,7 @@ namespace chesslib.Figures
             //Атака вперед вправо
             if (BoardUtils.IsValidCell(x + 1, y + Direction))
             {
-                Cell cell = Board.GetCell(x + 1, y + Direction);
+                SmartCell cell = Board.GetCell(x + 1, y + Direction);
                 if (cell.IsTaken &&
                     cell.Piece.PlayerColor != PlayerColor)
                 {

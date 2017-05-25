@@ -1,19 +1,19 @@
-﻿namespace chesslib.Field.BitBoard
+﻿namespace chesslib.Field.Bit
 {
-    public enum EnumCell
+    public enum EnumPiece
     {
         Empty,
         BKing,
         BPawn,
         BBishop,
         BRook,
-        BQuuen,
+        BQueen,
         BKnight,
         WKing,
         WPawn,
         WBishop,
         WRook,
-        WQuuen,
+        WQueen,
         WKnight
     }
 }

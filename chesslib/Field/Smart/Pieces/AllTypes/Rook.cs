@@ -1,35 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using chesslib.Field;
+using chesslib.Field.Bit;
 using chesslib.Utils;
 
-namespace chesslib.Figures
+namespace chesslib.Field.Smart.Pieces.AllTypes
 {
     [Serializable]
     public class Rook : Piece
     {
-        public Rook(Cell currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
+        public Rook(SmartCell  currentCell, PlayerColor playerColor, Board board) : base(currentCell, playerColor, board)
         {
-            PieceType = PieceType.Rook;
+            PieceType = playerColor == PlayerColor.Black ? EnumPiece.BRook : EnumPiece.WRook;
         }
 
-        public override IEnumerable<Cell> GetAttackPattern()
+        public override IEnumerable<SmartCell > GetAttackPattern()
         {
             return GetPattern((p, c) => true);
         }
 
-        public override IEnumerable<Cell> GetMovePattern()
+        public override IEnumerable<SmartCell > GetMovePattern()
         {
             return GetPattern(BoardUtils.PieceCanMoveTo);
         }
 
-        private IEnumerable<Cell> GetPattern(Func<Piece, Cell, bool> checker)
+        private IEnumerable<SmartCell > GetPattern(Func<Piece, SmartCell , bool> checker)
         {
             int x = PosX;
             int y = PosY;
             int size = Board.Size;
 
-            Cell cell;
+            SmartCell  cell;
             
             //Вправо
             for (int i = x + 1, j = y; i < size; i++)
